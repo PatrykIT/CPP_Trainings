@@ -1,2 +1,2 @@
 # CPP_Trainings
-Here I store all stuff for the training's I have given.
+Here I store all the stuff for the training's I have given.
