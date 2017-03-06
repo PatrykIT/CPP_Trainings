@@ -24,19 +24,3 @@ if (itr != fruits.end())
 { std::cout<<"pineapples costs: $" <<itr->second; }
 
 */
-
-#include <iostream>
-#include <string>
-#include <set>
-#include <cmath>
-
-int main()
-{
-  // (1) Default constructor
-  std::set<std::string> a;
-  a.insert("cat");
-  a.insert("dog");
-  a.insert("horse");
-  for(auto& str: a) std::cout << str << ' ';
-  std::cout << '\n';
-}
