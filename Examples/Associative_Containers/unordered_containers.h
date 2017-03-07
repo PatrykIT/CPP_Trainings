@@ -1,0 +1,9 @@
+#ifndef UNORDERED_CONTAINERS_H
+#define UNORDERED_CONTAINERS_H
+
+namespace UNORDERED_MEELOGIC
+{
+    void Start();
+}
+
+#endif // UNORDERED_CONTAINERS_H

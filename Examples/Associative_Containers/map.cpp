@@ -47,7 +47,12 @@ namespace MAP_MEELOGIC
         numbers_id.insert(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
         assert(numbers_id[key] == 10);
 
-        //Add emplace
+        /* From C++11 we have .emplace() method */
+        /* It makes use of variadic templates and perfect forwarding which results in constructing object in place.
+         * Instead of getting a source from which to copy into the container, the function takes the parameters that will be forwarded to the constructor of the object stored in the container. */
+        numbers_id.emplace(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
+        assert(numbers_id[key] == 10);
+
     }
 
     void Map_Iteration()
@@ -112,7 +117,7 @@ namespace MAP_MEELOGIC
 
     void Start()
     {
-        //Map_Insertions();
+        Map_Insertions();
         //Map_Iteration();
         Map_Adjustments();
     }

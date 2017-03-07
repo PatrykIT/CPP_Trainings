@@ -1,0 +1,15 @@
+Map exercises:
+
+1. I would like some exercise which makes trainees use 3rd template argument (not default one).
+
+
+
+
+
+
+
+
+
+
+
+Performance tests.
