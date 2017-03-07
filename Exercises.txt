@@ -1,8 +1,14 @@
 Map exercises:
 
 1. I would like some exercise which makes trainees use 3rd template argument (not default one).
+	a) Give trainees a map with different values. Ask them to create a copy of that map, but with values in greater order.
+	Probably most will copy the map and then call std::sort. As a correct answer, show them 3rd template.
 
+2. Map iteration - ask class what is wrong with first iteration. When they will be looking for an answer, open en.cppreference.com with std::map, and tell them to look there.
 
+At the end of training, ask:
+How is map implemented?
+What are pros and cons of this implementation (red-black tree)?
 
 
 
