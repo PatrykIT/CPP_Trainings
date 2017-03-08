@@ -7,12 +7,29 @@ Map exercises:
 2. Map iteration - ask class what is wrong with first iteration. When they will be looking for an answer, open en.cppreference.com with std::map, and tell them to look there.
 
 At the end of training, ask:
-How is map implemented?
-What are pros and cons of this implementation (red-black tree)?
+3). How is map implemented?
+4.) What are pros and cons of this implementation (red-black tree)?
+
+
+
+Unordered_map exercises:
+1.) Ask students to load a very big file with strings and count each occurence of the string. Most probably with do that as std::map<std::string, int> //<word, counter>
+Better answer would be std::unordered_map, because we don't need to sort those strings, which std::map would do.
+
+At the end of training, ask:
+2). How is unordered_map implemented?
+3.) What are pros and cons of this implementation (hash table)?
 
 
 
 
+Priority queue exercise:
+1). Give students a function that returns 1000 random numbers. Ask them to return the biggest / lowest number.
+Many will probably put numbers in std::vector and then sort it. Better answer would be to put it in std::priority_queue.
+
+At the end of training, ask:
+2). How is priority_queue implemented?
+3.) What does priority_queue achieves thanks to this implementation (heap)?
 
 
 
