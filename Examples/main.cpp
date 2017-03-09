@@ -2,6 +2,8 @@
 #include "Associative_Containers/unordered_containers.h"
 #include "Performance/performance.h"
 #include "Sequence_Containers/array.h"
+#include "Sequence_Containers/deque.h"
+#include "Container_Adaptors/priority_queue.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +11,9 @@ int main(int argc, char *argv[])
     //UNORDERED_MEELOGIC::Start();
 
     //PERFORMANCE_MEELOGIC::Map_vs_UnorderedMap();
-    ARRAY_MEELOGIC::Start();
+    //ARRAY_MEELOGIC::Start();
+    //DEQUE_MEELOGIC::Start();
+    PRIORITY_QUEUE_MEELOGIC::Start();
 
     return 0;
 }

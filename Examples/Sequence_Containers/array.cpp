@@ -69,16 +69,16 @@ namespace ARRAY_MEELOGIC
             std::cout << "Value: " << nr << "\n";
 
         /* BOUNDS CHECKING */
-        std::cout << numbers[4]; //No bounds checking. Undefined behaviour.
+        //std::cout << numbers[4]; //No bounds checking. Undefined behaviour.
         //Will crash or print some random value. Hard to trace in code.
     }
 
     void Start()
     {
-        std::cout << "\tC++11:\n";
+        std::cout << "\tC++11 array:\n";
         CPP11_Array();
 
-        std::cout << "\tC style:\n";
+        std::cout << "\tC-style array:\n";
         C_Style_Array();
     }
 }

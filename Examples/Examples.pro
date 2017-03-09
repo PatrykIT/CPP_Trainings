@@ -11,8 +11,13 @@ SOURCES += main.cpp \
     Container_Adaptors/queue.cpp \
     Container_Adaptors/stack.cpp \
     Sequence_Containers/array.cpp \
-    Sequence_Containers/deque.cpp
+    Sequence_Containers/deque.cpp \
+    Performance/performance.cpp
 
 HEADERS += \
     Associative_Containers/map.h \
-    Associative_Containers/unordered_containers.h
+    Associative_Containers/unordered_containers.h \
+    Performance/performance.h \
+    Sequence_Containers/array.h \
+    Sequence_Containers/deque.h \
+    Container_Adaptors/priority_queue.h

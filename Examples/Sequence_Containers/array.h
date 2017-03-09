@@ -1,7 +1,6 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include <array>
 namespace ARRAY_MEELOGIC
 {
     void CPP11_Array();
@@ -10,3 +9,7 @@ namespace ARRAY_MEELOGIC
 }
 
 #endif // ARRAY_H
+
+/* It has friendly value semantics, so that it can be passed to or returned from functions by value.
+ * It provides the interface of an STL container which makes it more convenient to find the size,
+ * and use with STL-style iterator-based algorithms. */
