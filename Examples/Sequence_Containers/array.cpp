@@ -4,6 +4,12 @@
 
 namespace ARRAY_MEELOGIC
 {
+/*
+template< class T,
+        std::size_t N >
+struct array;
+*/
+
     void CPP11_Array()
     {
         const int size = 3;

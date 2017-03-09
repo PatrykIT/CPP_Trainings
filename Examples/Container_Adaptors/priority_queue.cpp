@@ -13,16 +13,9 @@ namespace PRIORITY_QUEUE_MEELOGIC
 template<
     class T,
     class Container = std::vector<T>,
-    class Compare = std::less<typename Container::value_type>
-> class priority_queue;
+    class Compare = std::less<typename Container::value_type> >
+class priority_queue;
 */
-
-/* A priority queue is a container adaptor that provides constant time lookup of the largest (by default) element,
- * at the expense of logarithmic insertion and extraction.
- *
- * Working with a priority_queue is similar to managing a heap in some random access container,
- * with the benefit of not being able to accidentally invalidate the heap. */
-
 
     void Print_Queue(std::priority_queue<int> numbers)
     {

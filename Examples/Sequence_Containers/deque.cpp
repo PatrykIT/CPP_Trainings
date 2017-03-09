@@ -3,6 +3,12 @@
 
 namespace DEQUE_MEELOGIC
 {
+/*
+template< class T,
+        class Allocator = std::allocator<T> >
+class deque;
+*/
+
     void Deque_Interface()
     {
         // Create a deque containing integers

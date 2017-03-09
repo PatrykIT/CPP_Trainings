@@ -3,10 +3,10 @@
 
 namespace MAP_MEELOGIC
 {
-    void Start();
     void Map_Insertions();
     void Map_Iteration();
     void Map_Adjustments();
+    void Start();
 }
 
 #endif // MAP_H

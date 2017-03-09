@@ -5,6 +5,14 @@
 
 namespace UNORDERED_MEELOGIC
 {
+
+/* template< class Key,
+            class T,
+            class Hash = std::hash<Key>,
+            class KeyEqual = std::equal_to<Key>,
+            class Allocator = std::allocator< std::pair<const Key, T> > >
+class unordered_map; */
+
     void Unordered_Map_Interface_Basic()
     {
         /* We're going to skip insert operations and all other operations that are very much similar to std::map. Let's focus on differences */
