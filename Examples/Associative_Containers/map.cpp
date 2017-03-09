@@ -1,6 +1,8 @@
 #include <map>
 #include <cassert>
 #include <iostream>
+#include <fstream>
+
 
 
 namespace MAP_MEELOGIC
@@ -35,42 +37,6 @@ class map;
 
     }
 
-    void Map_Iteration()
-    {
-        int key = 5, value = 0;
-        std::map<int, int> numbers_id { {key, value} };
-
-        /* What is wrong with this loop? */
-        for(const std::pair<int, int> &entry : numbers_id)
-        {
-            std::cout << entry.first << " " << entry.second << "\n";
-        }
-
-
-        /* Correct loops: */
-        for(const std::pair<const int, int> &entry : numbers_id)
-        {
-            std::cout << entry.first << " " << entry.second << "\n";
-        }
-
-        for(const auto &entry : numbers_id)
-        {
-            std::cout << entry.first << " " << entry.second << "\n";
-        }
-
-        /* Confirmation: */
-        std::cout << "std::is_same<const pair<int,int>&, decltype( *begin(numbers_id) )>::value = "
-             << std::is_same< std::pair<int,int>&,
-                                                  decltype(*begin(numbers_id)) >::value << "\n";
-
-        std::cout << "std::is_same<const pair<const int,int>&, decltype( *begin(numbers_id) )>::value = "
-             << std::is_same< std::pair<const int,int>&,
-                                                        decltype(*begin(numbers_id)) >::value << "\n";
-
-        /* This const is required, because std::map is build as std::pair<const Key, T>. Because std::pair<Key, T> is close enough it will create a temporary of the correct type and copy initialize it.
-         * That will in turn be copied to the node, creating a total of two copies. */
-    }
-
     void Map_Adjustments()
     {
         int key = 5, key_2 = 10, value = 0, value_2 = 100;
@@ -98,10 +64,143 @@ class map;
          * http://en.cppreference.com/w/cpp/header/functional*/
     }
 
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+    void Exercise_One()
+    {
+        /* Count occurences of how many times given name appeared in a file. */
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Associative_Containers\\Map_exercises\\words_short.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::map<std::string, int> words;
+        std::string temporary;
+
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> temporary;
+                /* Put the name and counter into the map. */
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        /* Now, when you have counted the occurences, please create a multimap where occurences are a key and names are values.
+         * Keys should be sorted from bigger number to smaller numbers. So the most common occurence is at the top, and the least common occurence at the bottom.
+         * Print all elements. */
+
+    }
+
+    void Exercise_One_Answer()
+    {
+        //https://www.random.org/strings/
+        /* Counting occurences - how many duplicate strings are in a file. */
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Associative_Containers\\Map_exercises\\words_short.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::map<std::string, int> words;
+        std::string temporary;
+
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> temporary; //std::getline(file, temporary); //Also works.
+                words[temporary]++;
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+
+        /* Helper function that prints keys and their values. */
+        for(const auto &node : words)
+            std::cout << node.first << " = " << node.second << " times.\n";
+
+        /* Now, when you have counted the occurences, please create a multimap where occurences are a key - in top - bottom order */
+
+
+        /* Wrong usage */
+//        std::multimap<int, std::string> occurences;
+//        for(const auto &node : words)
+//        {
+//            occurences.emplace(std::make_pair(node.second, node.first));
+//        }
+
+//        for(const auto &node : occurences)
+//            std::cout << node.first << " = " << node.second << "\n";
+
+
+
+        /* Correct usage */
+        std::multimap<int, std::string, std::greater<int>> occurences_correct;
+        for(const auto &node : words)
+        {
+            occurences_correct.emplace(std::make_pair(node.second, node.first));
+        }
+
+        for(const auto &node : occurences_correct)
+            std::cout << node.first << " = " << node.second << "\n";
+
+    }
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+    void Exercise_Two()
+    {
+        int key = 5, value = 0;
+        std::map<int, int> numbers_id { {key, value} };
+
+        /* What is wrong with this loop? */
+        for(const std::pair<int, int> &entry : numbers_id)
+        {
+            std::cout << entry.first << " " << entry.second << "\n";
+        }
+    }
+
+    void Exercise_Two_Answer()
+    {
+        int key = 5, value = 0;
+        std::map<int, int> numbers_id { {key, value} };
+
+        /* Correct loops: */
+        for(const std::pair<const int, int> &entry : numbers_id)
+        {
+            std::cout << entry.first << " " << entry.second << "\n";
+        }
+
+        for(const auto &entry : numbers_id)
+        {
+            std::cout << entry.first << " " << entry.second << "\n";
+        }
+
+        /* Confirmation: */
+        std::cout << "std::is_same<const pair<int,int>&, decltype( *begin(numbers_id) )>::value = "
+             << std::is_same< std::pair<int,int>&,
+                                                  decltype(*begin(numbers_id)) >::value << "\n";
+
+        std::cout << "std::is_same<const pair<const int,int>&, decltype( *begin(numbers_id) )>::value = "
+             << std::is_same< std::pair<const int,int>&,
+                                                        decltype(*begin(numbers_id)) >::value << "\n";
+
+        /* This const is required, because std::map is build as std::pair<const Key, T>. Because std::pair<Key, T> is close enough it will create a temporary of the correct type and copy initialize it.
+         * That will in turn be copied to the node, creating a total of two copies. */
+    }
+
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
     void Start()
     {
-        Map_Insertions();
-        //Map_Iteration();
-        Map_Adjustments();
+        //Map_Insertions();
+        //Map_Adjustments();
+
+        //Exercise_One();
+        Exercise_One_Answer();
     }
 }
