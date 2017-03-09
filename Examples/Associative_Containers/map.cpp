@@ -5,7 +5,8 @@
 
 namespace MAP_MEELOGIC
 {
-    /*
+
+/*
 template< class Key,
         class T,
         class Compare = std::less<Key>,
@@ -92,6 +93,9 @@ class map;
 
         /* It's useful to remember this 3rd template argument. It is often overlooked or people don't know it exists.
          * I already saw in code an example of how a programmer first put all values into the map, and then called std::sort to get top to bottom hierarchy of keys :) */
+
+        /* For more comparision functions visit:
+         * http://en.cppreference.com/w/cpp/header/functional*/
     }
 
     void Start()

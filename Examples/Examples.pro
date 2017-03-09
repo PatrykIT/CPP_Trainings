@@ -20,4 +20,5 @@ HEADERS += \
     Performance/performance.h \
     Sequence_Containers/array.h \
     Sequence_Containers/deque.h \
-    Container_Adaptors/priority_queue.h
+    Container_Adaptors/priority_queue.h \
+    Container_Adaptors/stack.h

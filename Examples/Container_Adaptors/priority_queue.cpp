@@ -66,6 +66,13 @@ class priority_queue;
         Print_Queue(numbers_queue_2);
 
 
+        /* Create priority_queue out of std::vector, using constructor:
+         * priority_queue( const Compare& compare, const Container& cont ); (since C++11)
+         * See here more constructors: http://en.cppreference.com/w/cpp/container/priority_queue/priority_queue
+         * Take a look at the same constructor but with note "Until C++11". You will see a breaking change. */
+        std::vector<int> numbers_vector {1, 5, 10, 0};
+        std::priority_queue<int, std::vector<int>> numbers_queue_3 (std::less<int>(), numbers_vector);
+        Print_Queue(numbers_queue_3);
     }
 
 
