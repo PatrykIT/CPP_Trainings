@@ -18,20 +18,30 @@ namespace PERFORMANCE_MEELOGIC
     void Start();
 
     void Exercise_One();
+    int Exercise_Two_Biggest();
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Continuation();
+
+    /* Exercise 1 */
     void Exercise_One_Answer_Better();
     void Exercise_One_Answer_Better_CPP11();
     void Exercise_One_Answer_Best();
 
 
-    int Exercise_Two();
+    /* Exercise 2 */
     int Exercise_Two_Biggest_Answer_PriorityQueue();
     int Exercise_Two_Biggest_Answer_Vector();
     int Exercise_Two_Biggest_Answer_Set();
-    std::pair<int, int> Exercise_Two_Biggest_Smallest();
-    std::pair<int, int> Exercise_Two_Biggest_Smallest_Alternative();
 
-    int Exercise_Two_Biggest_Alternative_Dynamic_Input();
-    int Exercise_Two_Biggest_Alternative_Second_Dynamic_Input();
+    /* Exercise 2 - showing interesting facts */
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue();
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector();
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_Set();
+
+    /* Exercise 2.1 */
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_PriorityQueues();
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Vector();
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Set();
+
 }
 
 #endif // PERFORMANCE_H

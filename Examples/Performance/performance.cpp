@@ -59,6 +59,15 @@ namespace PERFORMANCE_MEELOGIC
     }
 
 
+
+
+
+
+
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+
     void Exercise_One()
     {
         /* Can this implementation work faster? You can change everything in this implementation.
@@ -306,12 +315,33 @@ namespace PERFORMANCE_MEELOGIC
 
 
 
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
 
-
-
-    int Exercise_Two()
+    int Exercise_Two_Biggest()
     {
         /* From given file, return the biggest number. */
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        int current_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_number;
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        //Return biggest number.
     }
 
 
@@ -404,13 +434,41 @@ namespace PERFORMANCE_MEELOGIC
     }
 
 
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::priority_queue<int> biggest;
+
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                biggest.emplace(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        biggest.emplace(5000);
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest.top();
+    }
 
     /* Comparision of std::sort and std::stable_sort on nearly sorted array. HUGE difference in performance.
      * Note that std::vector is very sensitive to dynamic input - after each insertion, you need to sort whole vector.
      * If you use std::sort (uses Quicksort), then you kill performance. Quicksort is very bad for nearly sorted array.
      * From standard algorithms use std::stable_sort, which is Mergesort. It performs better then Quicksort in that case.
      * The best algorithm for almost sorted container would be Insertion sort. It is not in C++, so feel free to write it yourself. */
-    int Exercise_Two_Biggest_Alternative_Dynamic_Input()
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector()
     {
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
         std::ifstream file(path, std::ios_base::in);
@@ -446,7 +504,7 @@ namespace PERFORMANCE_MEELOGIC
     /* std::set is insensitive to dynamic input. For each insertion, it will just create a node with value in appropriate
      * place in the tree. Then it might rebalance the tree. It is much faster then sorting whole vector with standard C++ sorting algorithm.
      * */
-    int Exercise_Two_Biggest_Alternative_Second_Dynamic_Input()
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input_Set()
     {
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
         std::ifstream file(path, std::ios_base::in);
@@ -485,7 +543,41 @@ namespace PERFORMANCE_MEELOGIC
 
 
 
-    std::pair<int, int> Exercise_Two_Biggest_Smallest()
+
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Continuation()
+    {
+        /* From given file, return the biggest and smallest number. */
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        /* This pair should be returned with first element the biggest, and second element the smallest. */
+        std::pair<int, int> biggest_lowest;
+        int current_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_number;
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest_lowest;
+    }
+
+
+
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_PriorityQueues()
     {
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
         std::ifstream file(path, std::ios_base::in);
@@ -521,7 +613,7 @@ namespace PERFORMANCE_MEELOGIC
 
 
 
-    std::pair<int, int> Exercise_Two_Biggest_Smallest_Alternative()
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Vector()
     {
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
         std::ifstream file(path, std::ios_base::in);
@@ -543,7 +635,7 @@ namespace PERFORMANCE_MEELOGIC
         else
             std::cerr << "Couldn't open file.";
 
-        std::sort(numbers.begin(), numbers.end());
+        std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
 
         biggest_lowest = std::make_pair(numbers.front(), numbers.back());
 
@@ -556,8 +648,34 @@ namespace PERFORMANCE_MEELOGIC
 
 
 
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Set()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
 
+        std::set<int, std::greater<int>> numbers;
+        std::pair<int, int> biggest_lowest;
 
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                numbers.emplace(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        biggest_lowest = std::make_pair(*numbers.begin(), *numbers.rbegin());
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest_lowest;
+    }
 
 
     void Start()
@@ -567,21 +685,27 @@ namespace PERFORMANCE_MEELOGIC
         //Exercise_One_Answer_Better_CPP11();
         //Exercise_One_Answer_Best();
 
-        std::pair<int, int> answer = Exercise_Two_Biggest_Smallest();
-        std::cout << "Biggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
 
-        answer = Exercise_Two_Biggest_Smallest_Alternative();
-        std::cout << "Biggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
-
-        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n";
-        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_Vector() << "\n";
-        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_Set() << "\n";
+        std::cout << "Biggest element [Priority Queue]: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n";
+        std::cout << "Biggest element [Vector] : " << Exercise_Two_Biggest_Answer_Vector() << "\n";
+        std::cout << "Biggest element [Set]: " << Exercise_Two_Biggest_Answer_Set() << "\n";
 
 
 
-        std::cout << "Biggest element: " << Exercise_Two_Biggest_Alternative_Dynamic_Input() << "\n";
-        std::cout << "Biggest element: " << Exercise_Two_Biggest_Alternative_Second_Dynamic_Input() << "\n";
+        std::cout << "Biggest element with dynamic addition [Priority Queue]: " << Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue() << "\n";
+        std::cout << "Biggest element with dynamic addition: [Vector]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector() << "\n";
+        std::cout << "Biggest element with dynamic addition: [Set]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Set() << "\n";
 
+        std::pair<int, int> answer;
+
+        answer = Exercise_Two_Biggest_Smallest_PriorityQueues();
+        std::cout << "Pair [2 priority queues]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+
+        answer = Exercise_Two_Biggest_Smallest_Vector();
+        std::cout << "Pair [Vector]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+
+        answer = Exercise_Two_Biggest_Smallest_Set();
+        std::cout << "Pair [Set]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
 
     }
 }

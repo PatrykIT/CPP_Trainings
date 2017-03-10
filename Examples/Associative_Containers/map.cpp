@@ -202,12 +202,44 @@ class map;
 
     /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
+
+
+    void Exercise_Three()
+    {
+        /* http://en.cppreference.com/w/cpp/container/map/map
+         * 1. Create new map using (2).
+         * 2. Create new map using (3).
+         * Both maps should be created out of "original" */
+
+        std::map<int, std::string> original { {1, "Hallo"}, {5, "Bye"} };
+    }
+
+    void Exercise_Three_Answer()
+    {
+        //http://en.cppreference.com/w/cpp/container/map/map
+        //Use (2) and (3)
+        std::map<int, std::string> original { {1, "Hallo"}, {5, "Bye"} };
+
+        //(2). Constructor taking iterators.
+        std::map<int, std::string> answer_1 (original.begin(), original.end());
+        for(auto &node : answer_1)
+            std::cout << node.first << " " << node.second << "\n";
+
+        //(3). Copy constructor taking another map
+        std::map<int, std::string> answer_2 (original);
+        for(auto &node : answer_2)
+            std::cout << node.first << " " << node.second << "\n";
+    }
+
+
     void Start()
     {
         //Map_Insertions();
         //Map_Adjustments();
 
         //Exercise_One();
-        Exercise_One_Answer();
+        //Exercise_One_Answer();
+
+        Exercise_Three_Answer();
     }
 }

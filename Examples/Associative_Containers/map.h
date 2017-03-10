@@ -8,8 +8,13 @@ namespace MAP_MEELOGIC
 
     void Exercise_One();
     void Exercise_One_Answer();
+
     void Exercise_Two();
     void Exercise_Two_Answer();
+
+    void Exercise_Three();
+    void Exercise_Three_Answer();
+
     void Start();
 }
 
