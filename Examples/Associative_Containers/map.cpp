@@ -16,7 +16,7 @@ template< class Key,
 class map;
 */
 
-    void Map_Insertions()
+    void Map_Interface()
     {
         int key = 5, value = 0;
         std::map<int, int> numbers_id { {key, value} };
@@ -35,6 +35,12 @@ class map;
         numbers_id.emplace(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
         assert(numbers_id[key] == 10);
 
+
+        /* Operator[] returns a reference to the value that is mapped to a key. */
+        numbers_id[key]++; //Postcondition: numbers_id[5] == 11
+        assert(numbers_id[key] == 11);
+
+        //TO DO: find(), lower_bound()
     }
 
     void Map_Adjustments()
@@ -58,13 +64,34 @@ class map;
         }
 
         /* It's useful to remember this 3rd template argument. It is often overlooked or people don't know it exists.
-         * I already saw in code an example of how a programmer first put all values into the map, and then called std::sort to get top to bottom hierarchy of keys :) */
+         * I already saw in code an example of how a programmer first put all values into the map, and then copied them into std::vector and called std::sort to get top to bottom hierarchy of keys :) */
 
         /* For more comparision functions visit:
-         * http://en.cppreference.com/w/cpp/header/functional*/
+         * http://en.cppreference.com/w/cpp/header/functional */
     }
 
 
+    void Multimap()
+    {
+        std::multimap<int, std::string> multimap_keys;
+        std::map<int, std::string> map_keys;
+
+        multimap_keys.emplace(std::make_pair(1, "Michal"));
+        multimap_keys.emplace(std::make_pair(2, "Natalia"));
+        multimap_keys.emplace(std::make_pair(1, "Ania"));
+
+        std::cout << "Elements in multimap:" << multimap_keys.size() << "\n";
+        for(auto &node : multimap_keys)
+            std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
+
+        map_keys.emplace(std::make_pair(1, "Michal"));
+        map_keys.emplace(std::make_pair(2, "Natalia"));
+        map_keys.emplace(std::make_pair(1, "Ania"));
+
+        std::cout << "Elements in map: " << map_keys.size() << "\n";
+        for(auto &node : map_keys)
+            std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
+    }
 
 
 
@@ -75,7 +102,7 @@ class map;
 
     void Exercise_One()
     {
-        /* Count occurences of how many times given name appeared in a file. */
+        /* Count occurrences of how many times given name appeared in a file. */
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Associative_Containers\\Map_exercises\\words_short.txt";
         std::ifstream file(path, std::ios_base::in);
 
@@ -102,7 +129,7 @@ class map;
     void Exercise_One_Answer()
     {
         //https://www.random.org/strings/
-        /* Counting occurences - how many duplicate strings are in a file. */
+        /* Counting occurrences - how many duplicate strings are in a file. */
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Associative_Containers\\Map_exercises\\words_short.txt";
         std::ifstream file(path, std::ios_base::in);
 
@@ -234,12 +261,13 @@ class map;
 
     void Start()
     {
-        //Map_Insertions();
+        //Map_Interface();
         //Map_Adjustments();
+        Multimap();
 
         //Exercise_One();
         //Exercise_One_Answer();
 
-        Exercise_Three_Answer();
+        //Exercise_Three_Answer();
     }
 }

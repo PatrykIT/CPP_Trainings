@@ -22,4 +22,5 @@ HEADERS += \
     Sequence_Containers/deque.h \
     Container_Adaptors/priority_queue.h \
     Container_Adaptors/stack.h \
-    Container_Adaptors/queue.h
+    Container_Adaptors/queue.h \
+    Associative_Containers/set.h

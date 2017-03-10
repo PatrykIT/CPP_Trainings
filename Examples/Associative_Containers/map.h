@@ -3,8 +3,9 @@
 
 namespace MAP_MEELOGIC
 {
-    void Map_Insertions();
+    void Map_Interface();
     void Map_Adjustments();
+    void Multimap();
 
     void Exercise_One();
     void Exercise_One_Answer();
@@ -14,6 +15,7 @@ namespace MAP_MEELOGIC
 
     void Exercise_Three();
     void Exercise_Three_Answer();
+
 
     void Start();
 }
