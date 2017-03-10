@@ -1,57 +1,18 @@
 #include <map>
 #include <unordered_map>
+#include <vector>
+#include <queue>
+#include <set>
+
 #include <fstream>
 #include <utility>
 #include <string>
 #include <iostream>
 #include <chrono>
+#include <algorithm>
 
 namespace PERFORMANCE_MEELOGIC
 {
-    void Map_vs_UnorderedMap()
-    {
-        /* Counting occurences - how many duplicate strings are in a file. */
-        //https://www.random.org/strings/
-        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\words.txt";
-        std::ifstream file(path, std::ios_base::in);
-
-        std::map<std::string, int> words;
-        std::string temporary;
-
-        /* START COUNTER */
-        if(file.is_open())
-        {
-            while(!file.eof())
-            {
-                std::getline(file, temporary);
-                words[temporary]++;
-            }
-        }
-        else
-            std::cerr << "Couldn't open file.";
-
-        auto stop_iterator = std::next(words.begin(), 100);
-        for(auto iter = words.begin(); ; ++iter)
-        {
-            std::cout << iter->first << " = " << iter->second << " times.\n";
-
-            if(iter == stop_iterator)
-            {
-                std::cout << "STOP.\n";
-                break;
-            }
-        }
-
-//        for(auto node : words)
-//            std::cout << node.first << " = " << node.second << " times.\n";
-
-    }
-
-    void Multimap_vs_UnorderedMultimap()
-    {
-
-    }
-
     void Vector_vs_Array()
     {
 
@@ -60,18 +21,41 @@ namespace PERFORMANCE_MEELOGIC
 
 
     /* Original size should be passed as bytes. */
-    void Print_Memory(unsigned long long memory_allocated)
+    void Print_Allocated_Memory_Size(unsigned long long memory_allocated)
     {
         /* Megabytes */
         if(memory_allocated >= 1000000)
         {
-            std::cout << "Memory allocated [MB]: " << memory_allocated / 1000000 << " megabytes.\n";
+            std::cout << "Memory allocated [MB]: " << memory_allocated / 1000000 << "." << memory_allocated % 1000000 << " megabytes.\n";
         }
+        /* Kilobytes */
         if(memory_allocated >= 1000)
         {
             std::cout << "Memory allocated [KB]: " << memory_allocated / 1000 << " kilobytes.\n";
         }
-        std::cout << "Memory allocated [Bytes]: " << memory_allocated << " bytes.\n";
+        //std::cout << "Memory allocated [Bytes]: " << memory_allocated << " bytes.\n";
+    }
+
+
+    std::chrono::time_point<std::chrono::steady_clock> Start_Time()
+    {
+        return std::chrono::steady_clock::now();
+    }
+
+    std::chrono::time_point<std::chrono::steady_clock> Stop_Time()
+    {
+        return std::chrono::steady_clock::now();
+    }
+
+    std::chrono::duration<double, std::milli> Get_Time_Difference(const auto &start, const auto &end)
+    {
+        return end - start;
+    }
+
+
+    void Print_Time(const std::chrono::duration<double, std::milli> &time)
+    {
+        std::cout << "Elapsed time: " << std::fixed << time.count() << " microseconds. \n";
     }
 
 
@@ -88,7 +72,7 @@ namespace PERFORMANCE_MEELOGIC
         std::map<std::string, int> words;
         std::string temporary;
 
-        auto start = std::chrono::steady_clock::now();
+        auto start = Start_Time();
         if(file.is_open())
         {
             while(!file.eof())
@@ -114,7 +98,7 @@ namespace PERFORMANCE_MEELOGIC
             occurences_correct.emplace(std::make_pair(node.second, node.first));
         }
 
-        auto end = std::chrono::steady_clock::now();
+        auto end = Stop_Time();
         std::chrono::duration<double, std::milli> elapsed_microseconds = end - start;
 
         unsigned long long memory_taken = 0;
@@ -125,14 +109,15 @@ namespace PERFORMANCE_MEELOGIC
         }
 
 
-        std::cout << "Elapsed time: " << std::fixed << elapsed_microseconds.count() << " microseconds. \n";
-        Print_Memory(memory_taken);
+        Print_Time(Get_Time_Difference(start, end));
+        Print_Allocated_Memory_Size(memory_taken);
     }
 
 
 
 
 
+    /* Here we use std::unordered_map to load string from file to memory. It is faster then std::map because we do not need to sort strings. */
     void Exercise_One_Answer_Better()
     {
         //const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\words_short.txt";
@@ -142,7 +127,7 @@ namespace PERFORMANCE_MEELOGIC
         std::unordered_map<std::string, int> words;
         std::string temporary;
 
-        auto start = std::chrono::steady_clock::now();
+        auto start = Start_Time();
         if(file.is_open())
         {
             while(!file.eof())
@@ -171,8 +156,7 @@ namespace PERFORMANCE_MEELOGIC
 
 
         /* End of task. Count time and memory taken. */
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double, std::milli> elapsed_microseconds = end - start;
+        auto end = Stop_Time();
 
         unsigned long long memory_taken = 0;
         for(const auto &node : occurences_correct)
@@ -183,13 +167,15 @@ namespace PERFORMANCE_MEELOGIC
         }
 
 
-        std::cout << "Elapsed time: " << std::fixed << elapsed_microseconds.count() << " microseconds. \n";
-        Print_Memory(memory_taken);
+        Print_Time(Get_Time_Difference(start, end));
+        Print_Allocated_Memory_Size(memory_taken);
     }
 
 
 
-
+    /* Here we use std::unordered_map to load string from file to memory + move semantics(std::move).
+     * It is faster then std::map because we do not need to sort strings.
+     * Move semantics help us with faster construction of strings. That is because we do not copy string contents (which is a lot of chars), but only internal pointers of std::string class.*/
     void Exercise_One_Answer_Better_CPP11()
     {
         //const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\words_short.txt";
@@ -199,7 +185,7 @@ namespace PERFORMANCE_MEELOGIC
         std::unordered_map<std::string, int> words;
         std::string temporary;
 
-        auto start = std::chrono::steady_clock::now();
+        auto start = Start_Time();
         if(file.is_open())
         {
             while(!file.eof())
@@ -228,8 +214,7 @@ namespace PERFORMANCE_MEELOGIC
 
 
         /* End of task. Count time and memory taken. */
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double, std::milli> elapsed_microseconds = end - start;
+        auto end = Stop_Time();
 
         unsigned long long memory_taken = 0;
         for(const auto &node : occurences_correct)
@@ -240,8 +225,8 @@ namespace PERFORMANCE_MEELOGIC
         }
 
 
-        std::cout << "Elapsed time: " << std::fixed << elapsed_microseconds.count() << " microseconds. \n";
-        Print_Memory(memory_taken);
+        Print_Time(Get_Time_Difference(start, end));
+        Print_Allocated_Memory_Size(memory_taken);
     }
 
 
@@ -249,6 +234,11 @@ namespace PERFORMANCE_MEELOGIC
 
 
 
+    /* Here we use std::unordered_map to load string from file to memory. Our multimap where we will sort keys has a value std::string* instead std::string
+     * We do not need to create copies of strings, because words are already loaded in std::unordered_map<std::string, int> words.
+     * Thanks to having pointers, we save time on copy constructing the string (because simply we don't do it).
+     * Second, even bigger advantage is memory saving. There is HUGE difference between keeping std::string and std::string*.
+     * For example, if a string has length of 50, it will take at least 50 bytes in memory. Pointer to this string takes only 4 or 8 bytes! */
     struct KeyEqual
     {
      bool operator()(const std::string *lhs, const std::string *rhs) const
@@ -256,7 +246,6 @@ namespace PERFORMANCE_MEELOGIC
         return *lhs < *rhs;
      }
     };
-
 
     void Exercise_One_Answer_Best()
     {
@@ -267,7 +256,7 @@ namespace PERFORMANCE_MEELOGIC
         std::unordered_map<std::string, int> words;
         std::string temporary;
 
-        auto start = std::chrono::steady_clock::now();
+        auto start = Start_Time();
         if(file.is_open())
         {
             while(!file.eof())
@@ -294,8 +283,7 @@ namespace PERFORMANCE_MEELOGIC
             occurences_correct.emplace(std::make_pair(node.second, &node.first));
         }
 
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double, std::milli> elapsed_microseconds = end - start;
+        auto end = Stop_Time();
 
         unsigned long long memory_taken = 0;
         for(const auto &node : occurences_correct)
@@ -305,15 +293,295 @@ namespace PERFORMANCE_MEELOGIC
         }
 
 
-        std::cout << "Elapsed time: " << std::fixed << elapsed_microseconds.count() << " microseconds. \n";
-        Print_Memory(memory_taken);
+        Print_Time(Get_Time_Difference(start, end));
+        Print_Allocated_Memory_Size(memory_taken);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int Exercise_Two()
+    {
+        /* From given file, return the biggest number. */
+    }
+
+
+
+
+    /* std::priority_queue */
+    int Exercise_Two_Biggest_Answer_PriorityQueue()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::priority_queue<int> biggest;
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                biggest.push(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest.top();
+    }
+
+
+    /* std::vector + std::sort() */
+    int Exercise_Two_Biggest_Answer_Vector()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::vector<int> numbers;
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                numbers.emplace_back(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return numbers.front();
+    }
+
+
+    /* std::set */
+    int Exercise_Two_Biggest_Answer_Set()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::set<int, std::greater<int>> biggest;
+
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                biggest.emplace(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return *biggest.begin();
+    }
+
+
+
+    /* Comparision of std::sort and std::stable_sort on nearly sorted array. HUGE difference in performance.
+     * Note that std::vector is very sensitive to dynamic input - after each insertion, you need to sort whole vector.
+     * If you use std::sort (uses Quicksort), then you kill performance. Quicksort is very bad for nearly sorted array.
+     * From standard algorithms use std::stable_sort, which is Mergesort. It performs better then Quicksort in that case.
+     * The best algorithm for almost sorted container would be Insertion sort. It is not in C++, so feel free to write it yourself. */
+    int Exercise_Two_Biggest_Alternative_Dynamic_Input()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::vector<int> numbers;
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                numbers.emplace_back(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+
+        numbers.push_back(5000);
+
+        std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+        //std::stable_sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return numbers.front();
+    }
+
+    /* std::set is insensitive to dynamic input. For each insertion, it will just create a node with value in appropriate
+     * place in the tree. Then it might rebalance the tree. It is much faster then sorting whole vector with standard C++ sorting algorithm.
+     * */
+    int Exercise_Two_Biggest_Alternative_Second_Dynamic_Input()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        std::set<int, std::greater<int>> biggest;
+
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                biggest.emplace(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        biggest.emplace(5000);
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return *biggest.begin();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    std::pair<int, int> Exercise_Two_Biggest_Smallest()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        /* This pair should be returned with first element the biggest, and second element the smallest. */
+        std::pair<int, int> biggest_lowest;
+
+        std::priority_queue<int> biggest;
+        std::priority_queue<int, std::vector<int>, std::greater<typename std::vector<int>::value_type>> lowest;
+
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                biggest.push(current_file_number);
+                lowest.push(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        biggest_lowest = std::make_pair(biggest.top(), lowest.top());
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest_lowest;
+    }
+
+
+
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_Alternative()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        /* This pair should be returned with first element the biggest, and second element the smallest. */
+        std::pair<int, int> biggest_lowest;
+        std::vector<int> numbers;
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                numbers.emplace_back(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        std::sort(numbers.begin(), numbers.end());
+
+        biggest_lowest = std::make_pair(numbers.front(), numbers.back());
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest_lowest;
+    }
+
+
+
+
+
+
+
 
     void Start()
     {
         //Exercise_One();
         //Exercise_One_Answer_Better();
         //Exercise_One_Answer_Better_CPP11();
-        Exercise_One_Answer_Best();
+        //Exercise_One_Answer_Best();
+
+        std::pair<int, int> answer = Exercise_Two_Biggest_Smallest();
+        std::cout << "Biggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+
+        answer = Exercise_Two_Biggest_Smallest_Alternative();
+        std::cout << "Biggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+
+        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n";
+        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_Vector() << "\n";
+        std::cout << "Biggest element: " << Exercise_Two_Biggest_Answer_Set() << "\n";
+
+
+
+        std::cout << "Biggest element: " << Exercise_Two_Biggest_Alternative_Dynamic_Input() << "\n";
+        std::cout << "Biggest element: " << Exercise_Two_Biggest_Alternative_Second_Dynamic_Input() << "\n";
+
+
     }
 }
