@@ -5,6 +5,7 @@
 
 #include <queue>
 #include <iostream>
+#include <functional>
 
 namespace PRIORITY_QUEUE_MEELOGIC
 {

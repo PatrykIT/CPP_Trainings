@@ -2,6 +2,7 @@
 #define PRIORITY_QUEUE_H
 
 #include <queue>
+#include <functional>
 
 namespace PRIORITY_QUEUE_MEELOGIC
 {

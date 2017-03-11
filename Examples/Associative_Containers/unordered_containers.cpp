@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <iostream>
+#include <string>
 
 /* Visualization: https://www.cs.usfca.edu/~galles/visualization/OpenHash.html */
 
@@ -59,7 +60,7 @@ class unordered_map; */
 
 
                                                                 /* ADVANCED */
-    struct Key
+    struct Full_Name
     {
         std::string first;
         std::string second;
@@ -68,7 +69,7 @@ class unordered_map; */
     /* For more info why we need to use std::hash<T>() please look at: http://en.cppreference.com/w/cpp/string/basic_string/hash */
     struct KeyHash
     {
-     std::size_t operator()(const Key& k) const
+     std::size_t operator()(const Full_Name& k) const
      {
          return std::hash<std::string>()(k.first) ^
                 (std::hash<std::string>()(k.second) << 1);
@@ -78,7 +79,7 @@ class unordered_map; */
 
     struct KeyEqual
     {
-     bool operator()(const Key& lhs, const Key& rhs) const
+     bool operator()(const Full_Name& lhs, const Full_Name& rhs) const
      {
         return lhs.first == rhs.first && lhs.second == rhs.second;
      }
@@ -96,16 +97,14 @@ class unordered_map; */
     */
     void Unordered_Map_Interface_Advanced()
     {
-        std::unordered_map<Key, int, KeyHash, KeyEqual> names =
+        std::unordered_map<Full_Name, int, KeyHash, KeyEqual> names =
         {
                 { {"John", "Doe"}, 35},
                 { {"Mary", "Sue"}, 22}
         };
 
         for(auto &node : names)
-        {
             std::cout << "Key: " << node.first.first << " " << node.first.second << " = " << node.second << "\n";
-        }
     }
 
 

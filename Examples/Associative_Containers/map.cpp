@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <functional>
+#include <string>
 
 
 namespace MAP_MEELOGIC
