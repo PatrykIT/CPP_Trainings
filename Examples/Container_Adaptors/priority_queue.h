@@ -11,13 +11,14 @@ namespace PRIORITY_QUEUE_MEELOGIC
     void Start();
 }
 
-/* A priority queue is a container adaptor that provides constant time lookup of the largest (by default) element,
- * at the expense of logarithmic insertion and extraction.
+/* A priority queue is a container adaptor that provides constant time lookup of the
+ * largest (by default) element, at the expense of logarithmic insertion and extraction.
  *
- * Working with a priority_queue is similar to managing a heap in some random access container,
- * with the benefit of not being able to accidentally invalidate the heap. */
+ * Working with a priority_queue is similar to managing a heap in some random access
+ * container, with the benefit of not being able to accidentally invalidate the heap. */
 
-/* Alternative of using std::priority_queue would be to use vector \ deque and manage heap manually by:
+/* Alternative of using std::priority_queue would be to use
+ * vector \ deque and manage heap manually by:
  * std::make_heap, std::push_heap, std::pop_heap, std::sort_heap
  * http://en.cppreference.com/w/cpp/algorithm/sort_heap */
 

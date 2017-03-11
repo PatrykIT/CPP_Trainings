@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
-
+#include <algorithm>
 
 
 namespace MAP_MEELOGIC
@@ -21,17 +21,19 @@ class map;
         int key = 5, value = 0;
         std::map<int, int> numbers_id { {key, value} };
 
-        /* The difference between insert() and operator [] is what happens when there is already an element with the given key. The insert function will not modify the state of the map,
-         * but instead return an iterator to the element (and a false indicating that it was not inserted). Operator [] would overwrite previous value. */
         numbers_id[key] = 10; //Postcondition: numbers_id[5] == 10
         assert(numbers_id[key] == 10);
 
+        /* The difference between insert() and operator [] is what happens when there is already an element with the given key.
+         * The insert function will not modify the state of the map, but instead return an iterator to the element
+         * (and a false indicating that it was not inserted). Operator [] would overwrite previous value. */
         numbers_id.insert(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
         assert(numbers_id[key] == 10);
 
         /* From C++11 we have .emplace() method */
         /* It makes use of variadic templates and perfect forwarding which results in constructing object in place.
-         * Instead of getting a source from which to copy into the container, the function takes the parameters that will be forwarded to the constructor of the object stored in the container. */
+         * Instead of getting a source from which to copy into the container,
+         * the function takes the parameters that will be forwarded to the constructor of the object stored in the container. */
         numbers_id.emplace(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
         assert(numbers_id[key] == 10);
 
@@ -41,6 +43,16 @@ class map;
         assert(numbers_id[key] == 11);
 
         //TO DO: find(), lower_bound()
+
+        /* Iterations */
+        for(std::map<int, int>::iterator node = numbers_id.begin(); node != numbers_id.end(); node++)
+            std::cout << "Key: " << node->first << " Value: " << node->second << "\n";
+
+        for(const auto &node : numbers_id) //C++11
+            std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
+
+        std::for_each(numbers_id.begin(), numbers_id.end(), [](std::pair<const int, int> &node)
+        { std::cout << "Key: " << node.first << " Value: " << node.second << "\n"; });
     }
 
     void Map_Adjustments()
@@ -155,7 +167,7 @@ class map;
         /* Now, when you have counted the occurences, please create a multimap where occurences are a key - in top - bottom order */
 
 
-        /* Wrong usage */
+        /* Almost good. What is wrong? */
 //        std::multimap<int, std::string> occurences;
 //        for(const auto &node : words)
 //        {
@@ -223,7 +235,8 @@ class map;
              << std::is_same< std::pair<const int,int>&,
                                                         decltype(*begin(numbers_id)) >::value << "\n";
 
-        /* This const is required, because std::map is build as std::pair<const Key, T>. Because std::pair<Key, T> is close enough it will create a temporary of the correct type and copy initialize it.
+        /* This const is required, because std::map is build as std::pair<const Key, T>. Because std::pair<Key, T> is close enough
+         * it will create a temporary of the correct type and copy initialize it.
          * That will in turn be copied to the node, creating a total of two copies. */
     }
 
@@ -261,9 +274,9 @@ class map;
 
     void Start()
     {
-        //Map_Interface();
+        Map_Interface();
         //Map_Adjustments();
-        Multimap();
+        //Multimap();
 
         //Exercise_One();
         //Exercise_One_Answer();
