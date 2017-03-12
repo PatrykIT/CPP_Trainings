@@ -43,6 +43,9 @@ class map;
         /* Operator[] returns a reference to the value that is mapped to a key. */
         numbers_id[key]++; //Postcondition: numbers_id[5] == 11
         assert(numbers_id[key] == 11);
+        numbers_id[100] = 4; //If the key is not in the map, operator [] will create it.
+        assert(numbers_id[100] == 4);
+        /* Add code how it could be done .insert or .emplace */
 
 
 
@@ -70,6 +73,7 @@ class map;
         /* ITERATIONS */
         for(std::map<int, int>::iterator node = numbers_id.begin(); node != numbers_id.end(); node++)
             std::cout << "Key: " << node->first << " Value: " << node->second << "\n";
+            //std::cout << "Key: " << (*node).first << " Value: " << (*node).second << "\n";
 
         for(std::map<int, int>::const_iterator node = numbers_id.cbegin(); node != numbers_id.cend(); node++)
             std::cout << "Key: " << node->first << " Value: " << node->second << "\n";
@@ -278,7 +282,7 @@ class map;
 
         /* This const is required, because std::map is build as std::pair<const Key, T>. Because std::pair<Key, T> is close enough
          * it will create a temporary of the correct type and copy initialize it.
-         * That will in turn be copied to the node, creating a total of two copies. */
+         * If you don't take node as reference, then that will in turn be copied to the node, creating a total of two copies. */
     }
 
     /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -303,12 +307,12 @@ class map;
 
         //(2). Constructor taking iterators.
         std::map<int, std::string> answer_1 (original.begin(), original.end());
-        for(auto &node : answer_1)
+        for(const auto &node : answer_1)
             std::cout << node.first << " " << node.second << "\n";
 
         //(3). Copy constructor taking another map
         std::map<int, std::string> answer_2 (original);
-        for(auto &node : answer_2)
+        for(const auto &node : answer_2)
             std::cout << node.first << " " << node.second << "\n";
     }
 

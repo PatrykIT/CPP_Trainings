@@ -33,6 +33,7 @@ class unordered_map; */
         std::cout << "Average number of elements per bucket: " << names.load_factor() << "\n";
 
 
+        /* Get index of where a key is placed in array. */
         int key_to_find = 5;
         size_t index_of_a_key = names.bucket(key_to_find);
         std::cout << "Key: " << key_to_find << " is at the index: " << index_of_a_key << "\n";
@@ -47,7 +48,8 @@ class unordered_map; */
             std::cout << "Number of elements in the bucket with index: " << i << " = " << names.bucket_size(i) << "\n";
 
         /* Reserve guarantees you that if you don't insert more than the reserved number of elements, there will be no rehashing
-         * (i.e. your iterators will remain valid). */
+         * (i.e. your iterators will remain valid).
+         * Behaves slightly different than std::vector. */
         names.reserve(10);
 
 
