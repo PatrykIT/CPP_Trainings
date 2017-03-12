@@ -47,9 +47,11 @@ class priority_queue;
         //Container adaptors do not use std::initializer_list for construction. See here: http://stackoverflow.com/questions/10293302/why-cant-i-construct-a-queue-stack-with-brace-enclosed-initializer-lists-c1
 
         std::initializer_list<int> numbers_list = {5, 10, 20, 40, 3, 2, 1};
-        //for(int number : {5, 10, 20, 40, 3, 2, 1}) //Same as below.
-        for(int number : numbers_list)
+        //for(int number : numbers_list)
+        for(int number : {5, 10, 20, 40, 3, 2, 1}) //Same as above, but shorter, more readable.
+        {
             number_queue.push(number);
+        }
 
         /* Below iteration doesn't work. It is because container adaptors purposefully provide a limited interface, which excludes iteration.
          * http://en.cppreference.com/w/cpp/container/priority_queue && http://en.cppreference.com/w/cpp/container/deque */
@@ -63,11 +65,22 @@ class priority_queue;
         /* Change sorting order */
         std::priority_queue<int, std::vector<int>, std::greater<int> > numbers_queue_2;
         for(int number : numbers_list)
-            numbers_queue_2.push(number);
+            numbers_queue_2.emplace(number);
+
         Print_Queue(numbers_queue_2);
+    }
 
+    void Exercise_One()
+    {
+        /* Create priority_queue out of std::vector, using constructor (1):
+         * priority_queue( const Compare& compare, const Container& cont ); (since C++11)
+         * See here more constructors: http://en.cppreference.com/w/cpp/container/priority_queue/priority_queue
+         * Take a look at the same constructor but with note "Until C++11". You will see a breaking change. */
+    }
 
-        /* Create priority_queue out of std::vector, using constructor:
+    void Exercise_One_Answer()
+    {
+        /* Create priority_queue out of std::vector, using constructor (1):
          * priority_queue( const Compare& compare, const Container& cont ); (since C++11)
          * See here more constructors: http://en.cppreference.com/w/cpp/container/priority_queue/priority_queue
          * Take a look at the same constructor but with note "Until C++11". You will see a breaking change. */
@@ -80,6 +93,8 @@ class priority_queue;
     void Start()
     {
         Priority_Queue_Interface();
+        Exercise_One();
+        Exercise_One_Answer();
     }
 
 }

@@ -3,9 +3,13 @@
 
 namespace UNORDERED_MEELOGIC
 {
-    void Start();
     void Unordered_Map_Interface_Basic();
     void Unordered_Map_Interface_Advanced();
+
+    bool Exercise_One();
+    bool Exercise_One_Answer();
+
+    void Start();
 }
 
 #endif // UNORDERED_CONTAINERS_H

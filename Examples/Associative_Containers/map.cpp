@@ -23,6 +23,7 @@ class map;
         int key = 5, value = 0;
         std::map<int, int> numbers_id { {key, value} };
 
+        /* INSERTIONS */
         numbers_id[key] = 10; //Postcondition: numbers_id[5] == 10
         assert(numbers_id[key] == 10);
 
@@ -39,27 +40,65 @@ class map;
         numbers_id.emplace(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
         assert(numbers_id[key] == 10);
 
-
         /* Operator[] returns a reference to the value that is mapped to a key. */
         numbers_id[key]++; //Postcondition: numbers_id[5] == 11
         assert(numbers_id[key] == 11);
 
-        //TO DO: find(), lower_bound()
 
-        /* Iterations */
+
+        /* FIND, AT */
+        int key_to_find = 5;
+        auto is_key_found = numbers_id.find(key_to_find);
+        if(is_key_found != numbers_id.end())
+        {
+            std::cout << "Key found, it has a mapped value: " << is_key_found->second << "\n";
+            std::cout << "Key found, it has a mapped value: " << numbers_id.at(key_to_find) << "\n";
+            /* Avoid calling operator [] to get value. If there is no key, it will construct a new one - silent bug.
+             * Prefer to call .at() or iterator version. */
+            std::cout << "Key found, it has a mapped value: " << numbers_id[key] << "\n";
+        }
+        else
+            std::cout << "Key not found. \n";
+
+
+
+
+
+        numbers_id.emplace(std::pair<const int, int> {50, 55});
+        numbers_id.emplace(std::pair<const int, int> {100, 105});
+
+        /* ITERATIONS */
         for(std::map<int, int>::iterator node = numbers_id.begin(); node != numbers_id.end(); node++)
+            std::cout << "Key: " << node->first << " Value: " << node->second << "\n";
+
+        for(std::map<int, int>::const_iterator node = numbers_id.cbegin(); node != numbers_id.cend(); node++)
             std::cout << "Key: " << node->first << " Value: " << node->second << "\n";
 
         for(const auto &node : numbers_id) //C++11
             std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
 
-        std::for_each(numbers_id.begin(), numbers_id.end(), [](std::pair<const int, int> &node)
+        std::for_each(numbers_id.begin(), numbers_id.end(), [](std::pair<const int, int> const &node)
         { std::cout << "Key: " << node.first << " Value: " << node.second << "\n"; });
+
+
+
+
+        /* REMOVING */
+        std::cout << "Removing elements.\n";
+        numbers_id.erase(key);
+        //numbers_id.erase(numbers_id.begin());
+        //numbers_id.erase(numbers_id.begin(), numbers_id.end()); //Removes all elements.
+        //numbers_id.clear(); //Removes all elements.
+
+        for(const auto &node : numbers_id) //C++11
+            std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
     }
 
     void Map_Adjustments()
     {
-        int key = 5, key_2 = 10, value = 0, value_2 = 100;
+        int key = 5, key_2 = 10;
+        int value = 0, value_2 = 100;
+
         std::map<int, int> numbers_id { {key, value}, {key_2, value_2} };
 
         std::cout << "Map with default comparator: " << "\n";
@@ -283,6 +322,10 @@ class map;
         //Exercise_One();
         //Exercise_One_Answer();
 
+        //Exercise_Two();
+        //Exercise_Two_Answer();
+
+        //Exercise_Three();
         //Exercise_Three_Answer();
     }
 }

@@ -22,7 +22,8 @@ namespace QUEUE_MEELOGIC
         /* http://en.cppreference.com/w/cpp/container/queue/queue
          * Create queue that uses std::list<int> as a container.
          * To this queue, put values: 5, 10
-         * Print values in queue.
+         * Print values in queue from first to last.
+         * Note: you can delete values when printing.
          *
          * Note: you don't need to know the implementation of std::list.
          * All you need is a std::queue interface.
@@ -34,7 +35,8 @@ namespace QUEUE_MEELOGIC
         /* http://en.cppreference.com/w/cpp/container/queue/queue
          * Create queue that uses std::list<int> as a container.
          * To this queue, put values: 5, 10, 15
-         * Print values in queue from first to last. */
+         * Print values in queue from first to last.
+         * Note: you can delete values when printing. */
 
         std::queue<int, std::list<int>> answer;
         answer.emplace(5); //or .push()
