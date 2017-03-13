@@ -10,33 +10,38 @@ template< class T,
 struct array;
 */
 
+    /* Advantages of std::array:
+     * It has friendly value semantics, so that it can be passed to or returned from functions by value.
+     * It provides the interface of an STL container which makes it more convenient to find the size,
+     * and use with STL-style iterator-based algorithms. */
+
     void CPP11_Array()
     {
-        const int size = 3;
+        const unsigned size = 3;
         std::array<int, size> numbers = {7, 5, 10};
 
         /* ELEMENTS COUNT */
         std::cout << "Number of elements in array: " << numbers.size() << "\n";
 
         /* EMPTINESS */
-        if(!numbers.empty())
+        if(numbers.empty())
         {
-
+            std::cout << "Array is empty. \n";
         }
 
         for(unsigned i = 0; i < numbers.size(); ++i)
             std::cout << "Value: " << numbers[i] << "\n";
 
         /* SORTING */
-        std::cout << "\nSort operation:\n";
+        std::cout << "\n" << "Sort operation: \n";
         std::sort(numbers.begin(), numbers.end());
-        for(auto nr : numbers)
+        for(const auto nr : numbers)
             std::cout << "Value: " << nr << "\n";
 
         /* FILLING */
-        std::cout << "\nFill operation:\n";
+        std::cout << "\n" << "Fill operation: \n";
         numbers.fill(0);
-        for(auto iter = numbers.begin(); iter != numbers.end(); ++iter)
+        for(auto iter = numbers.begin(); iter != numbers.end(); ++iter) //std::array supports iterator traversal
             std::cout << "Value: " << *iter << "\n";
 
         /* BOUNDS CHECKING */
@@ -53,25 +58,25 @@ struct array;
         std::cout << "Number of elements in array: " << sizeof(numbers) / sizeof(numbers[0]) << "\n";
 
         /* EMPTINESS */
-        if(sizeof(numbers) > 0)
+        if(sizeof(numbers) == 0)
         {
-
+            std::cout << "Array is empty. \n";
         }
 
         for(unsigned i = 0; i < sizeof(numbers) / sizeof(numbers[0]); ++i)
             std::cout << "Value: " << numbers[i] << "\n";
 
         /* SORTING */
-        std::cout << "\nSort operation:\n";
+        std::cout << "\n" << "Sort operation: \n";
         std::sort(numbers, numbers + size);
         for(auto nr : numbers)
             std::cout << "Value: " << nr << "\n";
 
         /* FILLING */
-        std::cout << "\nFill operation:\n";
+        std::cout << "\n" << "Fill operation: \n";
         for(auto &nr : numbers) //Have to remember to take &nr, not nr !!!
             nr = 0;
-        for(auto nr : numbers)
+        for(const auto nr : numbers)
             std::cout << "Value: " << nr << "\n";
 
         /* BOUNDS CHECKING */

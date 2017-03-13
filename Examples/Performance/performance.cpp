@@ -10,6 +10,7 @@
 #include <iostream>
 #include <chrono>
 #include <algorithm>
+#include <functional>
 
 namespace PERFORMANCE_MEELOGIC
 {
@@ -47,7 +48,7 @@ namespace PERFORMANCE_MEELOGIC
         return std::chrono::steady_clock::now();
     }
 
-    std::chrono::duration<double, std::milli> Get_Time_Difference(const auto &start, const auto &end)
+    std::chrono::duration<double, std::milli> Get_Time_Difference(const std::chrono::time_point<std::chrono::steady_clock> &start, const std::chrono::time_point<std::chrono::steady_clock> &end)
     {
         return end - start;
     }
@@ -342,6 +343,7 @@ namespace PERFORMANCE_MEELOGIC
         Print_Time(Get_Time_Difference(start, end));
 
         //Return biggest number.
+        return -1;
     }
 
 

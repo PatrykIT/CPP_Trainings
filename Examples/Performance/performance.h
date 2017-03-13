@@ -12,7 +12,7 @@ namespace PERFORMANCE_MEELOGIC
     void Print_Time(const std::chrono::duration<double, std::milli> &time);
     std::chrono::time_point<std::chrono::steady_clock> Start_Time();
     std::chrono::time_point<std::chrono::steady_clock> Stop_Time();
-    std::chrono::duration<double, std::milli> Get_Time_Difference(const auto &start, const auto &end);
+    std::chrono::duration<double, std::milli> Get_Time_Difference(const std::chrono::time_point<std::chrono::steady_clock> &start, std::chrono::time_point<std::chrono::steady_clock> &end);
 
 
     void Start();

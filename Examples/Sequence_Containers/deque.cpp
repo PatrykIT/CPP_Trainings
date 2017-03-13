@@ -17,8 +17,8 @@ class deque;
         /* 4 core methods of double ended queue. */
         double_ended_queue.pop_front();
         double_ended_queue.pop_back();
-        double_ended_queue.push_front(10);
-        double_ended_queue.push_back(50);
+        double_ended_queue.emplace_front(10);
+        double_ended_queue.emplace_back(50);
 
         // Iterate and print values of deque
         for(int number : double_ended_queue)
