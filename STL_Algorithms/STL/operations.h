@@ -7,6 +7,10 @@ namespace STL_MEELOGIC
     void Sort();
     void AllOf_AnyOf_NoneOf();
     void For_Each();
+    void Remove();
+
+    bool Exercise_One();
+
     void Start();
 }
 

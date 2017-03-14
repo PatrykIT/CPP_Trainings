@@ -91,12 +91,51 @@ namespace STL_MEELOGIC
         for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
     }
 
+    void Remove()
+    {
+        /* std::remove doesn't actually erase the element from the container, but it does return the new end iterator which can be passed to
+         * container_type::erase to do the REAL removal of the extra elements that are now at the end of the container.
+         *
+         * The algorithm library provides the remove and remove_if algorithms. Because these algorithms operate
+         * on a range of elements denoted by iterators, they have no knowledge of the underlying container or collection.
+         * Thus, no elements are actually removed from the container.
+         *
+         * Rather, all elements which don't fit the remove criteria are brought together to the front of the range,
+         * in the same relative order. The remaining elements are left in a valid, but unspecified, state.
+         * When this is done, remove returns an iterator pointing one element past the last unremoved element.
+         *
+         * To actually eliminate elements from the container, remove is combined with the container's erase
+         * member function, hence the name "erase–remove idiom". */
+
+        std::vector<int> numbers = { 5, 10, 15, 20, 25, 0, 1, 2, 3, 50};
+        auto UnaryPredicate = [](const int number) -> bool { return number % 5 == 0; };
+
+        //std::remove_if(numbers.begin(), numbers.end(), UnaryPredicate);
+        numbers.erase(std::remove_if(numbers.begin(), numbers.end(), UnaryPredicate), numbers.end());
+
+        for(const auto number : numbers) { std::cout << number << " "; }
+    }
+
 
     void Start()
     {
         //Find();
         //Sort();
         //AllOf_AnyOf_NoneOf();
-        For_Each();
+        //For_Each();
+        Remove();
+
+
+        //Exercise_One();
+    }
+
+    bool Exercise_One()
+    {
+        std::vector<int> numbers = { 5, 10, 20, 15, 47, 19, -5, 4, 11, -2, 0, 50};
+
+        std::remove_if(numbers.begin(), numbers.end(), [](const int number){ return number % 5 == 0;  } );
+        for(const auto number : numbers) { std::cout << number << " "; }
+
+        return std::is_sorted(numbers.begin(), numbers.end());
     }
 }
