@@ -21,23 +21,25 @@ class map;
     void Map_Interface()
     {
         int key = 5, value = 0;
-        std::map<int, int> numbers_id { {key, value} };
+        std::map<int, int> numbers_id /*{ {key, value} }*/;
 
         /* INSERTIONS */
+        /* Operator [] overrides the value for a given key. */
         numbers_id[key] = 10; //Postcondition: numbers_id[5] == 10
         assert(numbers_id[key] == 10);
 
         /* The difference between insert() and operator [] is what happens when there is already an element with the given key.
          * The insert function will not modify the state of the map, but instead return an iterator to the element
          * (and a false indicating that it was not inserted). Operator [] would overwrite previous value. */
-        numbers_id.insert(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
+        //numbers_id.insert(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
+        numbers_id.insert( {key, value} ); //C++11
         assert(numbers_id[key] == 10);
 
         /* From C++11 we have .emplace() method */
         /* It makes use of variadic templates and perfect forwarding which results in constructing object in place.
          * Instead of getting a source from which to copy into the container,
          * the function takes the parameters that will be forwarded to the constructor of the object stored in the container. */
-        numbers_id.emplace(std::make_pair(key, 20)); //Postcondition: numbers_id[5] == 10. No change.
+        numbers_id.emplace(key, 20);
         assert(numbers_id[key] == 10);
 
         /* Operator[] returns a reference to the value that is mapped to a key. */
@@ -51,10 +53,12 @@ class map;
 
         /* FIND, AT */
         int key_to_find = 5;
-        auto is_key_found = numbers_id.find(key_to_find);
+        std::map<int, int>::iterator is_key_found = numbers_id.find(key_to_find);
         if(is_key_found != numbers_id.end())
         {
             std::cout << "Key found, it has a mapped value: " << is_key_found->second << "\n";
+            std::cout << "Key found, it has a mapped value: " << (*is_key_found).second << "\n";
+
             std::cout << "Key found, it has a mapped value: " << numbers_id.at(key_to_find) << "\n";
             /* Avoid calling operator [] to get value. If there is no key, it will construct a new one - silent bug.
              * Prefer to call .at() or iterator version. */
