@@ -21,7 +21,7 @@ class map;
     void Map_Interface()
     {
         int key = 5, value = 0;
-        std::map<int, int> numbers_id /*{ {key, value} }*/;
+        std::map<int, int> numbers_id { {key, value} };
 
         /* INSERTIONS */
         /* Operator [] overrides the value for a given key. */
@@ -42,9 +42,7 @@ class map;
         numbers_id.emplace(key, 20);
         assert(numbers_id[key] == 10);
 
-        /* Operator[] returns a reference to the value that is mapped to a key. */
-        numbers_id[key]++; //Postcondition: numbers_id[5] == 11
-        assert(numbers_id[key] == 11);
+
         numbers_id[100] = 4; //If the key is not in the map, operator [] will create it.
         assert(numbers_id[100] == 4);
         /* Add code how it could be done .insert or .emplace */
@@ -138,6 +136,7 @@ class map;
         std::map<int, std::string> map_keys;
 
         multimap_keys.emplace(std::make_pair(1, "Michal"));
+        multimap_keys.emplace(1, "Mateusz");
         multimap_keys.emplace(std::make_pair(2, "Natalia"));
         multimap_keys.emplace(std::make_pair(1, "Ania"));
 
@@ -146,6 +145,7 @@ class map;
             std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
 
         map_keys.emplace(std::make_pair(1, "Michal"));
+        map_keys.emplace(1, "Mateusz");
         map_keys.emplace(std::make_pair(2, "Natalia"));
         map_keys.emplace(std::make_pair(1, "Ania"));
 
@@ -323,9 +323,9 @@ class map;
 
     void Start()
     {
-        Map_Interface();
+        //Map_Interface();
         //Map_Adjustments();
-        //Multimap();
+        Multimap();
 
         //Exercise_One();
         //Exercise_One_Answer();

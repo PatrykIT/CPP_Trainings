@@ -83,6 +83,11 @@ class unordered_map; */
     {
         std::string first;
         std::string second;
+
+        bool operator ==(const Full_Name &name) const
+        {
+            return this->first == name.first && this->second == name.second;
+        }
     };
 
     /* For more info why we need to use std::hash<T>() please look at: http://en.cppreference.com/w/cpp/string/basic_string/hash */
@@ -116,7 +121,17 @@ class unordered_map; */
     */
     void Unordered_Map_Interface_Advanced()
     {
-        std::unordered_map<Full_Name, int, KeyHash, KeyEqual> names =
+        /* To be able to use std::unordered_map (or one of the other unordered associative containers) with a user-defined key-type, you need to define two things:
+         * 1) A hash function. This must be a class that overrides operator() and calculates the hash value given an object of the key-type.
+         * One particularly straight-forward way of doing this is to specialize the std::hash template for your key-type.
+         *
+         * 2) A comparison function for equality; this is required because the hash cannot rely on the fact that the hash function will always provide a
+         * unique hash value for every distinct key (i.e., it needs to be able to deal with collisions),
+         * so it needs a way to compare two given keys for an exact match. You can implement this either as a class that overrides operator(), or as a specialization of std::equal, or – easiest of all – by overloading operator==() for your key type (as you did already). */
+
+
+        //std::unordered_map<Full_Name, int, KeyHash, KeyEqual> names =
+        std::unordered_map<Full_Name, int, KeyHash> names =
         {
                 { {"John", "Doe"}, 35},
                 { {"Mary", "Sue"}, 22}
