@@ -249,13 +249,13 @@ namespace PERFORMANCE_MEELOGIC
      * Thanks to having pointers, we save time on copy constructing the string (because simply we don't do it).
      * Second, even bigger advantage is memory saving. There is HUGE difference between keeping std::string and std::string*.
      * For example, if a string has length of 50, it will take at least 50 bytes in memory. Pointer to this string takes only 4 or 8 bytes! */
-    struct KeyEqual
-    {
-     bool operator()(const std::string *lhs, const std::string *rhs) const
-     {
-        return *lhs < *rhs;
-     }
-    };
+//    struct KeyEqual
+//    {
+//     bool operator()(const std::string *lhs, const std::string *rhs) const
+//     {
+//        return *lhs < *rhs;
+//     }
+//    };
 
     void Exercise_One_Answer_Best()
     {
@@ -398,7 +398,8 @@ namespace PERFORMANCE_MEELOGIC
         else
             std::cerr << "Couldn't open file.";
 
-        std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+        //std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+        std::sort(numbers.begin(), numbers.end(), std::greater<int>());
 
         auto end = Stop_Time();
         Print_Time(Get_Time_Difference(start, end));
