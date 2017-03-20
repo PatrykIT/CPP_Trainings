@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <functional>
+#include <list>
 
 bool Our_Own_Predicate(const int &number) //Used in STL_MEELOGIC::Find()
 {
@@ -22,6 +23,24 @@ void Our_Own_UnaryFunction(int &number) //Used in STL_MEELOGIC::For_Each()
 
 namespace STL_MEELOGIC
 {
+
+
+
+    void Iterators_Compability()
+    {
+        std::vector<int> numbers = { 1, 2, 3, 4 }; //If we change vector to i.e. list, the index loop doesn't compile.
+
+        for(size_t i = 0; i < numbers.size(); ++i)
+            std::cout << numbers[i] << " ";
+
+        std::cout << "\n";
+
+        for(auto iter = numbers.begin(); iter != numbers.end(); ++iter) //auto deduces std::vector<int>::iterator
+            std::cout << *iter << " ";
+
+        std::cout << "\n\n";
+    }
+
     void Find()
     {
         std::vector<int> numbers = { 5, 10, 15, 20 };
@@ -124,13 +143,28 @@ namespace STL_MEELOGIC
     }
 
 
+    void Iterators_Incrementing()
+    {
+        std::vector<int> numbers_vector = { 5, 10, 15, 20 };
+        std::list<int> numbers_list = { 5, 10, 15, 20 };
+        int third_number;
+
+        third_number = *(numbers_vector.begin() + 2); //"+" only works for RandomAccessIterator type.
+        std::cout << "Third number[vector]: " << third_number << "\n";
+
+        third_number = *std::next(numbers_list.begin(), 2);
+        std::cout << "Third number[list]: " << third_number << "\n";
+    }
+
     void Start()
     {
+        //Iterators_Compability();
         //Find();
-        Sort();
+        //Sort();
         //AllOf_AnyOf_NoneOf();
         //For_Each();
         //Remove();
+        Iterators_Incrementing();
 
 
         //Exercise_One();
@@ -138,6 +172,14 @@ namespace STL_MEELOGIC
         std::cout << Exercise_Two_Answer() << "\n";
     }
 
+
+
+
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------
     bool Exercise_One()
     {
         /* 1. Please erase from vector all numbers that are dividable by 5.
@@ -156,6 +198,9 @@ namespace STL_MEELOGIC
 
         return std::is_sorted(numbers.begin(), numbers.end());
     }
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------
 
     int Exercise_Two()
     {

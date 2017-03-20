@@ -3,11 +3,14 @@
 
 namespace STL_MEELOGIC
 {
+
+    void Iterators_Compability();
     void Find();
     void Sort();
     void AllOf_AnyOf_NoneOf();
     void For_Each();
     void Remove();
+    void Iterators_Incrementing();
 
     bool Exercise_One();
     bool Exercise_One_Answer();

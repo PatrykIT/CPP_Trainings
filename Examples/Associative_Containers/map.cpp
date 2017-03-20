@@ -1,3 +1,5 @@
+#include "map.h"
+
 #include <map>
 #include <cassert>
 #include <iostream>
@@ -159,6 +161,26 @@ class map;
 
 
 
+
+
+
+    void Start()
+    {
+        //Map_Interface();
+        //Map_Adjustments();
+        //Multimap();
+
+        //Exercise_One();
+        Exercise_One_Answer();
+
+        //Exercise_Two();
+        //Exercise_Two_Answer();
+
+        //Exercise_Three();
+        //Exercise_Three_Answer();
+    }
+
+
     /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     void Exercise_One()
@@ -203,6 +225,13 @@ class map;
             {
                 file >> temporary; //std::getline(file, temporary); //Also works.
                 words[temporary]++;
+
+                /* Longer alternative to the above line. */
+//                std::map<std::string, int>::iterator finder = words.find(temporary);
+//                if(finder != words.end())
+//                    finder->second += 1;
+//                else
+//                    words[temporary] = 0;
             }
         }
         else
@@ -212,6 +241,7 @@ class map;
         /* Helper function that prints keys and their values. */
         for(const auto &node : words)
             std::cout << node.first << " = " << node.second << " times.\n";
+        std::cout << "\n\n";
 
         /* Now, when you have counted the occurences, please create a multimap where occurences are a key - in top - bottom order */
 
@@ -319,21 +349,22 @@ class map;
         for(const auto &node : answer_2)
             std::cout << node.first << " " << node.second << "\n";
     }
-
-
-    void Start()
-    {
-        //Map_Interface();
-        //Map_Adjustments();
-        Multimap();
-
-        //Exercise_One();
-        //Exercise_One_Answer();
-
-        //Exercise_Two();
-        //Exercise_Two_Answer();
-
-        //Exercise_Three();
-        //Exercise_Three_Answer();
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
