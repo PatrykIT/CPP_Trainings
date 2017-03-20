@@ -10,6 +10,10 @@ namespace STL_MEELOGIC
     void Remove();
 
     bool Exercise_One();
+    bool Exercise_One_Answer();
+
+    int Exercise_Two();
+    int Exercise_Two_Answer();
 
     void Start();
 }

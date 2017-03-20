@@ -41,6 +41,7 @@ namespace PERFORMANCE_MEELOGIC
     std::pair<int, int> Exercise_Two_Biggest_Smallest_PriorityQueues();
     std::pair<int, int> Exercise_Two_Biggest_Smallest_Vector();
     std::pair<int, int> Exercise_Two_Biggest_Smallest_Set();
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_MinMax();
 
 }
 

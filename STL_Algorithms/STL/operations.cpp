@@ -5,17 +5,17 @@
 #include <iostream>
 #include <functional>
 
-bool Our_Own_Predicate(const int number) //Used in STL_MEELOGIC::Find()
+bool Our_Own_Predicate(const int &number) //Used in STL_MEELOGIC::Find()
 {
     return number == sqrt(100.0);
 }
 
-bool Sort_Comparator(const int number_1, const int number_2) //Used in STL_MEELOGIC::Sort()
+bool Sort_Comparator(const int &number_1, const int &number_2) //Used in STL_MEELOGIC::Sort()
 {
     return number_1 > number_2; //Growing order.
 }
 
-void Our_Own_UnaryFunction(int &number)
+void Our_Own_UnaryFunction(int &number) //Used in STL_MEELOGIC::For_Each()
 {
     number *= 10;
 }
@@ -29,7 +29,7 @@ namespace STL_MEELOGIC
         std::vector<int>::iterator number = std::find(numbers.begin(), numbers.end(), 15);
 
         if(number != numbers.end()) { std::cout << *number << "\n"; }
-        else {std::cout << "Number not found. \n"; }
+        else { std::cout << "Number not found. \n"; }
 
         //number = std::find_if(numbers.begin(), numbers.end(), [](const int nr) { return nr ==  sqrt(100.0); } );
         number = std::find_if(numbers.begin(), numbers.end(), Our_Own_Predicate);
@@ -50,12 +50,19 @@ namespace STL_MEELOGIC
         std::sort(numbers.begin(), numbers.end(), Sort_Comparator);
         for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
-        std::sort(numbers.begin(), numbers.end(), [](const int number_1, const int number_2)
+        std::sort(numbers.begin(), numbers.end(), [](const int &number_1, const int &number_2)
         { return number_1 > number_2; });
         for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
         std::sort(numbers.begin(), numbers.end(), std::greater<int>());
         for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+
+
+
+        /* Sorting range of elements. */
+        std::vector<int> numbers_2 = { 0, -5, 4, 3, 18, 10, 2 };
+        std::stable_sort(numbers_2.begin() +1, numbers_2.end() - 1);
+        for(const auto number : numbers_2) { std::cout << number << " "; } std::cout << "\n\n";
     }
 
     void AllOf_AnyOf_NoneOf()
@@ -63,18 +70,18 @@ namespace STL_MEELOGIC
         std::vector<int> numbers = { 5, 10, 15, 20 };
 
         /* Checks if unary predicate returns true for all elements in the range [first, last). */
-        if( std::all_of(numbers.begin(), numbers.end(), [](const int number){ return number % 5 == 0; }) )
+        if( std::all_of(numbers.begin(), numbers.end(), [](const int &number){ return number % 5 == 0; }) )
         {
             std::cout << "All numbers are dividable by 5. \n";
         }
 
         /* Checks if unary predicate p returns true for at least one element in the range [first, last) */
-        if( std::any_of(numbers.begin(), numbers.end(), [](const int number){ return number % 10 == 0; }) )
+        if( std::any_of(numbers.begin(), numbers.end(), [](const int &number){ return number % 10 == 0; }) )
         {
             std::cout << "At least one number is dividable by 10. \n";
         }
 
-        if( std::none_of(numbers.begin(), numbers.end(), [](const int number){ return number % 50 == 0; }) )
+        if( std::none_of(numbers.begin(), numbers.end(), [](const int &number){ return number % 50 == 0; }) )
         {
             std::cout << "None of the numbers is dividable by 50. \n";
         }
@@ -108,7 +115,7 @@ namespace STL_MEELOGIC
          * member function, hence the name "erase–remove idiom". */
 
         std::vector<int> numbers = { 5, 10, 15, 20, 25, 0, 1, 2, 3, 50};
-        auto UnaryPredicate = [](const int number) -> bool { return number % 5 == 0; };
+        auto UnaryPredicate = [](const int &number) -> bool { return number % 5 == 0; };
 
         //std::remove_if(numbers.begin(), numbers.end(), UnaryPredicate);
         numbers.erase(std::remove_if(numbers.begin(), numbers.end(), UnaryPredicate), numbers.end());
@@ -120,22 +127,61 @@ namespace STL_MEELOGIC
     void Start()
     {
         //Find();
-        //Sort();
+        Sort();
         //AllOf_AnyOf_NoneOf();
         //For_Each();
-        Remove();
+        //Remove();
 
 
         //Exercise_One();
+        //std::cout << Exercise_Two() << "\n";
+        std::cout << Exercise_Two_Answer() << "\n";
     }
 
     bool Exercise_One()
     {
+        /* 1. Please erase from vector all numbers that are dividable by 5.
+         * 2. Check if vector is sorted, and return appriopriate bool value. */
         std::vector<int> numbers = { 5, 10, 20, 15, 47, 19, -5, 4, 11, -2, 0, 50};
 
-        std::remove_if(numbers.begin(), numbers.end(), [](const int number){ return number % 5 == 0;  } );
+
+    }
+
+    bool Exercise_One_Answer()
+    {
+        std::vector<int> numbers = { 5, 10, 20, 15, 47, 19, -5, 4, 11, -2, 0, 50};
+
+        numbers.erase(std::remove_if(numbers.begin(), numbers.end(), [](const int number){ return number % 5 == 0;  } ), numbers.end());
         for(const auto number : numbers) { std::cout << number << " "; }
 
         return std::is_sorted(numbers.begin(), numbers.end());
+    }
+
+    int Exercise_Two()
+    {
+        /* 1. Please fill first three numbers with "-1". Try not to use a loop.
+         * 2. Reverse this vector.
+         * 3. Return maximum element.*/
+        std::vector<int> numbers = { 5, 15, 20, 10 };
+
+
+    }
+
+    int Exercise_Two_Answer()
+    {
+        std::vector<int> numbers = { 5, 15, 20, 10 };
+
+        std::fill(numbers.begin(), numbers.begin() + 3, -1);
+        for(const auto number : numbers) { std::cout << number << " "; }
+
+        std::cout << "\n";
+
+        std::reverse(numbers.begin(), numbers.end());
+        for(const auto number : numbers) { std::cout << number << " "; }
+
+        std::vector<int>::iterator max_number_iterator = std::max_element(numbers.begin(), numbers.end());
+        int max_number = *max_number_iterator;
+
+        return max_number;
     }
 }

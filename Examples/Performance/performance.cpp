@@ -639,6 +639,7 @@ namespace PERFORMANCE_MEELOGIC
             std::cerr << "Couldn't open file.";
 
         std::sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; });
+        //std::stable_sort(numbers.begin(), numbers.end(), [](const int a, const int b) { return a > b; }); //In this case, slower.
 
         biggest_lowest = std::make_pair(numbers.front(), numbers.back());
 
@@ -681,6 +682,39 @@ namespace PERFORMANCE_MEELOGIC
     }
 
 
+
+    std::pair<int, int> Exercise_Two_Biggest_Smallest_MinMax()
+    {
+        const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Performance\\numbers.txt";
+        std::ifstream file(path, std::ios_base::in);
+
+        /* This pair should be returned with first element the biggest, and second element the smallest. */
+        std::vector<int> numbers;
+        int current_file_number;
+
+        auto start = Start_Time();
+        if(file.is_open())
+        {
+            while(!file.eof())
+            {
+                file >> current_file_number;
+                numbers.emplace_back(current_file_number);
+            }
+        }
+        else
+            std::cerr << "Couldn't open file.";
+
+        //std::pair<int, int> biggest_lowest (*std::max_element(numbers.begin(), numbers.end()), *std::min_element(numbers.begin(), numbers.end()));
+
+        std::pair<std::vector<int>::iterator, std::vector<int>::iterator> biggest_lowest_iterators(std::minmax_element(numbers.begin(), numbers.end()));
+        std::pair<int, int> biggest_lowest  (*biggest_lowest_iterators.second, *biggest_lowest_iterators.first);
+
+        auto end = Stop_Time();
+        Print_Time(Get_Time_Difference(start, end));
+
+        return biggest_lowest;
+    }
+
     void Start()
     {
         //Exercise_One();
@@ -689,26 +723,32 @@ namespace PERFORMANCE_MEELOGIC
         //Exercise_One_Answer_Best();
 
 
-        std::cout << "Biggest element [Priority Queue]: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n";
-        std::cout << "Biggest element [Vector] : " << Exercise_Two_Biggest_Answer_Vector() << "\n";
-        std::cout << "Biggest element [Set]: " << Exercise_Two_Biggest_Answer_Set() << "\n";
+        std::cout << "\t\t --- Biggest element ---\n";
+        std::cout << "Biggest element [Priority Queue]: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n\n";
+        std::cout << "Biggest element [Vector] : " << Exercise_Two_Biggest_Answer_Vector() << "\n\n";
+        std::cout << "Biggest element [Set]: " << Exercise_Two_Biggest_Answer_Set() << "\n\n";
 
 
 
-        std::cout << "Biggest element with dynamic addition [Priority Queue]: " << Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue() << "\n";
-        std::cout << "Biggest element with dynamic addition: [Vector]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector() << "\n";
-        std::cout << "Biggest element with dynamic addition: [Set]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Set() << "\n";
+        std::cout << "\t\t --- Biggest element with dynamic input---\n";
+        std::cout << "Biggest element with dynamic addition [Priority Queue]: " << Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue() << "\n\n";
+        std::cout << "Biggest element with dynamic addition: [Vector]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector() << "\n\n";
+        std::cout << "Biggest element with dynamic addition: [Set]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Set() << "\n\n";
 
+
+        std::cout << "\t\t --- Biggest and smallest element ---\n";
         std::pair<int, int> answer;
-
         answer = Exercise_Two_Biggest_Smallest_PriorityQueues();
-        std::cout << "Pair [2 priority queues]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+        std::cout << "Pair [2 priority queues]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
         answer = Exercise_Two_Biggest_Smallest_Vector();
-        std::cout << "Pair [Vector]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+        std::cout << "Pair [Vector]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
         answer = Exercise_Two_Biggest_Smallest_Set();
-        std::cout << "Pair [Set]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n";
+        std::cout << "Pair [Set]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
+
+        answer = Exercise_Two_Biggest_Smallest_MinMax();
+        std::cout << "Pair[MinMax_Element()]:\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
     }
 }
