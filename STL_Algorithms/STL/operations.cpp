@@ -41,22 +41,6 @@ namespace STL_MEELOGIC
         std::cout << "\n\n";
     }
 
-    void Find()
-    {
-        std::vector<int> numbers = { 5, 10, 15, 20 };
-
-        std::vector<int>::iterator number = std::find(numbers.begin(), numbers.end(), 15);
-
-        if(number != numbers.end()) { std::cout << *number << "\n"; }
-        else { std::cout << "Number not found. \n"; }
-
-        //number = std::find_if(numbers.begin(), numbers.end(), [](const int nr) { return nr ==  sqrt(100.0); } );
-        number = std::find_if(numbers.begin(), numbers.end(), Our_Own_Predicate);
-
-        if(number != numbers.end()) { std::cout << *number << "\n"; }
-        else { std::cout << "Number not found. \n"; }
-    }
-
     void Sort()
     {
         std::vector<int> numbers = { 1, 5, 3, 0 };
@@ -83,6 +67,23 @@ namespace STL_MEELOGIC
         std::stable_sort(numbers_2.begin() +1, numbers_2.end() - 1);
         for(const auto number : numbers_2) { std::cout << number << " "; } std::cout << "\n\n";
     }
+
+    void Find()
+    {
+        std::vector<int> numbers = { 5, 10, 15, 20 };
+
+        std::vector<int>::iterator number = std::find(numbers.begin(), numbers.end(), 15);
+
+        if(number != numbers.end()) { std::cout << *number << "\n"; }
+        else { std::cout << "Number not found. \n"; }
+
+        //number = std::find_if(numbers.begin(), numbers.end(), [](const int nr) { return nr ==  sqrt(100.0); } );
+        number = std::find_if(numbers.begin(), numbers.end(), Our_Own_Predicate);
+
+        if(number != numbers.end()) { std::cout << *number << "\n"; }
+        else { std::cout << "Number not found. \n"; }
+    }
+
 
     void AllOf_AnyOf_NoneOf()
     {
@@ -115,6 +116,11 @@ namespace STL_MEELOGIC
 
         std::for_each(numbers.begin(), numbers.end(), [](int &number) { number *= 10; } );
         for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+
+        for(auto &number : numbers) //for_each lost some of its popularity due to new for-range loops.
+        {
+            number *= 10;
+        }
     }
 
     void Remove()
@@ -186,7 +192,7 @@ namespace STL_MEELOGIC
          * 2. Check if vector is sorted, and return appriopriate bool value. */
         std::vector<int> numbers = { 5, 10, 20, 15, 47, 19, -5, 4, 11, -2, 0, 50};
 
-
+    return false;
     }
 
     bool Exercise_One_Answer()
@@ -209,7 +215,7 @@ namespace STL_MEELOGIC
          * 3. Return maximum element.*/
         std::vector<int> numbers = { 5, 15, 20, 10 };
 
-
+    return -1;
     }
 
     int Exercise_Two_Answer()

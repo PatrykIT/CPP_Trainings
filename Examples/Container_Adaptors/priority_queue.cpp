@@ -76,6 +76,9 @@ class priority_queue;
          * priority_queue( const Compare& compare, const Container& cont ); (since C++11)
          * See here more constructors: http://en.cppreference.com/w/cpp/container/priority_queue/priority_queue
          * Take a look at the same constructor but with note "Until C++11". You will see a breaking change. */
+
+        std::vector<int> numbers_vector {1, 5, 10, 0};
+
     }
 
     void Exercise_One_Answer()

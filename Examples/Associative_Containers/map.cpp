@@ -95,7 +95,7 @@ class map;
         std::cout << "Removing elements.\n";
         numbers_id.erase(key);
         //numbers_id.erase(numbers_id.begin());
-        //numbers_id.erase(numbers_id.begin(), numbers_id.end()); //Removes all elements.
+        //numbers_id.erase(numbers_id.begin(), numbers_id.end());
         //numbers_id.clear(); //Removes all elements.
 
         for(const auto &node : numbers_id) //C++11

@@ -1,3 +1,5 @@
+#include "unordered_containers.h"
+
 #include <unordered_map>
 #include <iostream>
 #include <string>
@@ -145,6 +147,21 @@ class unordered_map; */
 
 
 
+    void Start()
+    {
+        //Unordered_Map_Interface_Basic();
+        //Unordered_Map_Interface_Advanced();
+
+        std::cout << "Container empty: " << Exercise_One_Answer() << "\n";
+    }
+
+
+
+
+
+
+
+
     bool Exercise_One()
     {
         /* Please find given key, and if it available, print its value.
@@ -172,15 +189,5 @@ class unordered_map; */
         names.clear();
         //names.erase(names.begin(), names.end()); //Same as above.
         return names.empty();
-    }
-
-
-
-void Start()
-    {
-        //Unordered_Map_Interface_Basic();
-        //Unordered_Map_Interface_Advanced();
-
-        std::cout << "Container empty: " << Exercise_One_Answer() << "\n";
     }
 }
