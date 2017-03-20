@@ -231,7 +231,7 @@ class map;
 //                if(finder != words.end())
 //                    finder->second += 1;
 //                else
-//                    words[temporary] = 0;
+//                    words.emplace(temporary, 1); //Or: words[temporary] = 1;
             }
         }
         else
