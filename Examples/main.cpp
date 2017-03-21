@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-    //MAP_MEELOGIC::Start();
+    MAP_MEELOGIC::Start();
     //SET_MEELOGIC::Start();
     //UNORDERED_MEELOGIC::Start();
     //ARRAY_MEELOGIC::Start();
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     //STACK_MEELOGIC::Start();
     //PRIORITY_QUEUE_MEELOGIC::Start();
 
-    PERFORMANCE_MEELOGIC::Start();
+    //PERFORMANCE_MEELOGIC::Start();
 
 
     return 0;
