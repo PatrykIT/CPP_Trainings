@@ -71,8 +71,8 @@ class map;
 
 
 
-        numbers_id.emplace(std::pair<const int, int> {50, 55});
         numbers_id.emplace(std::pair<const int, int> {100, 105});
+        numbers_id.emplace(50, 55);
 
         /* ITERATIONS */
         for(std::map<int, int>::iterator node = numbers_id.begin(); node != numbers_id.end(); node++)

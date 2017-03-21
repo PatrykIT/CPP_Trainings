@@ -164,7 +164,7 @@ class unordered_map; */
 
     bool Exercise_One()
     {
-        /* Please find given key, and if it available, print its value.
+        /* Please find given key, and if its available, print its value.
          * After printing, remove all elements, and check if container is empty. If it is empty - return true, else: return false. */
         std::unordered_map<int, std::string> names = {{1, "Ania"}, {3, "Michal"}, {5, "Patryk" }, {-20, "Krzysztof" }, {4, "Agata" }, {0, "Pawel" }};
         const int key_to_find = 5;

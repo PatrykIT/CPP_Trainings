@@ -23,9 +23,6 @@ void Our_Own_UnaryFunction(int &number) //Used in STL_MEELOGIC::For_Each()
 
 namespace STL_MEELOGIC
 {
-
-
-
     void Iterators_Compability()
     {
         std::vector<int> numbers = { 1, 2, 3, 4 }; //If we change vector to i.e. list, the index loop doesn't compile.
