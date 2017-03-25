@@ -3,6 +3,7 @@
 
 namespace UNIQUE_MEELOGIC
 {
+    void Unique_Ptr_Contructors();
     void Unique_Ptr_Interface();
     void Unique_Ptr_Interface_Extended();
 
@@ -11,6 +12,18 @@ namespace UNIQUE_MEELOGIC
     // Passing pointers: http://stackoverflow.com/questions/8114276/how-do-i-pass-a-unique-ptr-argument-to-a-constructor-or-a-function?rq=1
 
     void Start();
+
+    struct Objects
+    {
+        Objects();
+        ~Objects();
+
+        Objects(const Objects &other);
+        Objects& operator=(const Objects &other);
+
+        Objects(Objects &&other);
+        Objects& operator=(Objects &&other);
+    };
 }
 
 #endif // UNIQUE_PTR_H
