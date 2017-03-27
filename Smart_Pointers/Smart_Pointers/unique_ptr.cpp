@@ -9,14 +9,8 @@ void UNIQUE_MEELOGIC::Start()
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Interface()
 {
-    /* First construct option */
-    std::unique_ptr<int> unique_number_0 (new int (20));
-
-    /* Second construct option */
-    int *number_ptr = new int (10);
-    std::unique_ptr<int> unique_number_1 (std::move(number_ptr)); //After moving number_ptr, the raw pointer might be null'ed and cannot be accessed!
-
-    /* Third construct option */
+    std::unique_ptr<int> unique_number_0 = std::make_unique<int> (20);
+    std::unique_ptr<int> unique_number_1 = std::make_unique<int> (5);
     std::unique_ptr<int> unique_number_2 = std::make_unique<int> (5);
 
 
@@ -42,8 +36,30 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Interface()
     std::cout << "Before swapping: " << *unique_number_0 << " - " << *unique_number_2 << "\n";
     unique_number_0.swap(unique_number_2); //Swaps contents of both pointers.
     std::cout << "After swapping: " <<  *unique_number_0 << " - " << *unique_number_2 << "\n";
-
-
-
-
 }
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors()
+{
+    /* First construct option */
+    std::unique_ptr<int> unique_number_0 (new int (20));
+
+    /* Second construct option */
+    int *number_ptr = new int (10);
+    std::unique_ptr<int> unique_number_1 (std::move(number_ptr)); //After moving number_ptr, the raw pointer might be null'ed and cannot be accessed!
+
+    /* Third construct option */
+    std::unique_ptr<int> unique_number_2 = std::make_unique<int> (5);
+
+
+    std::cout << *unique_number_0 << "\n";
+    std::cout << *unique_number_1 << "\n";
+    std::cout << *unique_number_2 << "\n";
+}
+
+
+UNIQUE_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
+UNIQUE_MEELOGIC::Objects::~Objects() { std::cout << "Destructor called.\n"; }
+UNIQUE_MEELOGIC::Objects::Objects(const Objects &other) { std::cout << "Copy constructor called.\n"; std::ignore = other; }
+UNIQUE_MEELOGIC::Objects& UNIQUE_MEELOGIC::Objects::operator=(const Objects &other) { std::cout << "Assignment constructor called.\n"; std::ignore = other; return *this;}
+UNIQUE_MEELOGIC::Objects::Objects(Objects &&other) { std::cout << "Move constructor called.\n"; std::ignore = other; }
+UNIQUE_MEELOGIC::Objects& UNIQUE_MEELOGIC::Objects::operator=(Objects &&other) { std::cout << "Move assignment called.\n"; std::ignore = other; return *this; }
