@@ -26,91 +26,6 @@ void UNIQUE_MEELOGIC::Start()
 }
 
 
-void UNIQUE_MEELOGIC::Custom_Deleter_C()
-{
-    FILE *file_handle;
-    file_handle = fopen("Example.txt", "r");
-
-    if(file_handle != NULL)
-    {
-        std::cout << "File open correctly." << std::endl;
-        fclose(file_handle);
-    }
-}
-
-
-void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Bad_Usage()
-{
-    /* What is wrong here? */
-
-    Objects *object = new Objects (5);
-    std::unique_ptr<Objects> first_ptr (object);
-    std::cout << first_ptr->x << "\n";
-
-    std::unique_ptr<Objects> second_ptr (object);
-    std::cout << second_ptr->x << "\n";
-}
-
-void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
-{
-    /* What is wrong here? */
-
-    Objects *object = new Objects (5);
-    std::unique_ptr<Objects> first_ptr (object);
-    std::cout << first_ptr->x << "\n";
-
-    std::unique_ptr<Objects> second_ptr (std::move(first_ptr));
-    std::cout << second_ptr->x << "\n";
-}
-
-void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
-{
-    const std::string path_to_file = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Smart_Pointers\\Smart_Pointers\\Example_Fopen.txt";
-
-    std::unique_ptr<FILE, // <-- Type of pointer
-            decltype(&fclose)>  // <-- Deleter type
-            file_handle (fopen(path_to_file.c_str(), "r"), // <-- Returns a pointer.
-                         fclose); // <-- Tells unique_ptr which function to call when deleting the pointer.
-
-    /* Instead of decltype, we can write manually deleter type */
-    std::unique_ptr<FILE, int(*)(FILE*)> file_handle_2 (fopen(path_to_file.c_str(), "r"), fclose);
-
-    if(file_handle != nullptr)
-    {
-        std::cout << "File open correctly." << std::endl;
-    }
-    else
-    {
-        std::cout << "Sorry." << std::endl;
-    }
-}
-
-void UNIQUE_MEELOGIC::Unique_Get()
-{
-    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
-
-    Objects *ptr_to_object = object.get(); //Unique_ptr will stil delete the object at the end of scop (unlike .release() method)
-
-    /* We use .get() if we want to pass a pointer to a function that takes a raw pointer (like every C function). */
-}
-
-void UNIQUE_MEELOGIC::Unique_Release()
-{
-    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
-
-    Objects *ptr_to_object = object.release();
-    delete ptr_to_object;
-}
-
-void UNIQUE_MEELOGIC::Unique_Reset()
-{
-    auto object = std::make_unique<Objects> ();
-
-    object.reset(new Objects(15));
-
-    std::cout << "Objects(15): " << object->x << "\n";
-}
-
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Custom_Class_1()
 {
@@ -154,6 +69,110 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
     else
         std::cout << first_ptr_to_object->x << "\n";
 }
+
+
+
+
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Bad_Usage()
+{
+    /* What is wrong here? */
+
+    Objects *object = new Objects (5);
+    std::unique_ptr<Objects> first_ptr (object);
+    std::cout << first_ptr->x << "\n";
+
+    std::unique_ptr<Objects> second_ptr (object);
+    std::cout << second_ptr->x << "\n";
+}
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
+{
+    /* What is wrong here? */
+
+    Objects *object = new Objects (5);
+    std::unique_ptr<Objects> first_ptr (object);
+    std::cout << first_ptr->x << "\n";
+
+    std::unique_ptr<Objects> second_ptr (std::move(first_ptr));
+    std::cout << second_ptr->x << "\n";
+}
+
+
+
+
+
+
+
+
+
+
+void UNIQUE_MEELOGIC::Unique_Get()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
+
+    Objects *ptr_to_object = object.get(); //Unique_ptr will stil delete the object at the end of scop (unlike .release() method)
+
+    /* We use .get() if we want to pass a pointer to a function that takes a raw pointer (like every C function). */
+}
+
+void UNIQUE_MEELOGIC::Unique_Release()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
+
+    Objects *ptr_to_object = object.release();
+    delete ptr_to_object;
+}
+
+void UNIQUE_MEELOGIC::Unique_Reset()
+{
+    auto object = std::make_unique<Objects> ();
+
+    object.reset(new Objects(15));
+
+    std::cout << "Objects(15): " << object->x << "\n";
+}
+
+
+
+
+
+
+void UNIQUE_MEELOGIC::Custom_Deleter_C()
+{
+    FILE *file_handle;
+    file_handle = fopen("Example.txt", "r");
+
+    if(file_handle != NULL)
+    {
+        std::cout << "File open correctly." << std::endl;
+        fclose(file_handle);
+    }
+}
+
+void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
+{
+    const std::string path_to_file = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Smart_Pointers\\Smart_Pointers\\Example_Fopen.txt";
+
+    std::unique_ptr<FILE, // <-- Type of pointer
+            decltype(&fclose)>  // <-- Deleter type
+            file_handle (fopen(path_to_file.c_str(), "r"), // <-- Returns a pointer.
+                         fclose); // <-- Tells unique_ptr which function to call when deleting the pointer.
+
+    /* Instead of decltype, we can write manually deleter type */
+    std::unique_ptr<FILE, int(*)(FILE*)> file_handle_2 (fopen(path_to_file.c_str(), "r"), fclose);
+
+    if(file_handle != nullptr)
+    {
+        std::cout << "File open correctly." << std::endl;
+    }
+    else
+    {
+        std::cout << "Sorry." << std::endl;
+    }
+}
+
+
 
 
 UNIQUE_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
