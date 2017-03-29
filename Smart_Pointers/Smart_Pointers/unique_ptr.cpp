@@ -1,6 +1,10 @@
 #include "unique_ptr.h"
 #include <memory>
 #include <iostream>
+#include <functional>
+
+#include <stdio.h>
+
 
 void UNIQUE_MEELOGIC::Start()
 {
@@ -8,58 +12,74 @@ void UNIQUE_MEELOGIC::Start()
     //Unique_Ptr_Contructors_Custom_Class_1();
     //Unique_Ptr_Contructors_Custom_Class_2();
     //Unique_Ptr_Contructors_Custom_Class_3();
-    Unique_Ptr_Contructors_Moving();
+    //Unique_Ptr_Contructors_Moving();
+    //Unique_Get();
+    //Unique_Release();
+    //Unique_Reset();
+    //Custom_Deleter_C();
+    Custom_Deleter_CPP11();
 }
 
-void UNIQUE_MEELOGIC::Unique_Ptr_Interface()
+
+void UNIQUE_MEELOGIC::Custom_Deleter_C()
 {
-    std::unique_ptr<int> unique_number_0 = std::make_unique<int> (20);
-    std::unique_ptr<int> unique_number_1 = std::make_unique<int> (5);
-    std::unique_ptr<int> unique_number_2 = std::make_unique<int> (5);
+    FILE *file_handle;
+    file_handle = fopen("Example.txt", "r");
 
+    if(file_handle != NULL)
+    {
+        std::cout << "File open correctly." << std::endl;
+        fclose(file_handle);
+    }
 
-    std::cout << *unique_number_0 << "\n";
-    std::cout << *unique_number_1 << "\n";
-    std::cout << *unique_number_2 << "\n";
-
-
-    /* GET */
-    int *raw_pointer = unique_number_0.get(); //Unique_ptr will stil delete the object at the end of scop (unlike .release() method)
-    std::cout << "raw_pointer after calling .get(): " << *raw_pointer << "\n";
-
-    /* RELEASE */
-    int *raw_pointer_2 = unique_number_1.release();
-    std::cout << "raw_pointer_2 after calling .release(): " << *raw_pointer_2 << "\n";
-    delete raw_pointer_2; //Need to manually delete it, as unique_ptr no longer holds ownership!
-
-    /* RESET */
-    unique_number_2.reset(new int (100)); //Deletes the previous object, and inserts a new one.
-    std::cout << *unique_number_2 << "\n";
-
-    /* SWAP */
-    std::cout << "Before swapping: " << *unique_number_0 << " - " << *unique_number_2 << "\n";
-    unique_number_0.swap(unique_number_2); //Swaps contents of both pointers.
-    std::cout << "After swapping: " <<  *unique_number_0 << " - " << *unique_number_2 << "\n";
+    std::unique_ptr<FILE, int(*)(FILE*)> filee (fopen("Example.txt", "r"), fclose);
 }
 
-void UNIQUE_MEELOGIC::Unique_Ptr_Contructors()
+void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
 {
-    /* First construct option */
-    std::unique_ptr<int> unique_number_0 (new int (20));
+    const std::string path_to_file = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Smart_Pointers\\Smart_Pointers\\Example_Fopen.txt";
 
-    /* Second construct option */
-    int *number_ptr = new int (10);
-    std::unique_ptr<int> unique_number_1 (number_ptr);
+    std::unique_ptr<FILE, // <-- Type of pointer
+            decltype(&fclose)>  // <-- Deleter type
+            file_handle (fopen(path_to_file.c_str(), "r"), // <-- Returns a pointer.
+                         fclose); // <-- Tells unique_ptr which function to call when deleting the pointer.
 
-    /* Third construct option */
-    std::unique_ptr<int> unique_number_2 = std::make_unique<int> (5);
+    /* Instead of decltype, we can write manually deleter type */
+    std::unique_ptr<FILE, int(*)(FILE*)> file_handle_2 (fopen(path_to_file.c_str(), "r"), fclose);
 
-
-    std::cout << *unique_number_0 << "\n";
-    std::cout << *unique_number_1 << "\n";
-    std::cout << *unique_number_2 << "\n";
+    if(file_handle != nullptr)
+    {
+        std::cout << "File open correctly." << std::endl;
+    }
+    else
+    {
+        std::cout << "Sorry." << std::endl;
+    }
 }
 
+void UNIQUE_MEELOGIC::Unique_Get()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
+
+    Objects *ptr_to_object = object.get(); //Unique_ptr will stil delete the object at the end of scop (unlike .release() method)
+}
+
+void UNIQUE_MEELOGIC::Unique_Release()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects> ();
+
+    Objects *ptr_to_object = object.release();
+    delete ptr_to_object;
+}
+
+void UNIQUE_MEELOGIC::Unique_Reset()
+{
+    auto object = std::make_unique<Objects> ();
+
+    object.reset(new Objects(15));
+
+    std::cout << "Objects(15): " << object->x << "\n";
+}
 
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Custom_Class_1()
