@@ -15,9 +15,9 @@ void UNIQUE_MEELOGIC::Start()
     //Unique_Ptr_Contructors_Moving();
     //Unique_Get();
     //Unique_Release();
-    //Unique_Reset();
+    Unique_Reset();
     //Custom_Deleter_C();
-    Custom_Deleter_CPP11();
+    //Custom_Deleter_CPP11();
 }
 
 
@@ -62,6 +62,8 @@ void UNIQUE_MEELOGIC::Unique_Get()
     std::unique_ptr<Objects> object = std::make_unique<Objects> ();
 
     Objects *ptr_to_object = object.get(); //Unique_ptr will stil delete the object at the end of scop (unlike .release() method)
+
+    /* We use .get() if we want to pass a pointer to a function that takes a raw pointer (like every C function). */
 }
 
 void UNIQUE_MEELOGIC::Unique_Release()

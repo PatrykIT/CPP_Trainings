@@ -15,11 +15,6 @@ namespace UNIQUE_MEELOGIC
     void Custom_Deleter_C();
     void Custom_Deleter_CPP11();
 
-    // Watch out for this: http://stackoverflow.com/questions/16894400/how-to-declare-stdunique-ptr-and-what-is-the-use-of-it
-    // Wise words: http://stackoverflow.com/questions/25370628/doesnt-get-break-the-idea-behind-stdunique-ptr
-    // Passing pointers: http://stackoverflow.com/questions/8114276/how-do-i-pass-a-unique-ptr-argument-to-a-constructor-or-a-function?rq=1
-
-    // ADD DELETER EXAMPLE!
     void Start();
 
     struct Objects
