@@ -13,11 +13,16 @@ void UNIQUE_MEELOGIC::Start()
     //Unique_Ptr_Contructors_Custom_Class_2();
     //Unique_Ptr_Contructors_Custom_Class_3();
     //Unique_Ptr_Contructors_Moving();
+
     //Unique_Get();
     //Unique_Release();
-    Unique_Reset();
+    //Unique_Reset();
+
     //Custom_Deleter_C();
     //Custom_Deleter_CPP11();
+
+    Unique_Ptr_Contructors_Bad_Usage();
+    //Unique_Ptr_Contructors_Good_Usage();
 }
 
 
@@ -31,8 +36,31 @@ void UNIQUE_MEELOGIC::Custom_Deleter_C()
         std::cout << "File open correctly." << std::endl;
         fclose(file_handle);
     }
+}
 
-    std::unique_ptr<FILE, int(*)(FILE*)> filee (fopen("Example.txt", "r"), fclose);
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Bad_Usage()
+{
+    /* What is wrong here? */
+
+    Objects *object = new Objects (5);
+    std::unique_ptr<Objects> first_ptr (object);
+    std::cout << first_ptr->x << "\n";
+
+    std::unique_ptr<Objects> second_ptr (object);
+    std::cout << second_ptr->x << "\n";
+}
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
+{
+    /* What is wrong here? */
+
+    Objects *object = new Objects (5);
+    std::unique_ptr<Objects> first_ptr (object);
+    std::cout << first_ptr->x << "\n";
+
+    std::unique_ptr<Objects> second_ptr (std::move(first_ptr));
+    std::cout << second_ptr->x << "\n";
 }
 
 void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
