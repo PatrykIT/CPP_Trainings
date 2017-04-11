@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <algorithm>
+#include <functional> //std::function
 
 class Human
 {
@@ -97,9 +98,18 @@ void LAMBDAS_MEELOGIC::Lambdas_Return_Value()
 {
     //TODO. Show what lambda returns (std::function ??)
     //http://stackoverflow.com/questions/21657627/what-is-the-type-signature-of-a-c11-1y-lambda-function
+
+    std::string name = "Jane";
+    int a = 5;
+
+    std::function<std::string(const double&)> saved_lambda = [&name, a](const double &number) -> std::string
+    { if(number > a) return "Ola"; else return "Mariusz"; };
+
+    std::string result = saved_lambda(4);
+    std::cout << "Name: " << result << "\n";
 }
 
-void LAMBDAS_MEELOGIC::Capturing_Variables()
+void LAMBDAS_MEELOGIC::Capturing_Variables_and_Auto_Parameters()
 {
    int a = 10;
    double b = 5.5;
@@ -114,6 +124,25 @@ void LAMBDAS_MEELOGIC::Capturing_Variables()
 }
 
 
+void LAMBDAS_MEELOGIC::Start()
+{
+    //Comparator_Pre_CPP11();
+    //Comparator_Since_CPP11();
+
+    //Return_Value();
+
+    //Calling_Lambda();
+    //Mutable();
+    //Capturing_Variables();
+
+    Lambdas_Return_Value();
+
+    //Lambda_In_Memory_CPP11();
+    //Lambda_In_Memory_CPP14();
+}
+
+
+
 struct Compiler_Generated_Lambda_CPP11
 {
 private:
@@ -125,33 +154,73 @@ public:
     /* Constructor */
     Compiler_Generated_Lambda_CPP11(std::string &_name, int _a) : name(_name), a(_a) { }
 
-    int operator() (int number)
+    /* If we do not write return type explicitly ("-> double"), then it is: */
+    // decltype(a + 10.0) operator ()(int number)
+    double operator() (int number)
     {
         if(name == "Jane")
-            return a + 10;
+            return a + 10.0 * number;
         else
-            return a - 10;
+            return a + 10.0;
     }
 };
 
 
 void LAMBDAS_MEELOGIC::Lambda_In_Memory_CPP11()
 {
-    int a = 5;
     std::string name = "Jane";
+    int a = 5;
 
-    auto saved_lambda = [&name, a](int number) { if(name == "Jane") return a + 10; else return a - 10; };
+    auto saved_lambda = [&name, a](int number) -> double { if(name == "Jane") return a + 10.0 * number;
+                                                           else return a + 10.0; };
+    double number = saved_lambda(2);
+    std::cout << "Number: " << number << "\n";
+
+    number = Compiler_Generated_Lambda_CPP11(name, a)(4);
+    /* Above is a shortcut for:  */
+    Compiler_Generated_Lambda_CPP11 object(name, a);
+    number = object(4);
+
+    std::cout << "Number: " << number << "\n";
 }
 
 
-void LAMBDAS_MEELOGIC::Start()
+
+
+
+struct Compiler_Generated_Lambda_CPP14
 {
-    //Comparator_Pre_CPP11();
-    //Comparator_Since_CPP11();
+private:
+    std::string &name;
+    int a;
 
-    //Return_Value();
+public:
 
-    //Calling_Lambda();
-    //Mutable();
-    Capturing_Variables();
+    /* Constructor */
+    Compiler_Generated_Lambda_CPP14(std::string &_name, int _a) : name(_name), a(_a) { }
+
+    template <typename Type>
+    double operator() (Type number)
+    {
+        if(name == "Jane")
+            return a + 10.0 * number;
+        else
+            return a + 10.0;
+    }
+};
+
+
+
+void LAMBDAS_MEELOGIC::Lambda_In_Memory_CPP14()
+{
+    std::string name = "Jane";
+    int a = 5;
+
+    auto saved_lambda = [&name, a](auto number) -> double { if(name == "Jane") return a + 10.0 * number;
+                                                           else return a + 10.0; };
+    double number = saved_lambda(2);
+    std::cout << "Number: " << number << "\n";
+
+    number = Compiler_Generated_Lambda_CPP14(name, a)(4);
+    std::cout << "Number: " << number << "\n";
 }

@@ -16,7 +16,7 @@ namespace LAMBDAS_MEELOGIC
 
     void Mutable();
 
-    void Capturing_Variables();
+    void Capturing_Variables_and_Auto_Parameters();
 
     void Lambda_In_Memory_CPP11();
     void Lambda_In_Memory_CPP14();
