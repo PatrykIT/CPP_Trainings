@@ -57,7 +57,7 @@ void LAMBDAS_MEELOGIC::Comparator_Since_CPP11()
     std::vector<Human> humans (10);
     Print_Ages(humans.begin(), humans.end());
 
-    std::sort(humans.begin(), humans.end(), []( const Human &one, const Human &two) { return one.age < two.age; });
+    std::sort(humans.begin(), humans.end(), [](const Human &one, const Human &two) { return one.age < two.age; });
 
     Print_Ages(humans.begin(), humans.end());
 }
@@ -69,6 +69,20 @@ void LAMBDAS_MEELOGIC::Return_Value()
 
     double multiplcation =  saved_lambda(5);
     std::cout << multiplcation << "\n";
+}
+
+void LAMBDAS_MEELOGIC::Capturing_Variables_and_Auto_Parameters()
+{
+   int a = 10;
+   double b = 5.5;
+   std::string name = "Jan";
+
+   /* Since C++14 parameters to lambda can be auto. */
+   auto captured_lambda = [&name, a, &b](auto number) { return number * a + b; };
+
+   auto number = captured_lambda(1);
+
+   std::cout << "Number: " << number << "\n";
 }
 
 void LAMBDAS_MEELOGIC::Calling_Lambda()
@@ -96,8 +110,8 @@ void LAMBDAS_MEELOGIC::Mutable()
 
 void LAMBDAS_MEELOGIC::Lambdas_Return_Value()
 {
-    //TODO. Show what lambda returns (std::function ??)
-    //http://stackoverflow.com/questions/21657627/what-is-the-type-signature-of-a-c11-1y-lambda-function
+    /* The types of C++11 lambdas are anonymous and instance-unique.
+     * Lambda is an unnamed temporary object of unique unnamed non-union non-aggregate class type, known as closure type. */
 
     std::string name = "Jane";
     int a = 5;
@@ -107,21 +121,25 @@ void LAMBDAS_MEELOGIC::Lambdas_Return_Value()
 
     std::string result = saved_lambda(4);
     std::cout << "Name: " << result << "\n";
+
+
+
+    /* This below is EXPERIMENTAL. Lambdas shouldn't be compared, because they don't provide 'operator ==' !
+     * This is just for illustration purposes. I actually don't know why this works correctly :) */
+    auto lambda_first = [](){};
+    auto lambda_second = [](){};
+
+    bool is_same = lambda_first == lambda_second;
+    std::cout << "Is same: " << is_same << "\n";
+
+    is_same = lambda_first == lambda_first;
+    std::cout << "Is same: " << is_same << "\n";
 }
 
-void LAMBDAS_MEELOGIC::Capturing_Variables_and_Auto_Parameters()
-{
-   int a = 10;
-   double b = 5.5;
-   std::string name = "Jan";
 
-   /* Since C++14 parameters to lambda can be auto. */
-   auto captured_lambda = [&name, a, &b](auto number) { return number * a + b; };
 
-   auto number = captured_lambda(1);
 
-   std::cout << "Number: " << number << "\n";
-}
+
 
 
 void LAMBDAS_MEELOGIC::Start()
