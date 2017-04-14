@@ -2,7 +2,8 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
-
+#include <vector>
+#include <cassert>
 
 const int* lookup()
 {
@@ -34,6 +35,40 @@ decltype(auto) return_lookup() //decltype(auto) feature is available since C++14
 }
 /* Show how it would return types with : decltype, auto, decltype(auto) */
 
+
+void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value()
+{
+    const int *third = return_lookup();
+    auto third_auto = return_lookup();
+    decltype(return_lookup()) third_dec = return_lookup();
+
+    std::cout << *third << " " << *third_dec << " " << *third_auto << "\n";
+
+//    std::cout << *third_dec << " " << *third_auto << "\n";
+}
+
+void MEELOGIC_DECLTYPE_VS_AUTO::Evaluation()
+{
+    std::vector<int> empty_numbers { 1, 5, 10 };
+
+    /* An important property of decltype is that its operand never gets evaluated.
+     * For example, you can use an out-of-bounds element access to a vector */
+    decltype(empty_numbers[5]) number_decltype = empty_numbers.at(0);
+    std::cout << "Is int : " << std::is_same<int, decltype(number_decltype)>::value << "\n";
+    std::cout << "Is int& : " << std::is_same<int&, decltype(number_decltype)>::value << "\n";
+
+    auto number_auto = empty_numbers.at(0);
+    std::cout << "Is int : " << std::is_same<int, decltype(number_auto)>::value << "\n";
+    std::cout << "Is int& : " << std::is_same<int&, decltype(number_auto)>::value << "\n";
+
+    //number_decltype = 50;
+    number_auto = 50;
+
+    for(auto nr : empty_numbers)
+        std::cout << nr << " ";
+
+    std::cout << "\n";
+}
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables()
 {
@@ -77,15 +112,11 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables()
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Start()
 {
-    Initialization_of_Local_Variables();
+    //Initialization_of_Local_Variables();
+    //Return_Value();
+    Evaluation();
 
-    const int *third = return_lookup();
-    auto third_auto = return_lookup();
-    decltype(return_lookup()) third_dec = return_lookup();
 
-    std::cout << *third << " " << *third_dec << " " << *third_auto << "\n";
-
-//    std::cout << *third_dec << " " << *third_auto << "\n";
 
 
 

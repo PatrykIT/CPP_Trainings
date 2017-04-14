@@ -5,6 +5,8 @@ namespace MEELOGIC_DECLTYPE_VS_AUTO
 {
     void Start();
     void Initialization_of_Local_Variables();
+    void Return_Value();
+    void Evaluation();
 
 
 }
