@@ -5,66 +5,67 @@
 #include <vector>
 #include <cassert>
 
-const int* lookup()
-{
-    const int *number = new int(10);
-    return number;
-}
-
-//int* return_lookup()
-//{
-//    return lookup();
-//}
-
-//auto return_lookup() //In C+11 that is not possible! Only starting from C++14
-//{
-//    return lookup();
-//}
-
-//auto return_lookup() -> decltype(lookup()) //This is how it needs to be done in C++11.
-//{
-//    return lookup();
-//}
 
 /* http://stackoverflow.com/questions/24109737/what-are-some-uses-of-decltypeauto */
 /* http://stackoverflow.com/questions/21369113/what-is-the-difference-between-auto-and-decltypeauto-when-returning-from-a-fun */
-/* This is the best, most generic way of returning a value. */
-decltype(auto) return_lookup() //decltype(auto) feature is available since C++14.
+
+
+int& return_number_by_reference(int &number)
 {
-    return lookup();
+    return number;
 }
-/* Show how it would return types with : decltype, auto, decltype(auto) */
+
+/* This straight-forward syntax is available since C++14.
+ * On C++11 it wouldn't compile with error: "Missing trailing return type" */
+//auto Return_Number_Wrapper(int &number)
+//{
+//    return return_number_by_reference(number);
+//}
+
+
+/* This is how it needs to be done in C++11. */
+//auto Return_Number_Wrapper(int &number) -> decltype(return_number_by_reference(number))
+//{
+//    return return_number_by_reference(number);
+//}
+
+/* decltype(auto) feature is available since C++14.
+ * This is the best, most generic way of returning a value that was passed from another function. */
+decltype(auto) Return_Number_Wrapper(int &number)
+{
+    return return_number_by_reference(number);
+}
 
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value()
 {
-    const int *third = return_lookup();
-    auto third_auto = return_lookup();
-    decltype(return_lookup()) third_dec = return_lookup();
+    int nr = 5;
+    decltype(Return_Number_Wrapper(nr)) number = Return_Number_Wrapper(nr);
 
-    std::cout << *third << " " << *third_dec << " " << *third_auto << "\n";
+    std::cout << "Is int& : " << std::is_same<int&, decltype(number)>::value << "\n";
+    std::cout << "Is int : " << std::is_same<int, decltype(number)>::value << "\n";
 
-//    std::cout << *third_dec << " " << *third_auto << "\n";
 }
+
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Evaluation()
 {
-    std::vector<int> empty_numbers { 1, 5, 10 };
+    std::vector<int> numbers { 1, 5, 10 };
 
     /* An important property of decltype is that its operand never gets evaluated.
      * For example, you can use an out-of-bounds element access to a vector */
-    decltype(empty_numbers[5]) number_decltype = empty_numbers.at(0);
+    decltype(numbers[5]) number_decltype = numbers.at(0);
     std::cout << "Is int : " << std::is_same<int, decltype(number_decltype)>::value << "\n";
     std::cout << "Is int& : " << std::is_same<int&, decltype(number_decltype)>::value << "\n";
 
-    auto number_auto = empty_numbers.at(0);
+    auto number_auto = numbers.at(0);
     std::cout << "Is int : " << std::is_same<int, decltype(number_auto)>::value << "\n";
     std::cout << "Is int& : " << std::is_same<int&, decltype(number_auto)>::value << "\n";
 
-    //number_decltype = 50;
-    number_auto = 50;
+    number_decltype = 90;
+    //number_auto = 90;
 
-    for(auto nr : empty_numbers)
+    for(auto nr : numbers)
         std::cout << nr << " ";
 
     std::cout << "\n";
@@ -113,8 +114,8 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables()
 void MEELOGIC_DECLTYPE_VS_AUTO::Start()
 {
     //Initialization_of_Local_Variables();
-    //Return_Value();
-    Evaluation();
+    Return_Value();
+    //Evaluation();
 
 
 
