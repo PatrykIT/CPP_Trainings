@@ -3,10 +3,6 @@
 #include <memory>
 #include <vector>
 
-/* Add example of taking 2 shared ptrs as arguments: new vs make_shared (exception safety) */
-
-/* Create 2 vectors: one with unique_ptrs, second with shared_ptrs. Show that only in shared ptrs we can have 2 vectors with
- * same objects. */
 
 void SHARED_MEELOGIC::Start()
 {
@@ -16,12 +12,12 @@ void SHARED_MEELOGIC::Start()
     //Share_Ownership_Raw_Pointers();
     //Share_Ownership_Shared_Pointers();
 
-    Vector_Unique_Pointers();
+    //Vector_Unique_Pointers();
     //Vector_Shared_Pointers();
+    Vector_Shared_Pointers_Wrong();
 }
 
 
-/* TODO: See what happens when you try to move shared ptr to another shared ptr. */
 
 void SHARED_MEELOGIC::Shared_Ptr_Contructors_Custom_Class_1()
 {
@@ -30,7 +26,6 @@ void SHARED_MEELOGIC::Shared_Ptr_Contructors_Custom_Class_1()
 
     long shared_pointers_in_use = object_ptr_one.use_count();
     std::cout << "Shared pointers in use: " << shared_pointers_in_use << "\n";
-
 }
 
 
@@ -45,6 +40,41 @@ void SHARED_MEELOGIC::Shared_Ptr_Unique()
 }
 
 
+
+void SHARED_MEELOGIC::Share_Ownership_Raw_Pointers()
+{
+    Objects *object = new Objects;
+
+    Objects *object_ptr_1 = object;
+
+    {
+        /* Lots of code... */
+    }
+
+    Objects *object_ptr_2 = object;
+
+    delete object; //OR: delete object_ptr_1; OR: delete object_ptr_2;
+
+    /* What if someone deletes Object too soon, and then other person tries to access object_ptr_1 or object_ptr_2?
+     * Crash. */
+}
+
+
+void SHARED_MEELOGIC::Share_Ownership_Shared_Pointers()
+{
+    Objects *object = new Objects;
+
+    std::shared_ptr<Objects> object_ptr_1 (object);
+
+    {
+        /* Lots of code... */
+    }
+
+    std::shared_ptr<Objects> object_ptr_2 (object_ptr_1);
+
+    /* We won't manually delete a object, so there is no chance of dereferencing a deleted pointer.
+     * Plus, of course there is no chance for memory leak.*/
+}
 
 
 void SHARED_MEELOGIC::Vector_Unique_Pointers()
@@ -97,59 +127,70 @@ void SHARED_MEELOGIC::Vector_Unique_Pointers()
      * We steal resources from first vector. So now first vector has nullptrs. */
 }
 
-void SHARED_MEELOGIC::Vector_Shared_Pointers()
+void SHARED_MEELOGIC::Vector_Shared_Pointers_Wrong()
 {
     Objects *object_1 = new Objects;
     Objects *object_2 = new Objects;
 
+    std::shared_ptr<Objects> object_1_ptr (object_1);
+    std::shared_ptr<Objects> object_2_ptr (object_2);
+
     std::vector<std::shared_ptr<Objects>> objects_vector_1;
     std::vector<std::shared_ptr<Objects>> objects_vector_2;
 
+    /* What is wrong here? */
     objects_vector_1.emplace_back(object_1);
     objects_vector_1.emplace_back(object_2);
 
     objects_vector_2.emplace_back(object_1);
     objects_vector_2.emplace_back(object_2);
+
+    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
+
+
+    /* Answer:
+     * object_1_ptr, objects_2_ptr, objects_vector_1, objects_vector_2 will all delete original Objects.
+     * So object_1 will be deleted 3 times, and object_2 likewise.*/
 }
 
-
-
-
-
-void SHARED_MEELOGIC::Share_Ownership_Raw_Pointers()
+void SHARED_MEELOGIC::Vector_Shared_Pointers_Correct()
 {
-    Objects *object = new Objects;
+    Objects *object_1 = new Objects;
+    Objects *object_2 = new Objects;
 
-    Objects *object_ptr_1 = object;
+    std::shared_ptr<Objects> object_1_ptr (object_1);
+    std::shared_ptr<Objects> object_2_ptr (object_2);
 
-    {
-        /* Lots of code... */
-    }
+    std::vector<std::shared_ptr<Objects>> objects_vector_1;
+    std::vector<std::shared_ptr<Objects>> objects_vector_2;
 
-    Objects *object_ptr_2 = object;
+    objects_vector_1.emplace_back(object_1_ptr);
+    objects_vector_1.emplace_back(object_2_ptr);
 
-    delete object; //OR: delete object_ptr_1; OR: delete object_ptr_2;
+    objects_vector_2.emplace_back(object_1_ptr);
+    objects_vector_2.emplace_back(object_2_ptr);
 
-    /* What if someone deletes Object too soon, and then other person tries to access object_ptr_1 or object_ptr_2?
-     * Crash. */
+    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
+
+
+    std::cout << "Reference count: " << object_1_ptr.use_count() << "\n";
+    /* Alternatively */
+    //std::cout << "Reference count: " << objects_vector_2.at(0).use_count() << "\n";
+
+    objects_vector_1.clear();
+    std::cout << "Reference count: " << objects_vector_2.at(0).use_count() << "\n";
+
+    objects_vector_2.clear();
+    std::cout << "Reference count: " << object_1_ptr.use_count() << "\n";
 }
 
 
-void SHARED_MEELOGIC::Share_Ownership_Shared_Pointers()
-{
-    Objects *object = new Objects;
 
-    std::shared_ptr<Objects> object_ptr_1 (object);
 
-    {
-        /* Lots of code... */
-    }
 
-    std::shared_ptr<Objects> object_ptr_2 (object_ptr_1);
 
-    /* We won't manually delete a object, so there is no chance of dereferencing a deleted pointer.
-     * Plus, of course there is no chance for memory leak.*/
-}
 
 
 SHARED_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }

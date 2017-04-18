@@ -12,7 +12,8 @@ namespace SHARED_MEELOGIC
     void Share_Ownership_Shared_Pointers();
 
     void Vector_Unique_Pointers();
-    void Vector_Shared_Pointers();
+    void Vector_Shared_Pointers_Wrong();
+    void Vector_Shared_Pointers_Correct();
 
     struct Objects
     {
