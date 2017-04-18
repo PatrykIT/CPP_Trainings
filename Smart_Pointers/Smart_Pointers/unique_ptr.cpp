@@ -2,10 +2,8 @@
 #include <memory>
 #include <iostream>
 #include <functional>
-
 #include <stdio.h>
 
-/* Add example of function taking 2 parameters, both unique ptrs. Show how new() can leak memory, and make_unique not leak. */
 
 void UNIQUE_MEELOGIC::Start()
 {
@@ -48,11 +46,33 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Custom_Class_2()
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Custom_Class_3()
 {
     std::unique_ptr<Objects> object_one = std::make_unique<Objects>();
-    std::unique_ptr<Objects> object_two = std::make_unique<Objects>(7);
+    /* make_unique allows us to use 'auto' keyword */
+    auto object_two = std::make_unique<Objects>(7);
 
     std::cout << object_one->x << "\n";
     std::cout << object_two->x << "\n";
 }
+
+
+
+
+void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
+{
+    std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
+    std::cout << first_ptr_to_object->x << "\n";
+
+    //std::unique_ptr<Objects> second_ptr_to_object  = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
+    std::unique_ptr<Objects> second_ptr_to_object (std::move(first_ptr_to_object));
+    std::cout << second_ptr_to_object->x << "\n";
+
+    //std::cout << first_ptr_to_object->x << "\n"; //Crashes!! Don't touch the pointer that was "moved from".
+    if(first_ptr_to_object == nullptr)
+        std::cout << "Unique_pointer is empty. Please do not dereference.\n";
+    else
+        std::cout << first_ptr_to_object->x << "\n";
+}
+
+
 
 
 void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
@@ -91,22 +111,6 @@ void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
     std::cout << "const &object" << std::endl;
 }
 
-void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
-{
-    std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
-    std::cout << first_ptr_to_object->x << "\n";
-
-    //std::unique_ptr<Objects> second_ptr_to_object  = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
-    std::unique_ptr<Objects> second_ptr_to_object (std::move(first_ptr_to_object));
-    std::cout << second_ptr_to_object->x << "\n";
-
-    //std::cout << first_ptr_to_object->x << "\n"; //Crashes!! Don't touch the pointer that was "moved from".
-    if(first_ptr_to_object == nullptr)
-        std::cout << "Unique_pointer is empty. Please do not dereference.\n";
-    else
-        std::cout << first_ptr_to_object->x << "\n";
-}
-
 
 void UNIQUE_MEELOGIC::Interfaces()
 {
@@ -135,8 +139,6 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Bad_Usage()
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
 {
-    /* What is wrong here? */
-
     Objects *object = new Objects (5);
     std::unique_ptr<Objects> first_ptr (object);
     std::cout << first_ptr->x << "\n";
