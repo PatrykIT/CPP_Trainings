@@ -1,14 +1,23 @@
 #include "shared_ptr.h"
 #include <iostream>
 #include <memory>
+#include <vector>
 
+/* Add example of taking 2 shared ptrs as arguments: new vs make_shared (exception safety) */
 
-/* Add example with raw pointers. int *object = new object; int *raw1 = object; int *raw2 = object; delete object;
- * And then show shared_ptr implementation*/
+/* Create 2 vectors: one with unique_ptrs, second with shared_ptrs. Show that only in shared ptrs we can have 2 vectors with
+ * same objects. */
+
 void SHARED_MEELOGIC::Start()
 {
     //Shared_Ptr_Contructors_Custom_Class_1();
-    Shared_Ptr_Unique();
+    //Shared_Ptr_Unique();
+
+    //Share_Ownership_Raw_Pointers();
+    //Share_Ownership_Shared_Pointers();
+
+    Vector_Unique_Pointers();
+    //Vector_Shared_Pointers();
 }
 
 
@@ -36,14 +45,122 @@ void SHARED_MEELOGIC::Shared_Ptr_Unique()
 }
 
 
+
+
+void SHARED_MEELOGIC::Vector_Unique_Pointers()
+{
+    Objects *object_1 = new Objects;
+    Objects *object_2 = new Objects;
+
+    std::unique_ptr<Objects> object_1_ptr (object_1);
+    std::unique_ptr<Objects> object_2_ptr (object_2);
+
+    std::vector<std::unique_ptr<Objects>> objects_vector_1;
+    std::vector<std::unique_ptr<Objects>> objects_vector_2;
+
+    objects_vector_1.emplace_back(std::move(object_1_ptr));
+    objects_vector_1.emplace_back(std::move(object_2_ptr));
+
+    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(object_1));
+//    objects_vector_2.emplace_back(std::move(object_2));
+
+    /* Answer:
+     * We make a duplicate of unique pointers, which makes a double delete.
+     * There will be 2 constructions and 4 destructions. */
+
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(object_1_ptr));
+//    objects_vector_2.emplace_back(std::move(object_2_ptr));
+//    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
+
+    /* Answer:
+     * object_1_ptr and object_2_ptr were already moved from before.
+     * So now they are nullptrs, and we are putting empty pointers to vector! */
+
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(0)));
+//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(1)));
+//    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+
+    /* Answer:
+     * We steal resources from first vector. So now first vector has nullptrs. */
+}
+
+void SHARED_MEELOGIC::Vector_Shared_Pointers()
+{
+    Objects *object_1 = new Objects;
+    Objects *object_2 = new Objects;
+
+    std::vector<std::shared_ptr<Objects>> objects_vector_1;
+    std::vector<std::shared_ptr<Objects>> objects_vector_2;
+
+    objects_vector_1.emplace_back(object_1);
+    objects_vector_1.emplace_back(object_2);
+
+    objects_vector_2.emplace_back(object_1);
+    objects_vector_2.emplace_back(object_2);
+}
+
+
+
+
+
+void SHARED_MEELOGIC::Share_Ownership_Raw_Pointers()
+{
+    Objects *object = new Objects;
+
+    Objects *object_ptr_1 = object;
+
+    {
+        /* Lots of code... */
+    }
+
+    Objects *object_ptr_2 = object;
+
+    delete object; //OR: delete object_ptr_1; OR: delete object_ptr_2;
+
+    /* What if someone deletes Object too soon, and then other person tries to access object_ptr_1 or object_ptr_2?
+     * Crash. */
+}
+
+
+void SHARED_MEELOGIC::Share_Ownership_Shared_Pointers()
+{
+    Objects *object = new Objects;
+
+    std::shared_ptr<Objects> object_ptr_1 (object);
+
+    {
+        /* Lots of code... */
+    }
+
+    std::shared_ptr<Objects> object_ptr_2 (object_ptr_1);
+
+    /* We won't manually delete a object, so there is no chance of dereferencing a deleted pointer.
+     * Plus, of course there is no chance for memory leak.*/
+}
+
+
 SHARED_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
-SHARED_MEELOGIC::Objects::Objects(int nr) { x = nr; std::cout << "Constructor with parameter called.\n"; }
+SHARED_MEELOGIC::Objects::Objects(int nr) { number = nr; std::cout << "Constructor with parameter called.\n"; }
 SHARED_MEELOGIC::Objects::~Objects() { std::cout << "Destructor called.\n"; }
 
 SHARED_MEELOGIC::Objects::Objects(const Objects &other) { std::cout << "Copy constructor called.\n"; std::ignore = other; }
 SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(const Objects &other)
 { std::cout << "Assignment constructor called.\n"; std::ignore = other; return *this;}
 
-SHARED_MEELOGIC::Objects::Objects(Objects &&other) { std::cout << "Move constructor called.\n"; std::ignore = other; }
+SHARED_MEELOGIC::Objects::Objects(Objects &&other)
+{ std::cout << "Move constructor called.\n"; std::ignore = other; }
 SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(Objects &&other)
 { std::cout << "Move assignment constructor called.\n"; std::ignore = other; return *this; }
