@@ -57,7 +57,7 @@ void LAMBDAS_MEELOGIC::Comparator_Since_CPP11()
     std::vector<Human> humans (10);
     Print_Ages(humans.begin(), humans.end());
 
-    std::sort(humans.begin(), humans.end(), [](const Human &one, const Human &two) { return one.age < two.age; });
+    std::sort(humans.begin(), humans.end(), [](const Human &one, const Human &two) -> bool { return one.age < two.age; });
 
     Print_Ages(humans.begin(), humans.end());
 }

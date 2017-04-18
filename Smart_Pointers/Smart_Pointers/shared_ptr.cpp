@@ -2,12 +2,17 @@
 #include <iostream>
 #include <memory>
 
+
+/* Add example with raw pointers. int *object = new object; int *raw1 = object; int *raw2 = object; delete object;
+ * And then show shared_ptr implementation*/
 void SHARED_MEELOGIC::Start()
 {
     //Shared_Ptr_Contructors_Custom_Class_1();
     Shared_Ptr_Unique();
 }
 
+
+/* TODO: See what happens when you try to move shared ptr to another shared ptr. */
 
 void SHARED_MEELOGIC::Shared_Ptr_Contructors_Custom_Class_1()
 {
@@ -25,9 +30,9 @@ void SHARED_MEELOGIC::Shared_Ptr_Unique()
     std::shared_ptr<Objects> object_ptr_one = std::make_shared<Objects>(5);
     std::shared_ptr<Objects> object_ptr_two (object_ptr_one);
 
-    std::cout << "Is unique? : " << std::boolalpha << object_ptr_one.unique() << "\n";
+    std::cout << "Is only one pointer pointing to object? : " << std::boolalpha << object_ptr_one.unique() << "\n";
     object_ptr_two.reset(); //Question to the class: Will this delete original object?
-    std::cout << "After reseting one shared_ptr, is this unique? : " << std::boolalpha << object_ptr_one.unique() << "\n";
+    std::cout << "After reseting one shared_ptr, is only one pointer pointing to object? : " << std::boolalpha << object_ptr_one.unique() << "\n";
 }
 
 

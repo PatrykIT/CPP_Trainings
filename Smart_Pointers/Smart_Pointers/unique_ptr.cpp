@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 
+/* Add example of function taking 2 parameters, both unique ptrs. Show how new() can leak memory, and make_unique not leak. */
 
 void UNIQUE_MEELOGIC::Start()
 {
@@ -12,7 +13,10 @@ void UNIQUE_MEELOGIC::Start()
     //Unique_Ptr_Contructors_Custom_Class_1();
     //Unique_Ptr_Contructors_Custom_Class_2();
     //Unique_Ptr_Contructors_Custom_Class_3();
+
     //Unique_Ptr_Contructors_Moving();
+
+    Interfaces();
 
     //Unique_Get();
     //Unique_Release();
@@ -21,7 +25,7 @@ void UNIQUE_MEELOGIC::Start()
     //Custom_Deleter_C();
     //Custom_Deleter_CPP11();
 
-    Unique_Ptr_Contructors_Bad_Usage();
+    //Unique_Ptr_Contructors_Bad_Usage();
     //Unique_Ptr_Contructors_Good_Usage();
 }
 
@@ -51,12 +55,45 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Custom_Class_3()
 }
 
 
+void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
+{
+    /* To take a unique pointer by value means that you are transferring ownership of the pointer to the function.
+     * You should expect that the pointer will be modified. */
+    std::cout << "std::unique_ptr object" << std::endl;
+}
+
+//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> &object_unique)
+//{
+//    /* No transfer of ownership.
+//     * Not a good interface, because now there are 2 pointers to the same object:
+//     * 1) pointer that was passed from the calling function
+//     * 2) pointer in this function
+//     * Without looking through function code, we do not know whether pointer is modified, or only accessed to read.
+//     * NOT COOL! */
+//    std::cout << "std::unique_ptr &object" << std::endl;
+//}
+
+//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> const &object_unique)
+//{
+//    /* By passing a const&, you are saying that the function can access the Object via the pointer, but can't modify it.
+//     * So there is stil no transfer of ownership, but now we know that the pointer will not be changed.
+//     * It's okay interface for example printing values etc. */
+
+//    std::cout << "std::unique_ptr const &object" << std::endl;
+//}
+
+void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
+{
+    /* The difference between taking const &object vs. std::unique_ptr const &object is that we require callers to pass
+     * original object, not a pointer. That means that they can pass it from unique_ptr, shared_ptr, raw pointer etc.
+     * So it is more universal, as callers are not required to use unique_ptr.
+     * REMEBER: This is good for const objects, that won't be modified. */
+    std::cout << "const &object" << std::endl;
+}
+
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
 {
-    Objects *object = new Objects(5);
-    std::cout << object->x << "\n";
-
-    std::unique_ptr<Objects> first_ptr_to_object (object);
+    std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
     std::cout << first_ptr_to_object->x << "\n";
 
     //std::unique_ptr<Objects> second_ptr_to_object  = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
@@ -70,6 +107,16 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
         std::cout << first_ptr_to_object->x << "\n";
 }
 
+
+void UNIQUE_MEELOGIC::Interfaces()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects>(5);
+
+    /* Real life example of where moving unique_ptr is necessary */
+    Take_Object(std::move(object));
+    //Take_Object(object);
+    Take_Object(*object);
+}
 
 
 
@@ -97,11 +144,6 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
     std::unique_ptr<Objects> second_ptr (std::move(first_ptr));
     std::cout << second_ptr->x << "\n";
 }
-
-
-
-
-
 
 
 

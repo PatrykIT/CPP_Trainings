@@ -6,7 +6,10 @@ namespace UNIQUE_MEELOGIC
     void Unique_Ptr_Contructors_Custom_Class_1();
     void Unique_Ptr_Contructors_Custom_Class_2();
     void Unique_Ptr_Contructors_Custom_Class_3();
+
     void Unique_Ptr_Contructors_Moving();
+
+    void Interfaces();
 
     void Unique_Ptr_Contructors_Bad_Usage();
     void Unique_Ptr_Contructors_Good_Usage();
