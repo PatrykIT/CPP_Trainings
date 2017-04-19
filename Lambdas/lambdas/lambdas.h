@@ -10,13 +10,15 @@ namespace LAMBDAS_MEELOGIC
 
     void Return_Value();
 
-    void Lambdas_Return_Value();
+    void Lambdas_in_STD_Function();
 
     void Calling_Lambda();
 
-    void Mutable();
+    void Mutable_Keyword();
 
-    void Capturing_Variables_and_Auto_Parameters();
+    void Capturing_Variables();
+    void Capturing_Variables_Reference();
+    void Auto_Parameters();
 
     void Lambda_In_Memory_CPP11();
     void Lambda_In_Memory_CPP14();

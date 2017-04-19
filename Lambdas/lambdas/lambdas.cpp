@@ -5,6 +5,112 @@
 #include <algorithm>
 #include <functional> //std::function
 
+
+void LAMBDAS_MEELOGIC::Return_Value()
+{
+    auto saved_lambda = [](int x) -> double { return x * 10.0; };
+
+    double multiplication =  saved_lambda(5);
+    std::cout << multiplication << "\n";
+}
+
+void LAMBDAS_MEELOGIC::Capturing_Variables()
+{
+    int a = 10;
+    double b = 5.5;
+
+    /* Captures 'a' and 'b' by value. */
+    auto captured_lambda = [a, b] () { return a + b; };
+
+    /* Alternative, captures everything by value. */
+    //auto captured_lambda = [=] () { return a + b; };
+
+    auto number = captured_lambda(); //Remember about () !! Especially when using auto.
+    std::cout << "Number: " << number << "\n";
+}
+
+void LAMBDAS_MEELOGIC::Capturing_Variables_Reference()
+{
+    std::string name = "Michal";
+
+    /* By catching by reference we skip unnecessary and expensive copying of a variable. */
+    auto captured_lambda = [&name] () {std::cout << name << std::endl; };
+
+    captured_lambda();
+}
+
+void LAMBDAS_MEELOGIC::Auto_Parameters()
+{
+   int a = 10;
+
+   /* Since C++14 parameters to lambda can be auto. */
+   auto captured_lambda = [a] (auto number) { return number * a; };
+
+   auto number = captured_lambda(2);
+
+   std::cout << "Number: " << number << "\n";
+}
+
+void LAMBDAS_MEELOGIC::Calling_Lambda()
+{
+    int number = 10;
+
+    [&number]() { number = 1; };
+
+    std::cout << "Number: " << number << "\n"; //Why is number still 10?
+}
+
+void LAMBDAS_MEELOGIC::Mutable_Keyword()
+{
+    int number = 10;
+
+    /* Compile error. Even though we captue by value (copy), it is by default a const. */
+    //auto saved_lambda = [=]() { if(number < 100) number = 1; return number * 5; };
+
+    /* Do keep in mind we are changing a COPY here, not original value. */
+    auto saved_lambda = [=]() mutable { if(number < 100) number = 1; return number * 5; };
+    number = saved_lambda();
+
+    std::cout << "Number: " << number << "\n";
+}
+
+void LAMBDAS_MEELOGIC::Lambdas_in_std_Function()
+{
+    /* The types of C++11 lambdas are anonymous and instance-unique.
+     * Lambda is an unnamed temporary object of unique unnamed non-union non-aggregate class type, known as closure type. */
+
+    std::string name = "Jane";
+    int a = 5;
+
+    std::function<std::string(const double&)> saved_lambda = [&name, a](const double &number) -> std::string
+    { if(number > a) return "Ola"; else return "Mariusz"; };
+
+    std::string result = saved_lambda(4);
+    std::cout << "Name: " << result << "\n";
+
+    /* Instances of std::function can store, copy, and invoke any Callable target -- functions, lambda expressions,
+     * bind expressions, or other function objects, as well as pointers to member functions and pointers to data members. */
+
+
+
+    /* This below is EXPERIMENTAL. Lambdas shouldn't be compared, because they don't provide 'operator ==' !
+     * This is just for illustration purposes. I actually don't know why this works correctly :) */
+    auto lambda_first = [](){};
+    auto lambda_second = [](){};
+
+    bool is_same = lambda_first == lambda_second;
+    std::cout << "Is same: " << is_same << "\n";
+
+    is_same = lambda_first == lambda_first;
+    std::cout << "Is same: " << is_same << "\n";
+}
+
+
+
+
+
+/* ------------------------------------ FUNCTOR EXAMPLE ------------------------------------ */
+
 class Human
 {
 public:
@@ -62,82 +168,7 @@ void LAMBDAS_MEELOGIC::Comparator_Since_CPP11()
     Print_Ages(humans.begin(), humans.end());
 }
 
-
-void LAMBDAS_MEELOGIC::Return_Value()
-{
-    auto saved_lambda = [](int x) -> double { return x * 10.0; };
-
-    double multiplcation =  saved_lambda(5);
-    std::cout << multiplcation << "\n";
-}
-
-void LAMBDAS_MEELOGIC::Capturing_Variables_and_Auto_Parameters()
-{
-   int a = 10;
-   double b = 5.5;
-   std::string name = "Jan";
-
-   /* Since C++14 parameters to lambda can be auto. */
-   auto captured_lambda = [&name, a, &b](auto number) { return number * a + b; };
-
-   auto number = captured_lambda(1);
-
-   std::cout << "Number: " << number << "\n";
-}
-
-void LAMBDAS_MEELOGIC::Calling_Lambda()
-{
-    int number = 10;
-
-    [&number]() { number = 1; };
-
-    std::cout << "Number: " << number << "\n"; //Why is number still 10?
-}
-
-void LAMBDAS_MEELOGIC::Mutable()
-{
-    int number = 10;
-
-    /* Compile error. Even though we captue by value (copy), it is by default a const. */
-    //auto saved_lambda = [=]() { if(number < 100) number = 1; return number * 5; };
-
-    /* Do keep in mind we are changing a COPY here, not original value. */
-    auto saved_lambda = [=]() mutable { if(number < 100) number = 1; return number * 5; };
-    number = saved_lambda();
-
-    std::cout << "Number: " << number << "\n";
-}
-
-void LAMBDAS_MEELOGIC::Lambdas_Return_Value()
-{
-    /* The types of C++11 lambdas are anonymous and instance-unique.
-     * Lambda is an unnamed temporary object of unique unnamed non-union non-aggregate class type, known as closure type. */
-
-    std::string name = "Jane";
-    int a = 5;
-
-    std::function<std::string(const double&)> saved_lambda = [&name, a](const double &number) -> std::string
-    { if(number > a) return "Ola"; else return "Mariusz"; };
-
-    std::string result = saved_lambda(4);
-    std::cout << "Name: " << result << "\n";
-
-
-
-    /* This below is EXPERIMENTAL. Lambdas shouldn't be compared, because they don't provide 'operator ==' !
-     * This is just for illustration purposes. I actually don't know why this works correctly :) */
-    auto lambda_first = [](){};
-    auto lambda_second = [](){};
-
-    bool is_same = lambda_first == lambda_second;
-    std::cout << "Is same: " << is_same << "\n";
-
-    is_same = lambda_first == lambda_first;
-    std::cout << "Is same: " << is_same << "\n";
-}
-
-
-
+/* ----------------------------------------------------------------------------------------- */
 
 
 
@@ -149,11 +180,15 @@ void LAMBDAS_MEELOGIC::Start()
 
     //Return_Value();
 
-    //Calling_Lambda();
-    //Mutable();
     //Capturing_Variables();
+    //Capturing_Variables_Reference();
+    //Auto_Parameters();
 
-    Lambdas_Return_Value();
+
+    Calling_Lambda();
+    Mutable_Keyword();
+
+    Lambdas_in_std_Function();
 
     //Lambda_In_Memory_CPP11();
     //Lambda_In_Memory_CPP14();
