@@ -189,6 +189,52 @@ void SHARED_MEELOGIC::Vector_Shared_Pointers_Correct()
 
 
 
+SHARED_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
+SHARED_MEELOGIC::Objects::Objects(int nr) { number = nr; std::cout << "Constructor with parameter called.\n"; }
+SHARED_MEELOGIC::Objects::~Objects() { std::cout << "Destructor called.\n"; }
+
+SHARED_MEELOGIC::Objects::Objects(const Objects &other) { std::cout << "Copy constructor called.\n"; std::ignore = other; }
+SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(const Objects &other)
+{ std::cout << "Assignment constructor called.\n"; std::ignore = other; return *this;}
+
+SHARED_MEELOGIC::Objects::Objects(Objects &&other)
+{ std::cout << "Move constructor called.\n"; std::ignore = other; }
+SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(Objects &&other)
+{ std::cout << "Move assignment constructor called.\n"; std::ignore = other; return *this; }
+
+
+
+
+
+struct B;
+
+struct A
+{
+    std::shared_ptr<B> object_B;
+    A() { std::cout << "A constructor. \n"; }
+    ~A() { std::cout << "A destructor. \n"; }
+
+    void Set_B(std::shared_ptr<B> b) { object_B = b; }
+};
+
+struct B
+{
+    std::shared_ptr<A> object_A;
+    B() { std::cout << "B constructor. \n"; }
+    ~B() { std::cout << "B destructor. \n"; }
+
+    void Set_A(std::shared_ptr<A> a) { object_A = a; }
+};
+
+
+void WEAK_MEELOGIC::Circular_Reference()
+{
+    std::shared_ptr<A> a = std::make_shared<A>();
+    std::shared_ptr<B> b = std::make_shared<B>();
+
+    a->Set_B(b);
+    b->Set_A(a);
+}
 
 
 
@@ -206,6 +252,11 @@ void WEAK_MEELOGIC::Dangling_Problem_Bad()
 
 void WEAK_MEELOGIC::Dangling_Problem_Good()
 {
+    /* Useful for working with objects that are not guaranteed to live for particular time.
+     * For example imagine a list of Task objects. If single Task has done it job, it deletes itself.
+     * We might have a Timer object which periodically logs which Tasks are still on-going.
+     * This Timer could observe Tasks by holding weak_ptr to them. */
+
     std::shared_ptr<int> number_ptr = std::make_shared<int> (10);
     std::weak_ptr<int> number_second_ptr = number_ptr;
 
@@ -224,7 +275,8 @@ void WEAK_MEELOGIC::Start()
 {
 
     //Dangling_Problem_Bad();
-    Dangling_Problem_Good();
+    //Dangling_Problem_Good();
+    Circular_Reference();
 
 }
 
@@ -233,15 +285,8 @@ void WEAK_MEELOGIC::Start()
 
 
 
-SHARED_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
-SHARED_MEELOGIC::Objects::Objects(int nr) { number = nr; std::cout << "Constructor with parameter called.\n"; }
-SHARED_MEELOGIC::Objects::~Objects() { std::cout << "Destructor called.\n"; }
 
-SHARED_MEELOGIC::Objects::Objects(const Objects &other) { std::cout << "Copy constructor called.\n"; std::ignore = other; }
-SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(const Objects &other)
-{ std::cout << "Assignment constructor called.\n"; std::ignore = other; return *this;}
 
-SHARED_MEELOGIC::Objects::Objects(Objects &&other)
-{ std::cout << "Move constructor called.\n"; std::ignore = other; }
-SHARED_MEELOGIC::Objects& SHARED_MEELOGIC::Objects::operator=(Objects &&other)
-{ std::cout << "Move assignment constructor called.\n"; std::ignore = other; return *this; }
+
+
+

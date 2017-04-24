@@ -37,6 +37,8 @@ namespace WEAK_MEELOGIC
     void Dangling_Problem_Bad();
     void Dangling_Problem_Good();
 
+    void Circular_Reference();
+
     void Start();
 }
 
