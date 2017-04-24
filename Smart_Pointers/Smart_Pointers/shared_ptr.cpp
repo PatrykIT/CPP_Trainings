@@ -192,6 +192,46 @@ void SHARED_MEELOGIC::Vector_Shared_Pointers_Correct()
 
 
 
+void WEAK_MEELOGIC::Dangling_Problem_Bad()
+{
+    int *number_ptr = new int (10);
+    int *number_second_ptr = number_ptr;
+    std::cout << *number_second_ptr << "\n";
+
+    delete number_ptr;
+
+    std::cout << *number_second_ptr << "\n"; //Crash or random value.
+}
+
+
+void WEAK_MEELOGIC::Dangling_Problem_Good()
+{
+    std::shared_ptr<int> number_ptr = std::make_shared<int> (10);
+    std::weak_ptr<int> number_second_ptr = number_ptr;
+
+    if(number_second_ptr.expired() == false)
+        std::cout << *number_second_ptr.lock() << "\n";
+
+    number_ptr.reset();
+
+    if(number_second_ptr.expired() == false)
+        std::cout << *number_second_ptr.lock() << "\n";
+    else
+        std::cout << "Object is already deleted. \n";
+}
+
+void WEAK_MEELOGIC::Start()
+{
+
+    //Dangling_Problem_Bad();
+    Dangling_Problem_Good();
+
+}
+
+
+
+
+
 
 SHARED_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
 SHARED_MEELOGIC::Objects::Objects(int nr) { number = nr; std::cout << "Constructor with parameter called.\n"; }

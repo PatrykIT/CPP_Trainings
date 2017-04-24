@@ -32,4 +32,12 @@ namespace SHARED_MEELOGIC
     };
 }
 
+namespace WEAK_MEELOGIC
+{
+    void Dangling_Problem_Bad();
+    void Dangling_Problem_Good();
+
+    void Start();
+}
+
 #endif // SHARED_PTR_H
