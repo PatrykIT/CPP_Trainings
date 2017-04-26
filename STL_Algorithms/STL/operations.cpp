@@ -30,7 +30,7 @@ namespace STL_MEELOGIC
         for(size_t i = 0; i < numbers.size(); ++i)
             std::cout << numbers[i] << " ";
 
-        std::cout << "\n";
+        std::cout << "\n---\n";
 
         for(auto iter = numbers.begin(); iter != numbers.end(); ++iter) //auto deduces std::vector<int>::iterator
             std::cout << *iter << " ";
@@ -40,26 +40,26 @@ namespace STL_MEELOGIC
 
     void Sort()
     {
-        std::vector<int> numbers = { 1, 5, 3, 0 };
+//        std::vector<int> numbers = { 1, 5, 3, 0 };
 
-        std::sort(numbers.begin(), numbers.end());
-        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+//        std::sort(numbers.begin(), numbers.end());
+//        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
 
         /* Three variants of the same function - changing sorting order. */
-        std::sort(numbers.begin(), numbers.end(), Sort_Comparator);
-        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+//        std::sort(numbers.begin(), numbers.end(), Sort_Comparator);
+//        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
-        std::sort(numbers.begin(), numbers.end(), [](const int &number_1, const int &number_2)
-        { return number_1 > number_2; });
-        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+//        std::sort(numbers.begin(), numbers.end(), [](const int &number_1, const int &number_2)
+//        { return number_1 > number_2; });
+//        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
-        std::sort(numbers.begin(), numbers.end(), std::greater<int>());
-        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
+//        std::sort(numbers.begin(), numbers.end(), std::greater<int>());
+//        for(const auto number : numbers) { std::cout << number << " "; } std::cout << "\n\n";
 
 
 
-        /* Sorting range of elements. */
+//        /* Sorting range of elements. */
         std::vector<int> numbers_2 = { 0, -5, 4, 3, 18, 10, 2 };
         std::stable_sort(numbers_2.begin() +1, numbers_2.end() - 1);
         for(const auto number : numbers_2) { std::cout << number << " "; } std::cout << "\n\n";
@@ -67,7 +67,7 @@ namespace STL_MEELOGIC
 
     void Find()
     {
-        std::vector<int> numbers = { 5, 10, 15, 20 };
+        std::vector<int> numbers = { 5, 10, 15, 20, 10 };
 
         std::vector<int>::iterator number = std::find(numbers.begin(), numbers.end(), 15);
 
@@ -87,7 +87,7 @@ namespace STL_MEELOGIC
         std::vector<int> numbers = { 5, 10, 15, 20 };
 
         /* Checks if unary predicate returns true for all elements in the range [first, last). */
-        if( std::all_of(numbers.begin(), numbers.end(), [](const int &number){ return number % 5 == 0; }) )
+        if( std::all_of(numbers.rbegin(), numbers.rend(), [](const int &number){ return number % 5 == 0; }) )
         {
             std::cout << "All numbers are dividable by 5. \n";
         }
@@ -117,6 +117,7 @@ namespace STL_MEELOGIC
         for(auto &number : numbers) //for_each lost some of its popularity due to new for-range loops.
         {
             number *= 10;
+            return;
         }
     }
 
@@ -167,12 +168,11 @@ namespace STL_MEELOGIC
         //AllOf_AnyOf_NoneOf();
         //For_Each();
         //Remove();
-        Iterators_Incrementing();
-
+        //Iterators_Incrementing();
 
         //Exercise_One();
         //std::cout << Exercise_Two() << "\n";
-        std::cout << Exercise_Two_Answer() << "\n";
+        //std::cout << Exercise_Two_Answer() << "\n";
     }
 
 
