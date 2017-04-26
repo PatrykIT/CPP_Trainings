@@ -94,9 +94,9 @@ class map;
         /* REMOVING */
         std::cout << "Removing elements.\n";
         numbers_id.erase(key);
-        //numbers_id.erase(numbers_id.begin());
-        //numbers_id.erase(numbers_id.begin(), numbers_id.end());
-        //numbers_id.clear(); //Removes all elements.
+        numbers_id.erase(numbers_id.begin());
+        numbers_id.erase(numbers_id.begin(), numbers_id.end());
+        numbers_id.clear(); //Removes all elements.
 
         for(const auto &node : numbers_id) //C++11
             std::cout << "Key: " << node.first << " Value: " << node.second << "\n";
@@ -107,13 +107,13 @@ class map;
         int key = 5, key_2 = 10;
         int value = 0, value_2 = 100;
 
-        std::map<int, int> numbers_id { {key, value}, {key_2, value_2} };
+//        std::map<int, int> numbers_id { {key_2, value_2}, {key, value} };
 
-        std::cout << "Map with default comparator: " << "\n";
-        for(const auto &entry : numbers_id)
-        {
-            std::cout << entry.first << " " << entry.second << "\n";
-        }
+//        std::cout << "Map with default comparator: " << "\n";
+//        for(const auto &entry : numbers_id)
+//        {
+//            std::cout << entry.first << " " << entry.second << "\n";
+//        }
 
 
         std::map<int, int, std::greater<int>> numbers_id_adjusted { {key, value}, {key_2, value_2} };
@@ -168,10 +168,10 @@ class map;
     {
         //Map_Interface();
         //Map_Adjustments();
-        //Multimap();
+        Multimap();
 
         //Exercise_One();
-        Exercise_One_Answer();
+        //Exercise_One_Answer();
 
         //Exercise_Two();
         //Exercise_Two_Answer();
@@ -183,13 +183,12 @@ class map;
 
     /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
+    /* Count occurrences of how many times given name appeared in a file. */
     void Exercise_One()
     {
-        /* Count occurrences of how many times given name appeared in a file. */
         const std::string path = "C:\\Users\\cyrklaf.pat\\Documents\\GitHub_SourceTree\\CPP_Trainings\\Examples\\Associative_Containers\\Map_exercises\\words_short.txt";
         std::ifstream file(path, std::ios_base::in);
 
-        std::map<std::string, int> words;
         std::string temporary;
 
         if(file.is_open())
@@ -197,16 +196,18 @@ class map;
             while(!file.eof())
             {
                 file >> temporary;
-                /* Put the name and counter into the map. */
+                /* Put the name into the container and increment counter of occurences. */
             }
         }
         else
+        {
             std::cerr << "Couldn't open file.";
+            return;
+        }
 
-        /* Now, when you have counted the occurences, please create a multimap where occurences are a key and names are values.
+        /* Now, when you have counted the occurences, please create a container where occurences are a key and names are values.
          * Keys should be sorted from bigger number to smaller numbers. So the most common occurence is at the top, and the least common occurence at the bottom.
          * Print all elements. */
-
     }
 
     void Exercise_One_Answer()

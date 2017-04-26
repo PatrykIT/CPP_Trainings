@@ -286,7 +286,7 @@ namespace PERFORMANCE_MEELOGIC
         std::cout << "\n\n";
         /* Now, when you have counted the occurences, please create a container where occurences are a key. Sorted in top - bottom order */
 
-        std::multimap<int, const std::string*> occurences_correct;
+        std::multimap<int, const std::string*, std::greater<int>> occurences_correct;
 
         for(const auto &node : words)
         {
@@ -719,36 +719,36 @@ namespace PERFORMANCE_MEELOGIC
     {
         //Exercise_One();
         //Exercise_One_Answer_Better();
-        //Exercise_One_Answer_Better_CPP11();
+        Exercise_One_Answer_Better_CPP11();
         //Exercise_One_Answer_Best();
 
 
-        std::cout << "\t\t --- Biggest element ---\n";
-        std::cout << "Biggest element [Priority Queue]: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n\n";
-        std::cout << "Biggest element [Vector] : " << Exercise_Two_Biggest_Answer_Vector() << "\n\n";
-        std::cout << "Biggest element [Set]: " << Exercise_Two_Biggest_Answer_Set() << "\n\n";
+//        std::cout << "\t\t --- Biggest element ---\n";
+//        std::cout << "Biggest element [Priority Queue]: " << Exercise_Two_Biggest_Answer_PriorityQueue() << "\n\n";
+//        std::cout << "Biggest element [Vector] : " << Exercise_Two_Biggest_Answer_Vector() << "\n\n";
+//        std::cout << "Biggest element [Set]: " << Exercise_Two_Biggest_Answer_Set() << "\n\n";
 
 
 
-        std::cout << "\t\t --- Biggest element with dynamic input---\n";
-        std::cout << "Biggest element with dynamic addition [Priority Queue]: " << Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue() << "\n\n";
-        std::cout << "Biggest element with dynamic addition: [Vector]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector() << "\n\n";
-        std::cout << "Biggest element with dynamic addition: [Set]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Set() << "\n\n";
+//        std::cout << "\t\t --- Biggest element with dynamic input---\n";
+//        std::cout << "Biggest element with dynamic addition [Priority Queue]: " << Exercise_Two_Biggest_Alternative_Dynamic_Input_PriorityQueue() << "\n\n";
+//        std::cout << "Biggest element with dynamic addition: [Vector]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Vector() << "\n\n";
+//        std::cout << "Biggest element with dynamic addition: [Set]" << Exercise_Two_Biggest_Alternative_Dynamic_Input_Set() << "\n\n";
 
 
-        std::cout << "\t\t --- Biggest and smallest element ---\n";
-        std::pair<int, int> answer;
-        answer = Exercise_Two_Biggest_Smallest_PriorityQueues();
-        std::cout << "Pair [2 priority queues]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
+//        std::cout << "\t\t --- Biggest and smallest element ---\n";
+//        std::pair<int, int> answer;
+//        answer = Exercise_Two_Biggest_Smallest_PriorityQueues();
+//        std::cout << "Pair [2 priority queues]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
-        answer = Exercise_Two_Biggest_Smallest_Vector();
-        std::cout << "Pair [Vector]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
+//        answer = Exercise_Two_Biggest_Smallest_Vector();
+//        std::cout << "Pair [Vector]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
-        answer = Exercise_Two_Biggest_Smallest_Set();
-        std::cout << "Pair [Set]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
+//        answer = Exercise_Two_Biggest_Smallest_Set();
+//        std::cout << "Pair [Set]\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
-        answer = Exercise_Two_Biggest_Smallest_MinMax();
-        std::cout << "Pair[MinMax_Element()]:\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
+//        answer = Exercise_Two_Biggest_Smallest_MinMax();
+//        std::cout << "Pair[MinMax_Element()]:\nBiggest element: "<< answer.first << "\nSmallest: " << answer.second << "\n\n";
 
     }
 }
