@@ -10,7 +10,7 @@ namespace LAMBDAS_MEELOGIC
 
     void Return_Value();
 
-    void Lambdas_in_STD_Function();
+    void Lambdas_in_std_Function();
 
     void Calling_Lambda();
 

@@ -105,6 +105,8 @@ void LAMBDAS_MEELOGIC::Lambdas_in_std_Function()
     std::cout << "Is same: " << is_same << "\n";
 }
 
+/* TO DO: Add example that shows how we can keep a variable (hold a state) in lambda throughout passing lambda on different object.
+ * Like counter that counts how many times lambda was called. */
 
 
 

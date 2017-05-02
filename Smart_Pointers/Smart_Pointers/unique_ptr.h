@@ -3,9 +3,12 @@
 
 namespace UNIQUE_MEELOGIC
 {
-    void Unique_Ptr_Contructors_Custom_Class_1();
-    void Unique_Ptr_Contructors_Custom_Class_2();
-    void Unique_Ptr_Contructors_Custom_Class_3();
+    void CPP_03_Pointers();
+    void CPP_03_Exception_Safety();
+    void Unique_Ptr_Contructors_1();
+
+    void Unique_Ptr_Contructors_2();
+    void Unique_Ptr_Contructors_3();
 
     void Unique_Ptr_Contructors_Moving();
 
@@ -19,6 +22,7 @@ namespace UNIQUE_MEELOGIC
     void Unique_Reset();
 
     void Custom_Deleter_C();
+    void Custom_Deleter_CPP11_Wrong();
     void Custom_Deleter_CPP11();
 
     void Start();
