@@ -4,6 +4,7 @@
 #include <chrono>
 #include <algorithm>
 #include <functional> //std::function
+#include <string>
 
 
 void LAMBDAS_MEELOGIC::Return_Value()
@@ -90,19 +91,6 @@ void LAMBDAS_MEELOGIC::Lambdas_in_std_Function()
 
     /* Instances of std::function can store, copy, and invoke any Callable target -- functions, lambda expressions,
      * bind expressions, or other function objects, as well as pointers to member functions and pointers to data members. */
-
-
-
-    /* This below is EXPERIMENTAL. Lambdas shouldn't be compared, because they don't provide 'operator ==' !
-     * This is just for illustration purposes. I actually don't know why this works correctly :) */
-    auto lambda_first = [](){};
-    auto lambda_second = [](){};
-
-    bool is_same = lambda_first == lambda_second;
-    std::cout << "Is same: " << is_same << "\n";
-
-    is_same = lambda_first == lambda_first;
-    std::cout << "Is same: " << is_same << "\n";
 }
 
 /* TO DO: Add example that shows how we can keep a variable (hold a state) in lambda throughout passing lambda on different object.
@@ -187,10 +175,10 @@ void LAMBDAS_MEELOGIC::Start()
     //Auto_Parameters();
 
 
-    Calling_Lambda();
-    Mutable_Keyword();
+    //Calling_Lambda();
+    //Mutable_Keyword();
 
-    Lambdas_in_std_Function();
+    //Lambdas_in_std_Function();
 
     //Lambda_In_Memory_CPP11();
     //Lambda_In_Memory_CPP14();
