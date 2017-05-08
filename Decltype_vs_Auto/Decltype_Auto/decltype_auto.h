@@ -10,6 +10,7 @@ namespace MEELOGIC_DECLTYPE_VS_AUTO
 
     void Evaluation();
     void Return_Value();
+    void Return_Value_String();
 
     void Exercises();
 }

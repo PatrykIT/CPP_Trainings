@@ -120,9 +120,45 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value()
 
 
 
+const std::string& Modify_String(std::string word)
+{
+    std::string final_string = "Meelogic" + word.at(0) + word.at(1);
+    return final_string;
+}
+
+
+decltype(auto) Modify_String_Wrapper(std::string word)
+{
+    if(word.length() > 1)
+        return Modify_String(word);
+    else
+        throw std::length_error("String must have at least 2 characters.");
+}
+
+//auto Modify_String_Wrapper(std::string word)
+//{
+//    if(word.length() > 1)
+//        return Modify_String(word);
+//    else
+//        throw std::length_error("String must have at least 2 characters.");
+//}
+
+//auto Modify_String_Wrapper(std::string word) -> decltype(Modify_String(word))
+//{
+//    if(word.length() > 1)
+//        return Modify_String(word);
+//    else
+//        throw std::length_error("String must have at least 2 characters.");
+//}
 
 
 
+void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value_String()
+{
+    std::string name = "AG";
+    //std::string output = Modify_String_Wrapper(name);
+    std::string output = Modify_String(name);
+}
 
 
 
