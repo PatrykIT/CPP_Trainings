@@ -3,6 +3,7 @@
 #include <iostream>
 #include <functional>
 #include <stdio.h>
+#include <vector>
 
 //TO DO: Show how unique ptr manages deletion when exception is thrown.
 //Show how in C++03 we needed to have try catch {} block to delete manually objects.
@@ -90,27 +91,26 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_3()
     /* make_unique allows us to use 'auto' keyword */
     auto object_two = std::make_unique<Objects>(7);
 
-    std::cout << object_one->x << "\n";
-    std::cout << object_two->x << "\n";
+    std::cout << object_one->number << "\n";
+    std::cout << object_two->number << "\n";
 }
 
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
 {
     std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
-    std::cout << first_ptr_to_object->x << "\n";
+    std::cout << first_ptr_to_object->number << "\n";
 
-    //std::unique_ptr<Objects> second_ptr_to_object  = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
+    //std::unique_ptr<Objects> second_ptr_to_object = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
     std::unique_ptr<Objects> second_ptr_to_object (std::move(first_ptr_to_object));
-    std::cout << second_ptr_to_object->x << "\n";
+    std::cout << second_ptr_to_object->number << "\n";
     /* What is the use-case for moving unique_ptr? */
 
     //std::cout << first_ptr_to_object->x << "\n"; //Crashes!! Don't touch the pointer that was "moved from".
     if(first_ptr_to_object == nullptr)
         std::cout << "Unique_pointer is empty. Please do not dereference.\n";
     else
-        std::cout << first_ptr_to_object->x << "\n";
-
+        std::cout << first_ptr_to_object->number << "\n";
 }
 
 
@@ -162,20 +162,20 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Bad_Usage()
 
     Objects *object = new Objects (5);
     std::unique_ptr<Objects> first_ptr (object);
-    std::cout << first_ptr->x << "\n";
+    std::cout << first_ptr->number << "\n";
 
     std::unique_ptr<Objects> second_ptr (object);
-    std::cout << second_ptr->x << "\n";
+    std::cout << second_ptr->number << "\n";
 }
 
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Good_Usage()
 {
     Objects *object = new Objects (5);
     std::unique_ptr<Objects> first_ptr (object);
-    std::cout << first_ptr->x << "\n";
+    std::cout << first_ptr->number << "\n";
 
     std::unique_ptr<Objects> second_ptr (std::move(first_ptr));
-    std::cout << second_ptr->x << "\n";
+    std::cout << second_ptr->number << "\n";
 }
 
 
@@ -232,26 +232,78 @@ void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
                          fclose); // <-- Tells unique_ptr which function to call when deleting the pointer.
 
     /* Instead of decltype, we can write manually deleter type */
-    std::unique_ptr<FILE, int(*)(FILE*)> file_handle_2 (fopen(path_to_file.c_str(), "r"), fclose);
+    std::unique_ptr<FILE, int (*)(FILE*)> file_handle_2 (fopen(path_to_file.c_str(), "r"), fclose);
 
     if(file_handle != nullptr)
-    {
         std::cout << "File open correctly." << std::endl;
-    }
     else
-    {
         std::cout << "Sorry." << std::endl;
-    }
+}
+
+
+
+void UNIQUE_MEELOGIC::Vector_Unique_Pointers()
+{
+    Objects *object_1 = new Objects;
+    Objects *object_2 = new Objects;
+
+    std::unique_ptr<Objects> object_1_ptr (object_1);
+    std::unique_ptr<Objects> object_2_ptr (object_2);
+
+    std::vector<std::unique_ptr<Objects>> objects_vector_1;
+    std::vector<std::unique_ptr<Objects>> objects_vector_2;
+
+    objects_vector_1.emplace_back(std::move(object_1_ptr));
+    objects_vector_1.emplace_back(std::move(object_2_ptr));
+
+    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(object_1));
+//    objects_vector_2.emplace_back(std::move(object_2));
+
+    /* Answer:
+     * We make a duplicate of unique pointers, which makes a double delete.
+     * There will be 2 constructions and 4 destructions. */
+
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(object_1_ptr));
+//    objects_vector_2.emplace_back(std::move(object_2_ptr));
+//    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
+
+    /* Answer:
+     * object_1_ptr and object_2_ptr were already moved from before.
+     * So now they are nullptrs, and we are putting empty pointers to vector! */
+
+
+
+
+    /* What is wrong here? */
+//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(0)));
+//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(1)));
+//    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
+
+    /* Answer:
+     * We steal resources from first vector. So now first vector has nullptrs. */
 }
 
 
 
 
+
 UNIQUE_MEELOGIC::Objects::Objects() { std::cout << "Constructor called.\n"; }
-UNIQUE_MEELOGIC::Objects::Objects(int nr) { x = nr; std::cout << "Constructor with parameter called.\n"; }
+UNIQUE_MEELOGIC::Objects::Objects(int nr) { number = nr; std::cout << "Constructor with parameter called.\n"; }
+
 UNIQUE_MEELOGIC::Objects::~Objects() { std::cout << "Destructor called.\n"; }
+
 UNIQUE_MEELOGIC::Objects::Objects(const Objects &other) { std::cout << "Copy constructor called.\n"; std::ignore = other; }
 UNIQUE_MEELOGIC::Objects& UNIQUE_MEELOGIC::Objects::operator=(const Objects &other) { std::cout << "Assignment constructor called.\n"; std::ignore = other; return *this;}
+
 UNIQUE_MEELOGIC::Objects::Objects(Objects &&other) { std::cout << "Move constructor called.\n"; std::ignore = other; }
 UNIQUE_MEELOGIC::Objects& UNIQUE_MEELOGIC::Objects::operator=(Objects &&other) { std::cout << "Move assignment constructor called.\n"; std::ignore = other; return *this; }
 

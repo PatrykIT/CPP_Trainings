@@ -12,7 +12,6 @@ void SHARED_MEELOGIC::Start()
     //Share_Ownership_Raw_Pointers();
     //Share_Ownership_Shared_Pointers();
 
-    //Vector_Unique_Pointers();
     //Vector_Shared_Pointers();
     Vector_Shared_Pointers_Wrong();
 }
@@ -39,93 +38,6 @@ void SHARED_MEELOGIC::Shared_Ptr_Unique()
     std::cout << "After reseting one shared_ptr, is only one pointer pointing to object? : " << std::boolalpha << object_ptr_one.unique() << "\n";
 }
 
-
-
-void SHARED_MEELOGIC::Share_Ownership_Raw_Pointers()
-{
-    Objects *object = new Objects;
-
-    Objects *object_ptr_1 = object;
-
-    {
-        /* Lots of code... */
-    }
-
-    Objects *object_ptr_2 = object;
-
-    delete object; //OR: delete object_ptr_1; OR: delete object_ptr_2;
-
-    /* What if someone deletes Object too soon, and then other person tries to access object_ptr_1 or object_ptr_2?
-     * Crash. */
-}
-
-
-void SHARED_MEELOGIC::Share_Ownership_Shared_Pointers()
-{
-    Objects *object = new Objects;
-
-    std::shared_ptr<Objects> object_ptr_1 (object);
-
-    {
-        /* Lots of code... */
-    }
-
-    std::shared_ptr<Objects> object_ptr_2 (object_ptr_1);
-
-    /* We won't manually delete a object, so there is no chance of dereferencing a deleted pointer.
-     * Plus, of course there is no chance for memory leak.*/
-}
-
-
-void SHARED_MEELOGIC::Vector_Unique_Pointers()
-{
-    Objects *object_1 = new Objects;
-    Objects *object_2 = new Objects;
-
-    std::unique_ptr<Objects> object_1_ptr (object_1);
-    std::unique_ptr<Objects> object_2_ptr (object_2);
-
-    std::vector<std::unique_ptr<Objects>> objects_vector_1;
-    std::vector<std::unique_ptr<Objects>> objects_vector_2;
-
-    objects_vector_1.emplace_back(std::move(object_1_ptr));
-    objects_vector_1.emplace_back(std::move(object_2_ptr));
-
-    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1));
-//    objects_vector_2.emplace_back(std::move(object_2));
-
-    /* Answer:
-     * We make a duplicate of unique pointers, which makes a double delete.
-     * There will be 2 constructions and 4 destructions. */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1_ptr));
-//    objects_vector_2.emplace_back(std::move(object_2_ptr));
-//    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
-
-    /* Answer:
-     * object_1_ptr and object_2_ptr were already moved from before.
-     * So now they are nullptrs, and we are putting empty pointers to vector! */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(0)));
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(1)));
-//    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-    /* Answer:
-     * We steal resources from first vector. So now first vector has nullptrs. */
-}
 
 void SHARED_MEELOGIC::Vector_Shared_Pointers_Wrong()
 {
@@ -277,7 +189,6 @@ void WEAK_MEELOGIC::Start()
     //Dangling_Problem_Bad();
     //Dangling_Problem_Good();
     Circular_Reference();
-
 }
 
 

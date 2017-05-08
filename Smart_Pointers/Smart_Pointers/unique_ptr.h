@@ -21,6 +21,8 @@ namespace UNIQUE_MEELOGIC
     void Unique_Release();
     void Unique_Reset();
 
+    void Vector_Unique_Pointers();
+
     void Custom_Deleter_C();
     void Custom_Deleter_CPP11_Wrong();
     void Custom_Deleter_CPP11();
@@ -40,7 +42,7 @@ namespace UNIQUE_MEELOGIC
         Objects& operator=(Objects &&other);
 
 
-        int x = 10;
+        int number = 10;
     };
 }
 

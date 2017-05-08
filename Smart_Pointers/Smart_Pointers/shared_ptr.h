@@ -8,10 +8,6 @@ namespace SHARED_MEELOGIC
     void Shared_Ptr_Contructors_Custom_Class_1();
     void Shared_Ptr_Unique();
 
-    void Share_Ownership_Raw_Pointers();
-    void Share_Ownership_Shared_Pointers();
-
-    void Vector_Unique_Pointers();
     void Vector_Shared_Pointers_Wrong();
     void Vector_Shared_Pointers_Correct();
 
