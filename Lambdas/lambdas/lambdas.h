@@ -8,7 +8,8 @@ namespace LAMBDAS_MEELOGIC
     void Comparator_Pre_CPP11();
     void Comparator_Since_CPP11();
 
-    void Return_Value();
+    void Return_Value_CPP03();
+    void Return_Value_CPP11();
 
     void Lambdas_in_std_Function();
 
@@ -20,6 +21,7 @@ namespace LAMBDAS_MEELOGIC
     void Capturing_Variables_Reference();
     void Auto_Parameters();
 
+    void Normal_Lambda();
     void Lambda_In_Memory_CPP11();
     void Lambda_In_Memory_CPP14();
 }

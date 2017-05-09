@@ -7,7 +7,20 @@
 #include <string>
 
 
-void LAMBDAS_MEELOGIC::Return_Value()
+
+double Multiply(int x)
+{
+    return x * 10.0;
+}
+
+void LAMBDAS_MEELOGIC::Return_Value_CPP03()
+{
+    double multiplication = Multiply(5);
+    std::cout << multiplication << "\n";
+}
+
+
+void LAMBDAS_MEELOGIC::Return_Value_CPP11()
 {
     auto saved_lambda = [](int x) -> double { return x * 10.0; };
 
@@ -168,7 +181,7 @@ void LAMBDAS_MEELOGIC::Start()
     //Comparator_Pre_CPP11();
     //Comparator_Since_CPP11();
 
-    //Return_Value();
+    Return_Value_CPP11();
 
     //Capturing_Variables();
     //Capturing_Variables_Reference();
@@ -185,12 +198,23 @@ void LAMBDAS_MEELOGIC::Start()
 }
 
 
+void LAMBDAS_MEELOGIC::Normal_Lambda()
+{
+    std::string name = "Jane";
+    int a = 5;
+
+    auto saved_lambda = [&name, a](int number) -> double { if(name == "Jane") return a + 10.0 * number;
+                                                           else return a + 10.0; };
+    double number = saved_lambda(2);
+    std::cout << "Number: " << number << "\n";
+}
+
 
 struct Compiler_Generated_Lambda_CPP11
 {
 private:
-    std::string &name;
-    int a;
+    const std::string &name;
+    const int a;
 
 public:
 
@@ -209,18 +233,15 @@ public:
 };
 
 
+
 void LAMBDAS_MEELOGIC::Lambda_In_Memory_CPP11()
 {
     std::string name = "Jane";
     int a = 5;
 
-    auto saved_lambda = [&name, a](int number) -> double { if(name == "Jane") return a + 10.0 * number;
-                                                           else return a + 10.0; };
-    double number = saved_lambda(2);
-    std::cout << "Number: " << number << "\n";
-
-    number = Compiler_Generated_Lambda_CPP11(name, a)(4);
+    double number = Compiler_Generated_Lambda_CPP11(name, a)(4);
     /* Above is a shortcut for:  */
+
     Compiler_Generated_Lambda_CPP11 object(name, a);
     number = object(4);
 
@@ -229,13 +250,11 @@ void LAMBDAS_MEELOGIC::Lambda_In_Memory_CPP11()
 
 
 
-
-
 struct Compiler_Generated_Lambda_CPP14
 {
 private:
-    std::string &name;
-    int a;
+    const std::string &name;
+    const int a;
 
 public:
 
