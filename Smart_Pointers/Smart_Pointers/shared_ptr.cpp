@@ -167,6 +167,9 @@ void WEAK_MEELOGIC::Dangling_Problem_Bad()
 
     delete number_ptr;
 
+    /* Lots of code here ... */
+
+    /* Someone forgot that object was deleted. */
     std::cout << *number_second_ptr << "\n"; //Crash or random value.
 }
 
