@@ -177,6 +177,7 @@ void WEAK_MEELOGIC::Dangling_Problem_Bad()
 void WEAK_MEELOGIC::Dangling_Problem_Good()
 {
     /* Useful for working with objects that are not guaranteed to live for particular time.
+     *
      * For example imagine a list of Task objects. If single Task has done it job, it deletes itself.
      * We might have a Timer object which periodically logs which Tasks are still on-going.
      * This Timer could observe Tasks by holding weak_ptr to them. */
