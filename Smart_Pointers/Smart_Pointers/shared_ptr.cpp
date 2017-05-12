@@ -6,14 +6,15 @@
 
 void SHARED_MEELOGIC::Start()
 {
-    //Shared_Ptr_Contructors_Custom_Class_1();
+    Shared_Ptr_Contructors_Custom_Class_1();
+    //Shared_Ptr_Contructors_Custom_Class_1_Wrong();
     //Shared_Ptr_Unique();
 
     //Share_Ownership_Raw_Pointers();
     //Share_Ownership_Shared_Pointers();
 
     //Vector_Shared_Pointers();
-    Vector_Shared_Pointers_Wrong();
+    //Vector_Shared_Pointers_Wrong();
 }
 
 
@@ -27,12 +28,12 @@ void SHARED_MEELOGIC::Shared_Ptr_Contructors_Custom_Class_1()
     std::cout << "Shared pointers in use: " << shared_pointers_in_use << "\n";
 }
 
-void Finish_Tomorrow()
+void SHARED_MEELOGIC::Shared_Ptr_Contructors_Custom_Class_1_Wrong()
 {
     /* Remember not to initialize multiple shared pointers like this!! */
     Objects *object = new Objects(5);
-    std::shared_ptr<Objects> first_ptr = object;
-    std::shared_ptr<Objects> second_ptr = object;
+    std::shared_ptr<Objects> first_ptr (object);
+    std::shared_ptr<Objects> second_ptr (object);
 
 }
 
