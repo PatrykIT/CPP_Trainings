@@ -12,7 +12,6 @@ namespace UNIQUE_MEELOGIC
 
     void Unique_Ptr_Contructors_Moving();
 
-    void Interfaces();
 
     void Unique_Ptr_Contructors_Bad_Usage();
     void Unique_Ptr_Contructors_Good_Usage();
@@ -21,7 +20,7 @@ namespace UNIQUE_MEELOGIC
     void Unique_Release();
     void Unique_Reset();
 
-    void Vector_Unique_Pointers();
+    void Interfaces();
 
     void Custom_Deleter_C();
     void Custom_Deleter_CPP11_Wrong();

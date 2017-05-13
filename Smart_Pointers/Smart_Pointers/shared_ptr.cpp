@@ -52,60 +52,38 @@ void SHARED_MEELOGIC::Shared_Ptr_Unique()
 void SHARED_MEELOGIC::Vector_Shared_Pointers_Wrong()
 {
     Objects *object_1 = new Objects;
-    Objects *object_2 = new Objects;
 
     std::shared_ptr<Objects> object_1_ptr (object_1);
-    std::shared_ptr<Objects> object_2_ptr (object_2);
-
     std::vector<std::shared_ptr<Objects>> objects_vector_1;
-    std::vector<std::shared_ptr<Objects>> objects_vector_2;
 
     /* What is wrong here? */
     objects_vector_1.emplace_back(object_1);
-    objects_vector_1.emplace_back(object_2);
-
-    objects_vector_2.emplace_back(object_1);
-    objects_vector_2.emplace_back(object_2);
-
     std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
 
 
     /* Answer:
-     * object_1_ptr, objects_2_ptr, objects_vector_1, objects_vector_2 will all delete original Objects.
-     * So object_1 will be deleted 3 times, and object_2 likewise.*/
+     * object_1_ptr and objects_vector_1, will both delete original Object.
+     * So we have double delete problem.*/
 }
 
 void SHARED_MEELOGIC::Vector_Shared_Pointers_Correct()
 {
     Objects *object_1 = new Objects;
-    Objects *object_2 = new Objects;
 
     std::shared_ptr<Objects> object_1_ptr (object_1);
-    std::shared_ptr<Objects> object_2_ptr (object_2);
-
     std::vector<std::shared_ptr<Objects>> objects_vector_1;
-    std::vector<std::shared_ptr<Objects>> objects_vector_2;
 
     objects_vector_1.emplace_back(object_1_ptr);
-    objects_vector_1.emplace_back(object_2_ptr);
-
-    objects_vector_2.emplace_back(object_1_ptr);
-    objects_vector_2.emplace_back(object_2_ptr);
-
     std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
 
 
+    /* PROOF THAT IT IS CORRECT */
     std::cout << "Reference count: " << object_1_ptr.use_count() << "\n";
     /* Alternatively */
-    //std::cout << "Reference count: " << objects_vector_2.at(0).use_count() << "\n";
+    std::cout << "Reference count: " << objects_vector_1.at(0).use_count() << "\n";
 
     objects_vector_1.clear();
-    std::cout << "Reference count: " << objects_vector_2.at(0).use_count() << "\n";
-
-    objects_vector_2.clear();
-    std::cout << "Reference count: " << object_1_ptr.use_count() << "\n";
+    std::cout << "Reference count: " << objects_vector_1.at(0).use_count() << "\n";
 }
 
 
