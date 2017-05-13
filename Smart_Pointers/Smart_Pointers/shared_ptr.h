@@ -6,6 +6,8 @@ namespace SHARED_MEELOGIC
     void Start();
 
     void Shared_Ptr_Contructors_Custom_Class_1();
+    void Shared_Ptr_Contructors_Custom_Class_1_Wrong();
+
     void Shared_Ptr_Unique();
 
     void Vector_Shared_Pointers_Wrong();
