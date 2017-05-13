@@ -242,56 +242,6 @@ void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
 
 
 
-void UNIQUE_MEELOGIC::Vector_Unique_Pointers()
-{
-    Objects *object_1 = new Objects;
-    Objects *object_2 = new Objects;
-
-    std::unique_ptr<Objects> object_1_ptr (object_1);
-    std::unique_ptr<Objects> object_2_ptr (object_2);
-
-    std::vector<std::unique_ptr<Objects>> objects_vector_1;
-    std::vector<std::unique_ptr<Objects>> objects_vector_2;
-
-    objects_vector_1.emplace_back(std::move(object_1_ptr));
-    objects_vector_1.emplace_back(std::move(object_2_ptr));
-
-    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1));
-//    objects_vector_2.emplace_back(std::move(object_2));
-
-    /* Answer:
-     * We make a duplicate of unique pointers, which makes a double delete.
-     * There will be 2 constructions and 4 destructions. */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1_ptr));
-//    objects_vector_2.emplace_back(std::move(object_2_ptr));
-//    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
-
-    /* Answer:
-     * object_1_ptr and object_2_ptr were already moved from before.
-     * So now they are nullptrs, and we are putting empty pointers to vector! */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(0)));
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(1)));
-//    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-    /* Answer:
-     * We steal resources from first vector. So now first vector has nullptrs. */
-}
-
 
 
 
