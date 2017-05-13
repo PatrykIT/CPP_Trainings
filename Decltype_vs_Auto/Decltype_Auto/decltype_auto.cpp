@@ -21,12 +21,7 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Const()
 
 
     //std::cout << "Is const int: "<< std::is_same<const int, decltype(number_auto)>::value << "\n";
-
     //std::cout << "Is const int: " << std::is_same<const int, decltype(number_decltype)>::value << "\n";
-
-
-    //std::cout << "Is const int: " << std::is_const<decltype(number_decltype)>::value  << '\n';
-    //std::cout << "Is const int: " << std::is_const<decltype(number_auto)>::value  << '\n';
 
     const auto number_auto_const = number;
     //std::cout << "Is const int: " << std::is_const<decltype(number_auto_const)>::value  << '\n';
@@ -53,29 +48,34 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Reference()
     std::cout << "Is int& : " << std::is_same<int&, decltype(reference_to_number_auto_fixed)>::value << "\n";
 }
 
-
-
-void MEELOGIC_DECLTYPE_VS_AUTO::Evaluation()
+void MEELOGIC_DECLTYPE_VS_AUTO::Vector_Evaluation_Auto()
 {
     std::vector<int> numbers { 1, 5, 10 };
 
-    /* An important property of decltype is that its operand never gets evaluated.
-     * For example, you can use an out-of-bounds element access to a vector */
-    decltype(numbers[5]) number_decltype = numbers.at(0);
-    std::cout << "Is int : " << std::is_same<int, decltype(number_decltype)>::value << "\n";
-    std::cout << "Is int& : " << std::is_same<int&, decltype(number_decltype)>::value << "\n";
-
     auto number_auto = numbers.at(0);
+
     std::cout << "Is int : " << std::is_same<int, decltype(number_auto)>::value << "\n";
     std::cout << "Is int& : " << std::is_same<int&, decltype(number_auto)>::value << "\n";
 
-    number_decltype = 90;
-    //number_auto = 90;
+    number_auto = 90;
 
     for(auto nr : numbers)
         std::cout << nr << " ";
+}
 
-    std::cout << "\n";
+void MEELOGIC_DECLTYPE_VS_AUTO::Vector_Evaluation_Decltype()
+{
+    std::vector<int> numbers { 1, 5, 10 };
+
+    decltype(numbers[0]) number_decltype = numbers.at(0);
+
+    std::cout << "Is int : " << std::is_same<int, decltype(number_decltype)>::value << "\n";
+    std::cout << "Is int& : " << std::is_same<int&, decltype(number_decltype)>::value << "\n";
+
+    number_decltype = 90;
+
+    for(auto nr : numbers)
+        std::cout << nr << " ";
 }
 
 
@@ -161,21 +161,40 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value_String()
 }
 
 
+std::vector<int> global_numbers { 1, 5, 10 };
+
+decltype(auto) Return_Middle()
+{
+    if(global_numbers.empty())
+        throw std::range_error("Vector is empty!");
+
+    size_t index = global_numbers.size() / 2;
+    return global_numbers[index];
+}
+
+//auto Return_Middle(int index)
+//{
+//    if(global_numbers.empty())
+//        throw std::range_error("Vector is empty!");
+
+//    size_t index = global_numbers.size() / 2;
+//    return global_numbers[index];
+//}
+
+void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value_Vector()
+{
+    decltype(Return_Middle()) number_decltype = Return_Middle();
+    decltype(auto) number_decltype_2 = Return_Middle();
+
+    auto number_auto = Return_Middle();
+
+    std::cout << std::is_same<int&, decltype(number_decltype)>::value << "\n";
+    std::cout << std::is_same<int&, decltype(number_auto)>::value << "\n";
+}
+
 
 
 /* Exercise 1. :
- * I want this function to return always double. How do we do this? */
-//decltype(auto) Function_with_Multiple_Returns()
-//{
-//    bool return_first = true;
-//    if(return_first)
-//        return 1.0;
-//    else
-//        return 1;
-//}
-
-
-/* Exercise 2. :
  * I want this function to be able to return double or int, depending on the user intent. */
 //decltype(auto) Function_with_Multiple_Returns()
 //{
@@ -189,16 +208,6 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value_String()
 namespace ANSWERS
 {
     /* Answer to exercise 1: */
-    decltype(auto) Function_with_Multiple_Returns_Answer_1() -> decltype(1.0) //Or -> double
-    {
-        bool return_first = true;
-        if(return_first == true)
-            return 2.5;
-        else
-            return 1;
-    }
-
-    /* Answer to exercise 2: */
     template <typename Type>
     Type Function_with_Multiple_Returns_Answer_2()
     {
@@ -213,11 +222,8 @@ namespace ANSWERS
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Exercises()
 {
-    auto number_1 = ANSWERS::Function_with_Multiple_Returns_Answer_1();
-    std::cout << "Number 1: " << number_1 << "\n";
-
-    auto number_2 = ANSWERS::Function_with_Multiple_Returns_Answer_2<double>();
-    std::cout << "Number 2: " << number_2 << "\n";
+    auto number_1 = ANSWERS::Function_with_Multiple_Returns_Answer_2<double>();
+    std::cout << "Number 2: " << number_1 << "\n";
 }
 
 
@@ -225,10 +231,11 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Exercises()
 void MEELOGIC_DECLTYPE_VS_AUTO::Start()
 {
     //Initialization_of_Local_Variables_Const();
-    Initialization_of_Local_Variables_Reference();
-    //Evaluation();
+    //Initialization_of_Local_Variables_Reference();
+    //Vector_Evaluation_Auto();
+    //Vector_Evaluation_Decltype();
 
-    //Return_Value();
+    Return_Value_Vector();
 
     //Exercises();
 

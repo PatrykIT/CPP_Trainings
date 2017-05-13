@@ -8,9 +8,11 @@ namespace MEELOGIC_DECLTYPE_VS_AUTO
     void Initialization_of_Local_Variables_Const();
     void Initialization_of_Local_Variables_Reference();
 
-    void Evaluation();
+    void Vector_Evaluation_Auto();
+    void Vector_Evaluation_Decltype();
     void Return_Value();
     void Return_Value_String();
+    void Return_Value_Vector();
 
     void Exercises();
 }
