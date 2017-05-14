@@ -96,6 +96,21 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_3()
 }
 
 
+void Func(std::unique_ptr<int> first, std::unique_ptr<int> second)
+{
+    //Some logic here.
+}
+
+void UNIQUE_MEELOGIC::Exception_Safety()
+{
+    Func(std::unique_ptr<int> (new int(5)), std::unique_ptr<int> (new int(10)));
+
+    /* Versus: */
+
+    Func(std::make_unique<int>(5), std::make_unique<int>(10));
+}
+
+
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
 {
     std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);

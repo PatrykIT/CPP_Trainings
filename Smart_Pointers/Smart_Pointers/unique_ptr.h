@@ -10,8 +10,9 @@ namespace UNIQUE_MEELOGIC
     void Unique_Ptr_Contructors_2();
     void Unique_Ptr_Contructors_3();
 
-    void Unique_Ptr_Contructors_Moving();
+    void Exception_Safety();
 
+    void Unique_Ptr_Contructors_Moving();
 
     void Unique_Ptr_Contructors_Bad_Usage();
     void Unique_Ptr_Contructors_Good_Usage();
