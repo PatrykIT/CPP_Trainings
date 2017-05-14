@@ -6,6 +6,18 @@
 #include <cassert>
 
 
+void MEELOGIC_DECLTYPE_VS_AUTO::Start()
+{
+    //Initialization_of_Local_Variables_Const();
+    //Initialization_of_Local_Variables_Reference();
+    //Vector_Evaluation_Auto();
+    //Vector_Evaluation_Decltype();
+
+    Return_Value_Vector();
+
+    //Exercises();
+}
+
 void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Const()
 {
     std::cout << std::boolalpha; //Changes printing from 0 and 1 to false & true.
@@ -166,18 +178,7 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Exercises()
 
 
 
-void MEELOGIC_DECLTYPE_VS_AUTO::Start()
-{
-    //Initialization_of_Local_Variables_Const();
-    //Initialization_of_Local_Variables_Reference();
-    //Vector_Evaluation_Auto();
-    //Vector_Evaluation_Decltype();
 
-    Return_Value_Vector();
-
-    //Exercises();
-
-}
 
 
 
