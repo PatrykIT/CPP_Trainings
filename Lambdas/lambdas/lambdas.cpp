@@ -8,6 +8,28 @@
 
 
 
+void LAMBDAS_MEELOGIC::Start()
+{
+    //Comparator_Pre_CPP11();
+    //Comparator_Since_CPP11();
+
+    Return_Value_CPP11();
+
+    //Capturing_Variables();
+    //Capturing_Variables_Reference();
+    //Auto_Parameters();
+
+
+    //Calling_Lambda();
+    //Mutable_Keyword();
+
+    //Lambdas_in_std_Function();
+
+    //Lambda_In_Memory_CPP11();
+    //Lambda_In_Memory_CPP14();
+}
+
+
 double Multiply(int x)
 {
     return x * 10.0;
@@ -171,31 +193,48 @@ void LAMBDAS_MEELOGIC::Comparator_Since_CPP11()
     Print_Ages(humans.begin(), humans.end());
 }
 
+
+
+namespace Exercises
+{
+    void Find()
+    {
+        srand(time(NULL));
+
+        std::vector<Human> humans(10);
+
+        std::vector<Human>::iterator found_place = std::find_if(humans.begin(), humans.end(), [](const Human &human) -> bool
+        { return human.age == 5; } );
+
+        if(found_place != humans.end())
+            std::cout << "Found person! \n";
+        else
+            std::cout << "Not found. \n";
+    }
+
+    void Is_Sorted()
+    {
+        srand(time(NULL));
+
+        std::vector<Human> humans(10);
+
+        for(const auto &human : humans)
+            std::cout << human.age << "\n";
+
+        bool sorted = std::is_sorted(humans.begin(), humans.end(), [](const Human &first, const Human &second)
+        { return first.age < second.age; });
+
+        if(sorted)
+            std::cout << "Vector is sorted! \n";
+        else
+            std::cout << "Vector is not sorted! \n";
+    }
+}
+
+
 /* ----------------------------------------------------------------------------------------- */
 
 
-
-
-void LAMBDAS_MEELOGIC::Start()
-{
-    //Comparator_Pre_CPP11();
-    //Comparator_Since_CPP11();
-
-    Return_Value_CPP11();
-
-    //Capturing_Variables();
-    //Capturing_Variables_Reference();
-    //Auto_Parameters();
-
-
-    //Calling_Lambda();
-    //Mutable_Keyword();
-
-    //Lambdas_in_std_Function();
-
-    //Lambda_In_Memory_CPP11();
-    //Lambda_In_Memory_CPP14();
-}
 
 
 void LAMBDAS_MEELOGIC::Normal_Lambda()

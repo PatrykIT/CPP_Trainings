@@ -96,6 +96,21 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_3()
 }
 
 
+void Func(std::unique_ptr<int> first, std::unique_ptr<int> second)
+{
+    //Some logic here.
+}
+
+void UNIQUE_MEELOGIC::Exception_Safety()
+{
+    Func(std::unique_ptr<int> (new int(5)), std::unique_ptr<int> (new int(10)));
+
+    /* Versus: */
+
+    Func(std::make_unique<int>(5), std::make_unique<int>(10));
+}
+
+
 void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
 {
     std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
@@ -113,45 +128,6 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
         std::cout << first_ptr_to_object->number << "\n";
 }
 
-
-
-
-void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
-{
-    /* To take a unique pointer by value means that you are transferring ownership of the pointer to the function.
-     * You should expect that the pointer will be modified. */
-    std::cout << "std::unique_ptr object" << std::endl;
-}
-
-//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> const &object_unique)
-//{
-//    /* By passing a const&, you are saying that the function can access the Object via the pointer, but can't modify it.
-//     * So there is no transfer of ownership, but we know that the pointer will not be changed.
-//     * It's okay interface for example printing values etc. */
-
-//    std::cout << "std::unique_ptr const &object" << std::endl;
-//}
-
-
-void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
-{
-    /* The difference between taking const &object vs. std::unique_ptr const &object is that we require callers to pass
-     * original object, not a pointer. That means that they can pass it from unique_ptr, shared_ptr, raw pointer etc.
-     * So it is more universal, as callers are not required to use unique_ptr.
-     * REMEBER: This is good for const objects, that won't be modified. */
-    std::cout << "const &object" << std::endl;
-}
-
-
-void UNIQUE_MEELOGIC::Interfaces()
-{
-    std::unique_ptr<Objects> object = std::make_unique<Objects>(5);
-
-    /* Real life example of where moving unique_ptr is necessary */
-    Take_Object(std::move(object));
-    //Take_Object(object);
-    //Take_Object(*object);
-}
 
 
 
@@ -202,6 +178,54 @@ void UNIQUE_MEELOGIC::Unique_Release()
 
 
 
+
+
+
+void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
+{
+    /* To take a unique pointer by value means that you are transferring ownership of the pointer to the function.
+     * You should expect that the pointer will be modified. */
+    std::cout << "std::unique_ptr object" << std::endl;
+}
+
+//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> const &object_unique)
+//{
+//    /* By passing a const&, you are saying that the function can access the Object via the pointer, but can't modify it.
+//     * So there is no transfer of ownership, but we know that the pointer will not be changed.
+//     * It's okay interface for example printing values etc. */
+
+//    std::cout << "std::unique_ptr const &object" << std::endl;
+//}
+
+
+void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
+{
+    /* The difference between taking const &object vs. std::unique_ptr const &object is that we require callers to pass
+     * original object, not a pointer. That means that they can pass it from unique_ptr, shared_ptr, raw pointer etc.
+     * So it is more universal, as callers are not required to use unique_ptr.
+     * REMEBER: This is good for const objects, that won't be modified. */
+    std::cout << "const &object" << std::endl;
+}
+
+
+void UNIQUE_MEELOGIC::Interfaces()
+{
+    std::unique_ptr<Objects> object = std::make_unique<Objects>(5);
+
+    /* Real life example of where moving unique_ptr is necessary */
+    Take_Object(std::move(object));
+    //Take_Object(object);
+    //Take_Object(*object);
+}
+
+
+
+
+
+
+
+
+
 void UNIQUE_MEELOGIC::Custom_Deleter_C()
 {
     FILE *file_handle;
@@ -241,56 +265,6 @@ void UNIQUE_MEELOGIC::Custom_Deleter_CPP11()
 }
 
 
-
-void UNIQUE_MEELOGIC::Vector_Unique_Pointers()
-{
-    Objects *object_1 = new Objects;
-    Objects *object_2 = new Objects;
-
-    std::unique_ptr<Objects> object_1_ptr (object_1);
-    std::unique_ptr<Objects> object_2_ptr (object_2);
-
-    std::vector<std::unique_ptr<Objects>> objects_vector_1;
-    std::vector<std::unique_ptr<Objects>> objects_vector_2;
-
-    objects_vector_1.emplace_back(std::move(object_1_ptr));
-    objects_vector_1.emplace_back(std::move(object_2_ptr));
-
-    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1));
-//    objects_vector_2.emplace_back(std::move(object_2));
-
-    /* Answer:
-     * We make a duplicate of unique pointers, which makes a double delete.
-     * There will be 2 constructions and 4 destructions. */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(object_1_ptr));
-//    objects_vector_2.emplace_back(std::move(object_2_ptr));
-//    std::cout << "Object->number: " << objects_vector_2.at(0)->number << "\n";
-
-    /* Answer:
-     * object_1_ptr and object_2_ptr were already moved from before.
-     * So now they are nullptrs, and we are putting empty pointers to vector! */
-
-
-
-
-    /* What is wrong here? */
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(0)));
-//    objects_vector_2.emplace_back(std::move(objects_vector_1.at(1)));
-//    std::cout << "Object->number: " << objects_vector_1.at(0)->number << "\n";
-
-    /* Answer:
-     * We steal resources from first vector. So now first vector has nullptrs. */
-}
 
 
 
