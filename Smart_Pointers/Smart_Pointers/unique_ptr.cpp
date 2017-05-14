@@ -108,6 +108,12 @@ void UNIQUE_MEELOGIC::Exception_Safety()
     /* Versus: */
 
     Func(std::make_unique<int>(5), std::make_unique<int>(10));
+
+
+    /* Answer: */
+    auto first = std::unique_ptr<int> (new int(5));
+    auto second = std::unique_ptr<int> (new int(10));
+    Func(std::move(first), std::move(second));
 }
 
 
