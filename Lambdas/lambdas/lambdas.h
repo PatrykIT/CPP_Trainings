@@ -18,6 +18,8 @@ namespace LAMBDAS_MEELOGIC
     void Mutable_Keyword();
 
     void Capturing_Variables();
+    void Capturing_Variables_Advanced();
+
     void Capturing_Variables_Reference();
     void Auto_Parameters();
 
