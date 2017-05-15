@@ -6,6 +6,7 @@
 #include <cassert>
 
 
+
 void MEELOGIC_DECLTYPE_VS_AUTO::Start()
 {
     //Initialization_of_Local_Variables_Const();
@@ -13,7 +14,9 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Start()
     //Vector_Evaluation_Auto();
     //Vector_Evaluation_Decltype();
 
-    Return_Value_Vector();
+    //Return_Value_Vector();
+
+     Return_Middle();
 
     //Exercises();
 }
@@ -26,14 +29,13 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Const()
     const int number = 5;
 
     auto number_auto = number;
+    std::cout << "Is const int: "<< std::is_same<const int, decltype(number_auto)>::value << "\n";
+
     decltype(number) number_decltype = number;
-
-
-    //std::cout << "Is const int: "<< std::is_same<const int, decltype(number_auto)>::value << "\n";
-    //std::cout << "Is const int: " << std::is_same<const int, decltype(number_decltype)>::value << "\n";
+    std::cout << "Is const int: " << std::is_same<const int, decltype(number_decltype)>::value << "\n";
 
     const auto number_auto_const = number;
-    //std::cout << "Is const int: " << std::is_const<decltype(number_auto_const)>::value  << '\n';
+    std::cout << "Is const int: " << std::is_const<decltype(number_auto_const)>::value  << '\n';
 }
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Reference()
@@ -43,6 +45,7 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Initialization_of_Local_Variables_Reference()
 
     int& reference_to_number = number_2;
     auto reference_to_number_auto = reference_to_number;
+
     decltype(auto) reference_to_number_decltype = reference_to_number; //C++14
 
     std::cout << "Is int& : " << std::is_same<int&, decltype(reference_to_number_auto)>::value << "\n";
@@ -71,7 +74,7 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Vector_Evaluation_Decltype()
 {
     std::vector<int> numbers { 1, 5, 10 };
 
-    decltype(numbers[0]) number_decltype = numbers.at(0);
+    decltype(auto) number_decltype = numbers.at(0);
 
     std::cout << "Is int : " << std::is_same<int, decltype(number_decltype)>::value << "\n";
     std::cout << "Is int& : " << std::is_same<int&, decltype(number_decltype)>::value << "\n";
@@ -84,8 +87,8 @@ void MEELOGIC_DECLTYPE_VS_AUTO::Vector_Evaluation_Decltype()
 
 
 
-
-//http://stackoverflow.com/questions/918567/size-t-vs-containersize-type
+/* Decltype keyword is useful when we don't want to change original return type of another function.
+ * In this example we do not want to change vectors operator [] return type. It returns a reference. */
 
 std::vector<int> global_numbers { 1, 5, 10 };
 
@@ -95,11 +98,12 @@ decltype(auto) Return_Middle()
         throw std::range_error("Vector is empty!");
 
     /* Which one is correct? */
-    //size_t index = global_numbers.size() / 2;
-    //int index = global_numbers.size() / 2;
-    //std::vector<int>::size_type index = global_numbers.size() / 2;
+    //http://stackoverflow.com/questions/918567/size-t-vs-containersize-type
+//    size_t index = global_numbers.size();
+//    int index = global_numbers.size();
+//    std::vector<int>::size_type index = global_numbers.size();
 
-    auto index = global_numbers.size() / 2;
+    auto index = global_numbers.size();
     return global_numbers[index];
 }
 
@@ -123,14 +127,14 @@ decltype(auto) Return_Middle()
 //}
 
 
-//auto Return_Middle() -> decltype(global_numbers[0])
-//{
-//    if(global_numbers.empty())
-//        throw std::range_error("Vector is empty!");
+auto Return_Middle() -> decltype(global_numbers[0])
+{
+    if(global_numbers.empty())
+        throw std::range_error("Vector is empty!");
 
-//    auto index = global_numbers.size() / 2;
-//    return global_numbers[index];
-//}
+    auto index = global_numbers.size() / 2;
+    return global_numbers[index];
+}
 
 
 void MEELOGIC_DECLTYPE_VS_AUTO::Return_Value_Vector()
