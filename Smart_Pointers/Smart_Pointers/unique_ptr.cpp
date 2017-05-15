@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <vector>
 
-//TO DO: Show how unique ptr manages deletion when exception is thrown.
-//Show how in C++03 we needed to have try catch {} block to delete manually objects.
 
 void UNIQUE_MEELOGIC::Start()
 {
@@ -23,10 +21,10 @@ void UNIQUE_MEELOGIC::Start()
     //Unique_Release();
 
     //Custom_Deleter_C();
-    Custom_Deleter_CPP11_Wrong();
+    //Custom_Deleter_CPP11_Wrong();
     //Custom_Deleter_CPP11();
 
-    //Unique_Ptr_Contructors_Bad_Usage();
+    Unique_Ptr_Contructors_Bad_Usage();
     //Unique_Ptr_Contructors_Good_Usage();
 }
 
@@ -105,9 +103,22 @@ void UNIQUE_MEELOGIC::Exception_Safety()
 {
     Func(std::unique_ptr<int> (new int(5)), std::unique_ptr<int> (new int(10)));
 
+    /* The compiler may call a function like this:
+     * 1. new int(5)
+     * 2. new int(10)
+     * 3. unique_ptr<int> (1.)
+     * 4. unique_ptr<int> (2.)
+     * If at point 2. constructor would throw, the 'new int(5)' would leak memory. */
+
+
     /* Versus: */
 
     Func(std::make_unique<int>(5), std::make_unique<int>(10));
+
+    /* Answer: */
+    auto first = std::unique_ptr<int> (new int(5));
+    auto second = std::unique_ptr<int> (new int(10));
+    Func(std::move(first), std::move(second));
 }
 
 
@@ -116,12 +127,13 @@ void UNIQUE_MEELOGIC::Unique_Ptr_Contructors_Moving()
     std::unique_ptr<Objects> first_ptr_to_object = std::make_unique<Objects>(5);
     std::cout << first_ptr_to_object->number << "\n";
 
-    //std::unique_ptr<Objects> second_ptr_to_object = first_ptr_to_object; //Will not compile. Unique_ptr's are not copyable. They are only movable.
+    /* Will not compile. Unique_ptr's are not copyable. They are only movable. */
+    //std::unique_ptr<Objects> second_ptr_to_object = first_ptr_to_object;
+
     std::unique_ptr<Objects> second_ptr_to_object (std::move(first_ptr_to_object));
     std::cout << second_ptr_to_object->number << "\n";
-    /* What is the use-case for moving unique_ptr? */
 
-    //std::cout << first_ptr_to_object->x << "\n"; //Crashes!! Don't touch the pointer that was "moved from".
+    //std::cout << first_ptr_to_object->number << "\n"; //Crashes!! Don't touch the pointer that was "moved from".
     if(first_ptr_to_object == nullptr)
         std::cout << "Unique_pointer is empty. Please do not dereference.\n";
     else
@@ -181,31 +193,32 @@ void UNIQUE_MEELOGIC::Unique_Release()
 
 
 
-void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
-{
-    /* To take a unique pointer by value means that you are transferring ownership of the pointer to the function.
-     * You should expect that the pointer will be modified. */
-    std::cout << "std::unique_ptr object" << std::endl;
-}
-
-//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> const &object_unique)
+//void Take_Object(std::unique_ptr<UNIQUE_MEELOGIC::Objects> object_unique)
 //{
-//    /* By passing a const&, you are saying that the function can access the Object via the pointer, but can't modify it.
-//     * So there is no transfer of ownership, but we know that the pointer will not be changed.
-//     * It's okay interface for example printing values etc. */
-
-//    std::cout << "std::unique_ptr const &object" << std::endl;
+//    /* To take a unique pointer by value means that you are transferring ownership of the pointer to the function.
+//     * You should expect that the pointer will be modified. */
+//    std::cout << "std::unique_ptr object" << std::endl;
 //}
 
-
-void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
+//TODO: Check difference std::unique_ptr<const UNIQUE_MEELOGIC::Objects> const &object_unique and std::unique_ptr<UNIQUE_MEELOGIC::Objects> const &object_unique
+void Take_Object( std::unique_ptr<const UNIQUE_MEELOGIC::Objects> const &object_unique)
 {
-    /* The difference between taking const &object vs. std::unique_ptr const &object is that we require callers to pass
-     * original object, not a pointer. That means that they can pass it from unique_ptr, shared_ptr, raw pointer etc.
-     * So it is more universal, as callers are not required to use unique_ptr.
-     * REMEBER: This is good for const objects, that won't be modified. */
-    std::cout << "const &object" << std::endl;
+    /* By passing a const&, you are saying that the function can access the Object via the pointer, but can't modify it.
+     * So there is no transfer of ownership, but we know that the pointer will not be changed.
+     * It's okay interface for example printing values etc. */
+
+    std::cout << "std::unique_ptr const &object" << std::endl;
 }
+
+
+//void Take_Object(const UNIQUE_MEELOGIC::Objects &object_unique)
+//{
+//    /* The difference between taking const &object vs. std::unique_ptr const &object is that we require callers to pass
+//     * original object, not a pointer. That means that they can pass it from unique_ptr, shared_ptr, raw pointer etc.
+//     * So it is more universal, as callers are not required to use unique_ptr.
+//     * REMEBER: This is good for const objects, that won't be modified. */
+//    std::cout << "const &object" << std::endl;
+//}
 
 
 void UNIQUE_MEELOGIC::Interfaces()
